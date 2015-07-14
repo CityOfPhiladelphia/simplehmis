@@ -1,21 +1,44 @@
 from django.contrib import admin
-from floppyforms.models import ModelForm
+from django.utils.translation import ugettext as _
 from . import models
 
 
+class HOHEnrollmentInline (admin.StackedInline):
+    model = models.ClientEnrollment
+    fk_name = 'enrollment_as_hoh'
+    exclude = ['hoh_relationship']
+    raw_id_fields = ['client']
+    verbose_name = _('Client Information')
+    verbose_name_plural = _('Head of Household')
+
+    def save_model(self, request, obj, form, change):
+        obj.hoh_relationship = 1  # 1 -> Self (head of household)
+        return super().save_model(request, obj, form, change)
+
+
+class DependentEnrollmentInline (admin.StackedInline):
+    model = models.ClientEnrollment
+    fk_name = 'enrollment_as_dependant'
+    extra = 0
+    raw_id_fields = ['client']
+    verbose_name = _('Dependent')
+    verbose_name_plural = _('Dependents')
+
+
+class EnrollmentAdmin (admin.ModelAdmin):
+    inlines = [HOHEnrollmentInline, DependentEnrollmentInline]
+    raw_id_fields = ['project']
+
+
 class ClientAdmin (admin.ModelAdmin):
-    form = ModelForm
-    fieldsets = [
-        ('Name', {'fields': ('first', 'middle', 'last', 'suffix', 'name_data_quality')}),
-        ('Social Security', {'fields': ('ssn', 'ssn_data_quality')}),
-        ('Date of Birth', {'fields': ('dob', 'dob_data_quality')}),
-        (None, {'fields': ('gender', 'ethnicity', 'race', 'veteran_status')})
-    ]
-
-    list_display = ('name_display', 'dob_display', 'ssn_display')
+    list_display = ['name_display', 'ssn_display', 'dob']
+    search_fields = ['first', 'middle', 'last', 'ssn']
 
 
-admin.site.register(models.Organization)
+class ProjectAdmin (admin.ModelAdmin):
+    search_fields = ['name']
+
+
 admin.site.register(models.Client, ClientAdmin)
 admin.site.register(models.Project)
-admin.site.register(models.Enrollment)
+admin.site.register(models.Enrollment, EnrollmentAdmin)
