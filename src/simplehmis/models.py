@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.timezone import now, timedelta
 from django.utils.translation import ugettext as _
 from simplehmis import consts
@@ -30,7 +31,7 @@ class ProjectManager (models.Manager):
 
 
 class Project (TimestampedModel):
-    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='projects')
     name = models.TextField()
 
     objects = ProjectManager()
@@ -48,17 +49,17 @@ class Client (TimestampedModel):
     middle = models.CharField(max_length=100, blank=True)
     last = models.CharField(max_length=100, blank=True)
     suffix = models.CharField(max_length=100, blank=True)
-    dob = models.DateField(_('Date of birth'), blank=True)
+    dob = models.DateField(_('Date of birth'), blank=True, null=True)
     ssn = models.CharField(max_length=9, blank=True,
         help_text=_('Enter 9 digit SSN Do not enter hyphens EX: 555210987'))
-    gender = models.PositiveIntegerField(blank=True, choices=consts.HUD_CLIENT_GENDER.items())
+    gender = models.PositiveIntegerField(blank=True, choices=consts.HUD_CLIENT_GENDER.items(), default=consts.HUD_DATA_NOT_COLLECTED)
     other_gender = models.TextField(blank=True,
         help_text=_('If "Other" for gender, please specify.'))
-    ethnicity = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_CLIENT_ETHNICITY.items())
-    race = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_CLIENT_RACE.items())
+    ethnicity = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_CLIENT_ETHNICITY.items(), default=consts.HUD_DATA_NOT_COLLECTED)
+    race = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_CLIENT_RACE.items(), default=consts.HUD_DATA_NOT_COLLECTED)
     # TODO: veteran status field should not validate if it conflicts with the
     #       client's age.
-    veteran_status = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_YES_NO.items(),
+    veteran_status = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_YES_NO.items(), default=consts.HUD_DATA_NOT_COLLECTED,
         help_text=_('Only collect this field if client is over 18.'))
 
     def name_display(self):
