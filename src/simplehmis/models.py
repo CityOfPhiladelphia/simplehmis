@@ -11,6 +11,30 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class HMISUser (object):
+    """
+    A user object that adds a few convenience methods to the Django User.
+    """
+    def __init__(self, user):
+        self.user = user
+        self.groups = None
+
+    def group_names(self):
+        return (g.name for g in self.groups)
+
+    def is_intake_staff(self):
+        return 'intake-staff' in self.group_names()
+
+    def is_project_staff(self):
+        return 'project-staff' in self.group_names()
+
+    def __getattr__(self, key):
+        return getattr(self.user, key)
+
+    def __dir__(self):
+        return dir(self.user) + super().__dir__()
+
+
 class TimestampedModel (models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -118,6 +142,13 @@ class Enrollment (TimestampedModel):
         except IndexError:
             return None
     hoh.short_description = _('Head of household')
+
+    def dependents(self):
+        return self.members.all()[1:]
+
+    def dependents_display(self):
+        return ', '.join(str(m) for m in self.dependents())
+    dependents_display.short_description = _('Dependents')
 
 
 class ClientEnrollment (TimestampedModel):
