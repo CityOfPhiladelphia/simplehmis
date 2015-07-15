@@ -20,7 +20,7 @@ class HMISUser (object):
         self.groups = None
 
     def group_names(self):
-        return (g.name for g in self.groups)
+        return (g.name for g in self.user.groups.all())
 
     def is_intake_staff(self):
         return 'intake-staff' in self.group_names()
