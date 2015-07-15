@@ -87,35 +87,52 @@ class Client (TimestampedModel):
         return '{} (SSN: {})'.format(self.name_display(), self.ssn_display())
 
 
+class EnrollmentManager (models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()\
+            .annotate(_member_count=models.Count('members'))
+
+
 class Enrollment (TimestampedModel):
     """
     A household enrollment
     """
     project = models.ForeignKey('Project')
-    # hoh = models.OneToOne('ClientEnrollment', verbose_name='Head of household')
-    # dependents = models.ManyToManyField('ClientEnrollment')
+    members = models.ManyToManyField('Client', through='ClientEnrollment')
+    entry_date = models.DateField(default=now)
+
+    objects = EnrollmentManager()
+
+    def member_count(self):
+        return self._member_count
+    member_count.short_description = _('# of members in household')
+
+    def members_display(self):
+        return ', '.join(str(m) for m in self.members.all())
+    members_display.short_description = _('Members in household')
 
     def hoh(self):
-        return self.members.all()[0]
+        try:
+            return self.members.all()[0]
+        except IndexError:
+            return None
+    hoh.short_description = _('Head of household')
 
 
 class ClientEnrollment (TimestampedModel):
     client = models.ForeignKey('Client')
+    enrollment = models.ForeignKey('Enrollment')
+
     hoh_relationship = models.PositiveIntegerField(_('Relationship to Head of Household'), choices=consts.HUD_CLIENT_HOH_RELATIONSHIP.items())
-    substance_abuse_issues = models.PositiveIntegerField(choices=consts.HUD_YES_NO.items(), blank=True, null=True,
+    substance_abuse_issues = models.PositiveIntegerField(choices=consts.HUD_YES_NO.items(), blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED,
         help_text=_('If Yes, please enter detail information in Substance Abuse Detail field'))
     substance_abuse_detail = models.TextField(blank=True)
-    mental_health_issues = models.PositiveIntegerField(choices=consts.HUD_YES_NO.items(), blank=True, null=True,
+    mental_health_issues = models.PositiveIntegerField(choices=consts.HUD_YES_NO.items(), blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED,
         help_text=_('If Yes, please enter detail information in Mental Health Detail field'))
     mental_health_detail = models.TextField(blank=True)
-    medical_issues = models.PositiveIntegerField(choices=consts.HUD_YES_NO.items(), blank=True, null=True,
+    medical_issues = models.PositiveIntegerField(choices=consts.HUD_YES_NO.items(), blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED,
         help_text=_('If Yes, please enter detail information in Medical Detail field'))
     medical_detail = models.TextField(blank=True)
-
-    household = models.ForeignKey('Enrollment', related_name='members')
-
-    enrollment_as_hoh = models.OneToOneField('Enrollment', related_name='hoh', null=True, blank=True)
-    enrollment_as_dependant = models.ForeignKey('Enrollment', related_name='dependents', null=True, blank=True)
 
     def __str__(self):
         return str(self.client)

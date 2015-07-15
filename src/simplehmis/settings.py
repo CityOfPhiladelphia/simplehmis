@@ -37,8 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'floppyforms',
-    # 'debug_toolbar',
+    # 'floppyforms',
+    'debug_toolbar',
     'simplehmis',
 )
 

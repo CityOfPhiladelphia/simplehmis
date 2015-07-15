@@ -3,30 +3,21 @@ from django.utils.translation import ugettext as _
 from . import models
 
 
-class HOHEnrollmentInline (admin.StackedInline):
+class ClientEnrollmentInline (admin.StackedInline):
     model = models.ClientEnrollment
-    fk_name = 'enrollment_as_hoh'
-    exclude = ['hoh_relationship']
     raw_id_fields = ['client']
-    verbose_name = _('Client Information')
-    verbose_name_plural = _('Head of Household')
+    verbose_name = _('Household member')
+    verbose_name_plural = _('Household members')
 
-    def save_model(self, request, obj, form, change):
-        obj.hoh_relationship = 1  # 1 -> Self (head of household)
-        return super().save_model(request, obj, form, change)
-
-
-class DependentEnrollmentInline (admin.StackedInline):
-    model = models.ClientEnrollment
-    fk_name = 'enrollment_as_dependant'
-    extra = 0
-    raw_id_fields = ['client']
-    verbose_name = _('Dependent')
-    verbose_name_plural = _('Dependents')
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj and obj.hoh:
+            return 0
+        else:
+            return 1
 
 
 class EnrollmentAdmin (admin.ModelAdmin):
-    inlines = [HOHEnrollmentInline, DependentEnrollmentInline]
+    inlines = [ClientEnrollmentInline]
     raw_id_fields = ['project']
 
 
