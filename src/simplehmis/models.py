@@ -60,10 +60,6 @@ class Project (TimestampedModel):
 
     objects = ProjectManager()
 
-    @staticmethod
-    def autocomplete_search_fields():
-        return ("name__icontains",)
-
     def __str__(self):
         return self.name
 
@@ -103,10 +99,6 @@ class Client (TimestampedModel):
 
     def is_adult(self):
         return (self.dob) and (now() - self.dob > timedelta(years=18))
-
-    @staticmethod
-    def autocomplete_search_fields():
-        return ("first__icontains", "last__icontains", "middle__icontains", "ssn__icontains")
 
     def __str__(self):
         return '{} (SSN: {})'.format(self.name_display(), self.ssn_display())
