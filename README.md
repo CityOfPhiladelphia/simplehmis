@@ -26,3 +26,7 @@ Next, set up the database and initialize the data:
     src/manage.py loaddata staff-groups.yaml
 
 Finally, load information specific to your structure. This could include: partner projects, project staff, etc. For information on doing that, run `src/manage.py load_projects -h`. As a superuser user you can always add this data manually. You can create a new superuser with the `src/manage.py createsuperuser` command.
+
+For testing convenience, you can load some test data if you just want to get started. This includes a few projects, an intake staff user with username `'intake-admin'`, and two project staff users with usernames `'project-admin1'` and `'project-admin2'`. All test users have password `'password'`.
+
+    src/manage.py loaddata hmis-test-data.yaml

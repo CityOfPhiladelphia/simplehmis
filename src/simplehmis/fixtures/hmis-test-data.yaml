@@ -1,0 +1,83 @@
+- fields:
+    date_joined: 2015-07-14 14:28:51.787293+00:00
+    email: ''
+    first_name: ''
+    groups: []
+    is_active: true
+    is_staff: true
+    is_superuser: true
+    last_login: 2015-07-14 14:29:04.543028+00:00
+    last_name: ''
+    password: pbkdf2_sha256$20000$oAwVKukSbkN1$kGPRUgyg7mIX+qPpuGmiy6gciH3wedrl4EFm5pxlhyU=
+    user_permissions: []
+    username: admin
+  model: auth.user
+- fields:
+    date_joined: 2015-07-15 19:41:11+00:00
+    email: ''
+    first_name: ''
+    groups:
+    - [project-staff]
+    is_active: true
+    is_staff: true
+    is_superuser: false
+    last_login: null
+    last_name: ''
+    password: pbkdf2_sha256$20000$jag7Y2uM2tX9$shMZvoWJySxNamKilKUpwp7bQ2gXR+HB3+HqNfGBGSo=
+    user_permissions: []
+    username: project-admin1
+  model: auth.user
+- fields:
+    date_joined: 2015-07-15 19:41:34+00:00
+    email: ''
+    first_name: ''
+    groups:
+    - [intake-staff]
+    is_active: true
+    is_staff: true
+    is_superuser: false
+    last_login: null
+    last_name: ''
+    password: pbkdf2_sha256$20000$dupDsLmIcPVQ$ehNG63K2t5wh3+TmVpGmHFRlyRH9ce8PknHTsCjkFRA=
+    user_permissions: []
+    username: intake-admin
+  model: auth.user
+- fields:
+    date_joined: 2015-07-15 19:47:23+00:00
+    email: ''
+    first_name: ''
+    groups:
+    - [project-staff]
+    is_active: true
+    is_staff: true
+    is_superuser: false
+    last_login: null
+    last_name: ''
+    password: pbkdf2_sha256$20000$3QfNVkGTwuEo$aTHMY/wy3/Q1qmPdRJ9z3pFyEU+zzsoXW2ou+uLp70s=
+    user_permissions: []
+    username: project-admin2
+  model: auth.user
+- fields:
+    admins:
+    - [project-admin1]
+    created_at: 2015-07-14 14:28:28.333841+00:00
+    name: My Little Project
+    updated_at: 2015-07-15 19:48:23.885896+00:00
+  model: simplehmis.project
+  pk: 1
+- fields:
+    admins:
+    - [project-admin2]
+    created_at: 2015-07-14 14:28:28.333903+00:00
+    name: The Big Bad Project
+    updated_at: 2015-07-15 19:48:30.232879+00:00
+  model: simplehmis.project
+  pk: 2
+- fields:
+    admins:
+    - [project-admin2]
+    created_at: 2015-07-14 14:28:28.333938+00:00
+    name: Teenage Mutant Ninja Project
+    updated_at: 2015-07-15 19:48:35.350504+00:00
+  model: simplehmis.project
+  pk: 3
