@@ -1,0 +1,19 @@
+- fields:
+    name: intake-staff
+    permissions:
+    - [add_client, simplehmis, client]
+    - [change_client, simplehmis, client]
+    - [change_project, simplehmis, project]
+  model: auth.group
+- fields:
+    name: project-staff
+    permissions:
+    - [add_client, simplehmis, client]
+    - [change_client, simplehmis, client]
+    - [add_clientenrollment, simplehmis, clientenrollment]
+    - [change_clientenrollment, simplehmis, clientenrollment]
+    - [delete_clientenrollment, simplehmis, clientenrollment]
+    - [add_enrollment, simplehmis, enrollment]
+    - [change_enrollment, simplehmis, enrollment]
+    - [change_project, simplehmis, project]
+  model: auth.group
