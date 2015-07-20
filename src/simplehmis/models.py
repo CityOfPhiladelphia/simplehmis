@@ -82,22 +82,21 @@ class Client (TimestampedModel):
     - Collection Point = Record Creation
     """
 
-    first = models.CharField(max_length=100, blank=True)
-    middle = models.CharField(max_length=100, blank=True)
-    last = models.CharField(max_length=100, blank=True)
-    suffix = models.CharField(max_length=100, blank=True)
+    first = models.CharField(_('First name'), max_length=100, blank=True)
+    middle = models.CharField(_('Middle name'), max_length=100, blank=True)
+    last = models.CharField(_('Last name'), max_length=100, blank=True)
+    suffix = models.CharField(_('Name suffix'), max_length=100, blank=True)
     dob = models.DateField(_('Date of birth'), blank=True, null=True)
-    ssn = models.CharField(max_length=9, blank=True,
+    ssn = models.CharField(_('SSN'), max_length=9, blank=True,
         help_text=_('Enter 9 digit SSN Do not enter hyphens EX: 555210987'))
-    gender = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_CLIENT_GENDER, default=consts.HUD_DATA_NOT_COLLECTED)
-    other_gender = models.TextField(blank=True,
-        help_text=_('If "Other" for gender, please specify.'))
-    ethnicity = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_CLIENT_ETHNICITY, default=consts.HUD_DATA_NOT_COLLECTED)
-    race = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_CLIENT_RACE, default=consts.HUD_DATA_NOT_COLLECTED)
+    gender = models.PositiveIntegerField(_('Gender'), blank=True, null=True, choices=consts.HUD_CLIENT_GENDER, default=consts.HUD_DATA_NOT_COLLECTED)
+    other_gender = models.TextField(_('If "Other" for gender, please specify'), blank=True)
+    ethnicity = models.PositiveIntegerField(_('Ethnicity'), blank=True, null=True, choices=consts.HUD_CLIENT_ETHNICITY, default=consts.HUD_DATA_NOT_COLLECTED)
+    race = models.PositiveIntegerField(_('Race'), blank=True, null=True, choices=consts.HUD_CLIENT_RACE, default=consts.HUD_DATA_NOT_COLLECTED)
     # TODO: veteran status field should not validate if it conflicts with the
     #       client's age.
-    veteran_status = models.PositiveIntegerField(blank=True, null=True, choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED,
-        help_text=_('Only collect this field if client is over 18.'))
+    veteran_status = models.PositiveIntegerField(_('Veteran status (adults only)'), blank=True, null=True, choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED,
+        help_text=_('Only collect veteran status if client is over 18.'))
 
     def name_display(self):
         name_pieces = []
@@ -147,7 +146,7 @@ class Household (TimestampedModel):
     project = models.ForeignKey('Project', null=True, blank=True,
         help_text=_('If the action is to refer the household to a project, '
                     'please specify which project.'))
-    referral_notes = models.TextField(blank=True)
+    referral_notes = models.TextField(_('Referral notes'), blank=True)
 
     objects = HouseholdManager()
 
@@ -212,7 +211,7 @@ class HouseholdMember (TimestampedModel):
     # household members.
 
     hoh_relationship = models.PositiveIntegerField(_('Relationship to head of household'), choices=consts.HUD_CLIENT_HOH_RELATIONSHIP)
-    present_at_enrollment = models.BooleanField(default=True)
+    present_at_enrollment = models.BooleanField(_('Present at enrollment'), default=True)
 
     class Meta:
         ordering = ['hoh_relationship']
@@ -239,7 +238,7 @@ class HealthInsuranceFields (models.Model):
     ----------------------
 
     """
-    health_insurance = models.PositiveIntegerField(choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED)
+    health_insurance = models.PositiveIntegerField(_('Client has health insurance'), choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED)
     health_insurance_medicaid = models.PositiveIntegerField(_('MEDICAID'), choices=consts.YES_NO, blank=True, null=True)
     health_insurance_medicare = models.PositiveIntegerField(_('MEDICARE'), choices=consts.YES_NO, blank=True, null=True)
     health_insurance_chip = models.PositiveIntegerField(_('State Children’s Health Insurance Program (or use local name)'), choices=consts.YES_NO, blank=True, null=True)
@@ -249,7 +248,7 @@ class HealthInsuranceFields (models.Model):
     health_insurance_private = models.PositiveIntegerField(_('Private Pay Health Insurance'), choices=consts.YES_NO, blank=True, null=True)
     health_insurance_state = models.PositiveIntegerField(_('State Health Insurance for Adults (or use local name)'), choices=consts.YES_NO, blank=True, null=True)
     # TODO: This next is HOPWA-only; should we omit?
-    health_insurance_none_reason = models.PositiveIntegerField('If none of the above, give reason', choices=consts.HUD_CLIENT_UNINSURED_REASON, default=consts.HUD_DATA_NOT_COLLECTED, blank=True, null=True)
+    health_insurance_none_reason = models.PositiveIntegerField(_('If none of the above, give reason'), choices=consts.HUD_CLIENT_UNINSURED_REASON, default=consts.HUD_DATA_NOT_COLLECTED, blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -341,7 +340,7 @@ class HousingStatusFields (models.Model):
     household comprised of only children.
 
     """
-    housing_status = models.PositiveIntegerField(choices=consts.HUD_CLIENT_HOUSING_STATUS, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    housing_status = models.PositiveIntegerField(_('Housing status'), choices=consts.HUD_CLIENT_HOUSING_STATUS, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
 
     homeless_at_least_one_year = models.PositiveIntegerField(_('Continuously homeless for at least one year'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     homeless_in_three_years = models.PositiveIntegerField(_('Number of times the client has been homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_COUNT, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
@@ -352,7 +351,7 @@ class HousingStatusFields (models.Model):
 
     prior_residence = models.PositiveIntegerField(_('Type of residence prior to project entry'), choices=consts.HUD_CLIENT_PRIOR_RESIDENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     prior_residence_other = models.TextField(_('If Other for type of residence, specify where'), blank=True)
-    length_at_prior_residence = models.PositiveIntegerField(choices=consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    length_at_prior_residence = models.PositiveIntegerField(_('Length of time at prior residence'), choices=consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
 
     class Meta:
         abstract = True
@@ -364,8 +363,8 @@ class DomesticViolenceFields (models.Model):
     ------------------------
 
     """
-    domestic_violence = models.PositiveIntegerField(choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    domestic_violence_occurred = models.PositiveIntegerField(choices=consts.HUD_CLIENT_DOMESTIC_VIOLENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    domestic_violence = models.PositiveIntegerField(_('Client is a victim/survivor of domestic violence'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    domestic_violence_occurred = models.PositiveIntegerField(_('If Client has experience domestic violence, when?'), choices=consts.HUD_CLIENT_DOMESTIC_VIOLENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
 
     class Meta:
         abstract = True
