@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
+from django.db.models import fields
 from django.forms import ValidationError
+from django.forms import widgets
 from django.utils.translation import ugettext as _
 from . import forms
 from . import models
@@ -28,15 +30,12 @@ class HouseholdMemberInline (admin.TabularInline):
     verbose_name = _('Household member')
     verbose_name_plural = _('Household members')
 
-    def get_extra(self, request, obj=None, **kwargs):
-        if obj and obj.member_count() >= 1:
-            return 0
-        else:
-            return 1
+    extra = 0
+    min_num = 1
 
     def link_to_assessments(self, obj=None):
         if obj is None or obj.id is None:
-            return '(Save the household in order to edit the entry assessment information)'
+            return '(Click "Save and continue editing" below to see the entry assessment information)'
         else:
             client_url = reverse('admin:simplehmis_householdmember_change', args=(obj.id,))
             return (
@@ -51,7 +50,7 @@ class HouseholdAdmin (admin.ModelAdmin):
     inlines = [HouseholdMemberInline]
     raw_id_fields = ['project']
 
-    list_display = ['project', 'hoh', 'dependents_display']
+    list_display = ['members_display', 'is_enrolled']
     search_fields = ['project__name', 'members__first', 'members__middle', 'members__last']
 
     class Media:
@@ -82,24 +81,6 @@ class HouseholdAdmin (admin.ModelAdmin):
 
         return form_class
 
-    def get_fields(self, request, obj=None):
-        user = models.HMISUser(request.user)
-        fields = super().get_fields(request, obj=obj)
-        if not user.can_refer_household():
-            fields.remove('intake_action')
-        if not user.can_enroll_household():
-            fields.remove('enrolled_at')
-        return fields
-
-    def get_readonly_fields(self, request, obj=None):
-        user = models.HMISUser(request.user)
-        fields = []
-        if not user.can_enroll_household():
-            fields.append('enrolled_at')
-        if not user.can_refer_household():
-            fields.append('arrived_at')
-        return fields
-
 
 class ClientAdmin (admin.ModelAdmin):
     list_display = ['name_display', 'ssn_display', 'dob']
@@ -113,7 +94,7 @@ class ClientEntryAssessmentInline (admin.StackedInline):
 
 class ClientExitAssessmentInline (admin.StackedInline):
     model = models.ClientExitAssessment
-    extra = 1
+    extra = 0
 
 
 class ClientAnnualAssessmentInline (admin.StackedInline):
@@ -123,23 +104,27 @@ class ClientAnnualAssessmentInline (admin.StackedInline):
 
 class HouseholdMemberAdmin (admin.ModelAdmin):
     raw_id_fields = ('client',)
-    exclude = ('household',)
+    exclude = ('household', 'present_at_enrollment')
+    readonly_fields = ('hoh_relationship',)
+    inlines = (
+        ClientEntryAssessmentInline,
+        ClientAnnualAssessmentInline,
+        ClientExitAssessmentInline
+    )
 
-    def get_inline_instances(self, request, obj=None):
-        user = models.HMISUser(request.user)
-        if user.is_superuser or user.can_enroll_household():
-            inlines = (
-                ClientEntryAssessmentInline,
-                ClientAnnualAssessmentInline,
-                ClientExitAssessmentInline
-            )
-        else:
-            inlines = ()
-        return [inline(self.model, self.admin_site) for inline in inlines]
+    list_display = ['__str__', 'is_enrolled']
+
+    class Media:
+        js = ("js/show-strrep.js", "js/hmis-forms.js")
+        css = {"all": ("css/hmis-forms.css",)}
 
 
 class ProjectAdmin (admin.ModelAdmin):
     search_fields = ['name']
+    filter_horizontal = ['admins']
+    formfield_overrides = {
+        fields.TextField: {'widget': widgets.TextInput(attrs={'size': '100'})},
+    }
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.has_perm('simplehmis.add_project'):

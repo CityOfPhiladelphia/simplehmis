@@ -13,3 +13,8 @@
 .dynamic-members .original p:first-child {
 	display:none;
 }
+
+.dynamic-entry_assessment > h3,
+.dynamic-exit_assessment > h3 {
+	display: none;
+}

@@ -63,8 +63,8 @@ class ProjectManager (models.Manager):
 
 
 class Project (TimestampedModel):
-    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='projects')
     name = models.TextField()
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='projects')
 
     objects = ProjectManager()
 
@@ -177,6 +177,10 @@ class Household (TimestampedModel):
         return ', '.join(str(m) for m in self.dependents())
     dependents_display.short_description = _('Dependents')
 
+    def is_enrolled(self):
+        return any(member.is_enrolled() for member in self.members.all())
+    is_enrolled.boolean = True
+
     def __str__(self):
         return '{}\'s household'.format(self.hoh())
 
@@ -207,7 +211,7 @@ class HouseholdMember (TimestampedModel):
     # house, rather it is to identify one client by which to attach the other
     # household members.
 
-    hoh_relationship = models.PositiveIntegerField(choices=consts.HUD_CLIENT_HOH_RELATIONSHIP)
+    hoh_relationship = models.PositiveIntegerField(_('Relationship to head of household'), choices=consts.HUD_CLIENT_HOH_RELATIONSHIP)
     present_at_enrollment = models.BooleanField(default=True)
 
     class Meta:
@@ -216,10 +220,17 @@ class HouseholdMember (TimestampedModel):
     def __str__(self):
         return str(self.client)
 
-    def delete(self, *args, **kwargs):
-        if self.hoh_relationship == 1:
-            raise ValidationError(_('You cannot delete the head of household.'))
-        super().delete(*args, **kwargs)
+    def has_entered(self):
+        try: return self.entry_assessment is not None
+        except ClientEntryAssessment.DoesNotExist: return False
+
+    def has_exited(self):
+        try: return self.exit_assessment is not None
+        except ClientExitAssessment.DoesNotExist: return False
+
+    def is_enrolled(self):
+        return self.has_entered() and not self.has_exited()
+    is_enrolled.boolean = True
 
 
 class HealthInsuranceFields (models.Model):
@@ -382,9 +393,11 @@ class ClientEntryAssessment (TimestampedModel, HealthInsuranceFields,
     - Element Type = Universal
     - Collection Point = Project Entry
     """
-    member = models.OneToOneField('HouseholdMember')
+    member = models.OneToOneField('HouseholdMember', related_name='entry_assessment')
     project_entry_date = models.DateField(null=True)
 
+    class Meta:
+        verbose_name_plural = _('Client entry assessment')
 
     def __str__(self):
         return '{} Entry Information'.format(self.member)
@@ -400,7 +413,7 @@ class ClientAnnualAssessment (TimestampedModel, HealthInsuranceFields,
     - Element Type = Universal
     - Collection Point = Annual Assessment
     """
-    member = models.ForeignKey('HouseholdMember')
+    member = models.ForeignKey('HouseholdMember', related_name='annual_assessments')
     assessment_date = models.DateField(default=now)
 
     def __str__(self):
@@ -416,7 +429,7 @@ class ClientExitAssessment (TimestampedModel, HealthInsuranceFields,
     - Element Type = Universal
     - Collection Point = Project Exit
     """
-    member = models.OneToOneField('HouseholdMember')
+    member = models.OneToOneField('HouseholdMember', related_name='exit_assessment')
     project_exit_date = models.DateField(default=now)
 
     def __str__(self):
