@@ -1,0 +1,15 @@
+.vForeignKeyRawIdAdminField {
+	display: none;
+}
+
+.inline-group .tabular .dynamic-members.has_original td {
+	padding-top: inherit;
+}
+
+.dynamic-members:first-child .delete input {
+	display: none;
+}
+
+.dynamic-members .original p:first-child {
+	display:none;
+}
