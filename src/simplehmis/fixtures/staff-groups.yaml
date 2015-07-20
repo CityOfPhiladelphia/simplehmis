@@ -24,6 +24,7 @@
     - [change_clientexitassessment, simplehmis, clientexitassessment]
     - [change_household, simplehmis, household]
     - [enroll_household, simplehmis, household]
+    - [add_householdmember, simplehmis, householdmember]
     - [change_householdmember, simplehmis, householdmember]
     - [change_project, simplehmis, project]
   model: auth.group
