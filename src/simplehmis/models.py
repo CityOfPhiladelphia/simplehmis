@@ -143,9 +143,7 @@ class Household (TimestampedModel):
     into the project is  unacceptable.
 
     """
-    project = models.ForeignKey('Project', null=True, blank=True,
-        help_text=_('If the action is to refer the household to a project, '
-                    'please specify which project.'))
+    project = models.ForeignKey('Project', null=True, blank=True)
     referral_notes = models.TextField(_('Referral notes'), blank=True)
 
     objects = HouseholdManager()
@@ -155,6 +153,8 @@ class Household (TimestampedModel):
             ('refer_household', 'Can refer household to a project'),
             ('enroll_household', 'Can enroll household in a project'),
         ]
+        verbose_name = _('household referral')
+        verbose_name_plural = _('household referrals')
 
     def member_count(self):
         return len(self.members.all())

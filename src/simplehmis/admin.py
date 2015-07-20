@@ -67,20 +67,6 @@ class HouseholdAdmin (admin.ModelAdmin):
         qs.prefetch_related('members')
         return qs
 
-    def get_form(self, request, obj=None, **kwargs):
-        user_projects = request.user.projects.all()
-        form_class = super().get_form(request, obj=obj, **kwargs)
-
-        if len(user_projects) == 1:
-            class ModifiedModelForm (form_class):
-                def __init__(self, *args, **kwargs):
-                    kwargs.setdefault('initial', {})
-                    kwargs['initial']['project'] = user_projects[0]
-                    super().__init__(*args, **kwargs)
-            form_class = ModifiedModelForm
-
-        return form_class
-
 
 class ClientAdmin (admin.ModelAdmin):
     list_display = ['name_display', 'ssn_display', 'dob']
@@ -133,7 +119,6 @@ class ProjectAdmin (admin.ModelAdmin):
             return []
         else:
             return ['name', 'admins']
-
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
