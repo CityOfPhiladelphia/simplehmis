@@ -211,7 +211,7 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
         ClientExitAssessmentInline
     )
 
-    list_display = ['__str__', 'is_enrolled']
+    list_display = ['__str__', 'is_enrolled', 'project', 'project_entry_date', 'project_exit_date']
     list_filter = [IsEnrolledListFilter]
 
     class Media:
