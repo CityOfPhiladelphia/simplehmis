@@ -393,7 +393,7 @@ class ClientEntryAssessment (TimestampedModel, HealthInsuranceFields,
     - Collection Point = Project Entry
     """
     member = models.OneToOneField('HouseholdMember', related_name='entry_assessment')
-    project_entry_date = models.DateField(null=True)
+    project_entry_date = models.DateField(null=True, default=now)
 
     class Meta:
         verbose_name_plural = _('Client entry assessment')

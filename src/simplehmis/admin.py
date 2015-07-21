@@ -75,6 +75,10 @@ class HouseholdAdmin (admin.ModelAdmin):
 class ClientAdmin (admin.ModelAdmin):
     list_display = ['name_display', 'ssn_display', 'dob']
     search_fields = ['first', 'middle', 'last', 'ssn']
+    formfield_overrides = {
+        fields.TextField: {'widget': widgets.TextInput(attrs={'size': '40'})},
+    }
+
 
 
 HEALTH_INSURANCE_RADIO_FIELDS = (
