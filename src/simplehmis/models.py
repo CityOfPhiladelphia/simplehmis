@@ -281,17 +281,17 @@ class DisablingConditionFields (models.Model):
     4.10  Substance Abuse
 
     """
-    physical_disability = models.PositiveIntegerField(_('Physical disability'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    physical_disability = models.PositiveIntegerField(_('Does the client have a physical disability?'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     physical_disability_impairing = models.PositiveIntegerField(_('If yes, is the physical disability expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    developmental_disability = models.PositiveIntegerField(_('Developmental disability'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    developmental_disability = models.PositiveIntegerField(_('Does the client have a developmental disability?'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     developmental_disability_impairing = models.PositiveIntegerField(_('If yes, is the developmental disability expected to substantially impair ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    chronic_health = models.PositiveIntegerField(_('Chronic health condition'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    chronic_health = models.PositiveIntegerField(_('Does the client have a chronic health condition?'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     chronic_health_impairing = models.PositiveIntegerField(_('If yes, is the chronic health condition expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    hiv_aids = models.PositiveIntegerField(_('HIV/AIDS'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    hiv_aids = models.PositiveIntegerField(_('Does the client have HIV/AIDS?'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     hiv_aids_impairing = models.PositiveIntegerField(_('If yes, is HIV/AIDS expected to substantially impair ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    mental_health = models.PositiveIntegerField(_('Mental health problem'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    mental_health = models.PositiveIntegerField(_('Does the client have a mental health problem?'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     mental_health_impairing = models.PositiveIntegerField(_('If yes, is the mental health problem expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    substance_abuse = models.PositiveIntegerField(_('Substance abuse problem'), choices=consts.HUD_CLIENT_SUBSTANCE_ABUSE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    substance_abuse = models.PositiveIntegerField(_('Does the client have a substance abuse problem?'), choices=consts.HUD_CLIENT_SUBSTANCE_ABUSE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     substance_abuse_impairing = models.PositiveIntegerField(_('If yes for alcohol abuse, drug abuse, or both, is the substance abuse problem expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
 
     @property
@@ -344,13 +344,13 @@ class HousingStatusFields (models.Model):
 
     homeless_at_least_one_year = models.PositiveIntegerField(_('Continuously homeless for at least one year'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     homeless_in_three_years = models.PositiveIntegerField(_('Number of times the client has been homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_COUNT, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    homeless_months_in_three_years = models.PositiveIntegerField(_('Total number of months homeless in the past three years, if homeless 4 or more times'), choices=consts.HUD_CLIENT_HOMELESS_MONTHS, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    homeless_months_in_three_years = models.PositiveIntegerField(_('If client has been homeless 4 or more times, how many total months homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_MONTHS, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
     homeless_months_prior = models.PositiveIntegerField(_('Total number of months continuously homeless immediately prior to project entry (partial months should be rounded UP)'), blank=True, null=True)
     status_documented = models.PositiveIntegerField(choices=consts.YES_NO, blank=True, null=True)
     # TODO: WHAT DOES status_documented MEAN?
 
     prior_residence = models.PositiveIntegerField(_('Type of residence prior to project entry'), choices=consts.HUD_CLIENT_PRIOR_RESIDENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    prior_residence_other = models.TextField(_('If Other for type of residence, specify where'), blank=True)
+    prior_residence_other = models.TextField(_('If "Other" for type of residence, specify where'), blank=True)
     length_at_prior_residence = models.PositiveIntegerField(_('Length of time at prior residence'), choices=consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
 
     class Meta:
