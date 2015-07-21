@@ -162,7 +162,7 @@ class Household (TimestampedModel):
 
     def members_display(self):
         return ', '.join(str(m) for m in self.members.all())
-    members_display.short_description = _('Members in household')
+    members_display.short_description = _('Household makeup')
 
     def hoh(self):
         try: return self.members.all()[0]
@@ -179,6 +179,13 @@ class Household (TimestampedModel):
     def is_enrolled(self):
         return any(member.is_enrolled() for member in self.members.all())
     is_enrolled.boolean = True
+
+    def date_of_entry(self):
+        hoh = self.hoh()
+        if hoh:
+            return hoh.project_entry_date()
+    date_of_entry.short_description = _('Date of entry')
+    date_of_entry.admin_order_field = 'members__entry_assessment__project_entry_date'
 
     def __str__(self):
         return '{}\'s household'.format(self.hoh())
@@ -218,6 +225,14 @@ class HouseholdMember (TimestampedModel):
 
     def __str__(self):
         return str(self.client)
+
+    def project_entry_date(self):
+        try: return self.entry_assessment.project_entry_date
+        except ClientEntryAssessment.DoesNotExist: return None
+
+    def project_exit_date(self):
+        try: return self.exit_assessment.project_exit_date
+        except ClientExitAssessment.DoesNotExist: return None
 
     def has_entered(self):
         try: return self.entry_assessment is not None

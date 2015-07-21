@@ -54,7 +54,7 @@ class HouseholdAdmin (admin.ModelAdmin):
     inlines = [HouseholdMemberInline]
     raw_id_fields = ['project']
 
-    list_display = ['members_display', 'is_enrolled']
+    list_display = ['members_display', 'is_enrolled', 'project', 'date_of_entry']
     search_fields = ['project__name', 'members__first', 'members__middle', 'members__last']
 
     class Media:
