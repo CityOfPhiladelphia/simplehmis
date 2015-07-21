@@ -49,6 +49,13 @@ class HouseholdMemberInline (admin.TabularInline):
     link_to_assessments.allow_tags = True
     link_to_assessments.short_description = _('Assessments')
 
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj=obj)
+        user = models.HMISUser(request.user)
+        if not user.can_enroll_household():
+            fields.remove('present_at_enrollment')
+        return fields
+
 
 class IsEnrolledListFilter(admin.SimpleListFilter):
     title = _('enrollment status')
