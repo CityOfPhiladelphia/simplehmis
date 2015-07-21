@@ -8,6 +8,10 @@ from . import forms
 from . import models
 
 
+class AdminSite(admin.AdminSite):
+    site_header = 'Philadenphia Simple HMIS'
+
+
 class HouseholdMemberFormset (forms.RequiredInlineFormSet):
     def clean(self):
         if any(self.errors):
@@ -214,7 +218,8 @@ class ProjectAdmin (admin.ModelAdmin):
         return qs
 
 
-admin.site.register(models.Client, ClientAdmin)
-admin.site.register(models.Project, ProjectAdmin)
-admin.site.register(models.Household, HouseholdAdmin)
-admin.site.register(models.HouseholdMember, HouseholdMemberAdmin)
+site = AdminSite()
+site.register(models.Client, ClientAdmin)
+site.register(models.Project, ProjectAdmin)
+site.register(models.Household, HouseholdAdmin)
+site.register(models.HouseholdMember, HouseholdMemberAdmin)
