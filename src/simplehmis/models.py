@@ -238,15 +238,15 @@ class HealthInsuranceFields (models.Model):
     ----------------------
 
     """
-    health_insurance = models.PositiveIntegerField(_('Client has health insurance'), choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED)
-    health_insurance_medicaid = models.PositiveIntegerField(_('MEDICAID'), choices=consts.YES_NO, blank=True, null=True)
-    health_insurance_medicare = models.PositiveIntegerField(_('MEDICARE'), choices=consts.YES_NO, blank=True, null=True)
-    health_insurance_chip = models.PositiveIntegerField(_('State Children’s Health Insurance Program (or use local name)'), choices=consts.YES_NO, blank=True, null=True)
-    health_insurance_va = models.PositiveIntegerField(_('Veteran’s Administration (VA) Medical Services'), choices=consts.YES_NO, blank=True, null=True)
-    health_insurance_employer = models.PositiveIntegerField(_('Employer – Provided Health Insurance'), choices=consts.YES_NO, blank=True, null=True)
-    health_insurance_cobra = models.PositiveIntegerField(_('Health Insurance obtained through COBRA'), choices=consts.YES_NO, blank=True, null=True)
-    health_insurance_private = models.PositiveIntegerField(_('Private Pay Health Insurance'), choices=consts.YES_NO, blank=True, null=True)
-    health_insurance_state = models.PositiveIntegerField(_('State Health Insurance for Adults (or use local name)'), choices=consts.YES_NO, blank=True, null=True)
+    health_insurance = models.PositiveIntegerField(_('Client has health insurance'), choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED, blank=True, null=True)
+    health_insurance_medicaid = models.PositiveIntegerField(_('MEDICAID'), choices=consts.YES_NO, default=0)
+    health_insurance_medicare = models.PositiveIntegerField(_('MEDICARE'), choices=consts.YES_NO, default=0)
+    health_insurance_chip = models.PositiveIntegerField(_('State Children’s Health Insurance Program (or use local name)'), choices=consts.YES_NO, default=0)
+    health_insurance_va = models.PositiveIntegerField(_('Veteran’s Administration (VA) Medical Services'), choices=consts.YES_NO, default=0)
+    health_insurance_employer = models.PositiveIntegerField(_('Employer – Provided Health Insurance'), choices=consts.YES_NO, default=0)
+    health_insurance_cobra = models.PositiveIntegerField(_('Health Insurance obtained through COBRA'), choices=consts.YES_NO, default=0)
+    health_insurance_private = models.PositiveIntegerField(_('Private Pay Health Insurance'), choices=consts.YES_NO, default=0)
+    health_insurance_state = models.PositiveIntegerField(_('State Health Insurance for Adults (or use local name)'), choices=consts.YES_NO, default=0)
     # TODO: This next is HOPWA-only; should we omit?
     health_insurance_none_reason = models.PositiveIntegerField(_('If none of the above, give reason'), choices=consts.HUD_CLIENT_UNINSURED_REASON, default=consts.HUD_DATA_NOT_COLLECTED, blank=True, null=True)
 
