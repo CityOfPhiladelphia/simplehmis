@@ -219,6 +219,11 @@ class ProjectAdmin (admin.ModelAdmin):
 
 
 site = AdminSite()
+
+from django.contrib.auth.admin import Group, GroupAdmin, User, UserAdmin
+site.register(Group, GroupAdmin)
+site.register(User, UserAdmin)
+
 site.register(models.Client, ClientAdmin)
 site.register(models.Project, ProjectAdmin)
 site.register(models.Household, HouseholdAdmin)
