@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.db.models import fields
-from django.forms import ValidationError
 from django.forms import widgets
 from django.utils.translation import ugettext as _
 from . import forms
@@ -12,23 +11,9 @@ class AdminSite(admin.AdminSite):
     site_header = _('Philadelphia Simple HMIS')
 
 
-class HouseholdMemberFormset (forms.RequiredInlineFormSet):
-    def clean(self):
-        if any(self.errors):
-            return
-
-        hoh_count = 0
-        for form in self.forms:
-            relationship = form.cleaned_data['hoh_relationship']
-            if relationship == 1:
-                hoh_count += 1
-        if hoh_count != 1:
-            raise ValidationError(_('There should be exactly one head of household.'))
-
-
 class HouseholdMemberInline (admin.TabularInline):
     model = models.HouseholdMember
-    formset = HouseholdMemberFormset
+    formset = forms.HouseholdMemberFormset
     raw_id_fields = ['client']
     readonly_fields = ['link_to_assessments']
     verbose_name = _('Household member')
