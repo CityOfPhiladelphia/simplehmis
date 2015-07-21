@@ -144,13 +144,14 @@ class HouseholdManager (models.QuerySet):
             qs = self\
                 .annotate(total_member_count=Count('members'))\
                 .annotate(enrolled_count=Count('members__entry_assessment'))\
+                .annotate(exited_count=Count('members__exit_assessment'))\
                 .filter(enrolled_count__gt=0)\
-                .filter(~Q(enrolled_count=F('total_member_count')))
+                .filter(~Q(exited_count=F('total_member_count')))
         elif status == '1':
             qs = self\
                 .annotate(total_member_count=Count('members'))\
-                .annotate(enrolled_count=Count('members__entry_assessment'))\
-                .filter(enrolled_count=F('total_member_count'))
+                .annotate(exited_count=Count('members__exit_assessment'))\
+                .filter(exited_count=F('total_member_count'))
         else:
             raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
         return qs
@@ -222,6 +223,31 @@ class Household (TimestampedModel):
         return '{}\'s household'.format(self.hoh())
 
 
+class HouseholdMemberQuerySet (models.QuerySet):
+    def filter_by_enrollment(self, status):
+        """
+        status can be:
+        -1 -- Has not yet ben enrolled in a program
+        0  -- Is currently enrolled in a program
+        1  -- Has exited a program
+        """
+        if status is None:
+            return self
+
+        status = str(status)
+        if status == '-1':
+            qs = self.filter(entry_assessment__isnull=True)
+        elif status == '0':
+            qs = self\
+                .filter(exit_assessment__isnull=True)\
+                .filter(entry_assessment__isnull=False)
+        elif status == '1':
+            qs = self.filter(exit_assessment__isnull=False)
+        else:
+            raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
+        return qs
+
+
 class HouseholdMember (TimestampedModel):
     """
     3.14   Household ID
@@ -250,6 +276,8 @@ class HouseholdMember (TimestampedModel):
 
     hoh_relationship = models.PositiveIntegerField(_('Relationship to head of household'), choices=consts.HUD_CLIENT_HOH_RELATIONSHIP)
     present_at_enrollment = models.BooleanField(_('Present at enrollment'), default=True)
+
+    objects = HouseholdMemberQuerySet.as_manager()
 
     class Meta:
         ordering = ['hoh_relationship']
