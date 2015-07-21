@@ -18,3 +18,25 @@
 .dynamic-exit_assessment > h3 {
 	display: none;
 }
+
+#householdmember_form .field-hoh_relationship label,
+#entry_assessment-group label,
+#exit_assessment-group label,
+#annual_assessments-group label {
+	float: none;
+	width: auto;
+	max-width: 40em;
+}
+
+#householdmember_form .aligned p,
+#householdmember_form .aligned ul {
+	margin-left: 0;
+	padding-left: 12px;
+}
+
+fieldset.collapsed h2 {
+  background-image: none;
+  background-color: #eee;
+  color: #333;
+  padding-left: 12px;
+}

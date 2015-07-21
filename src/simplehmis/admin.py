@@ -73,19 +73,101 @@ class ClientAdmin (admin.ModelAdmin):
     search_fields = ['first', 'middle', 'last', 'ssn']
 
 
+HEALTH_INSURANCE_RADIO_FIELDS = (
+    ('health_insurance_medicaid', admin.HORIZONTAL),
+    ('health_insurance_medicare', admin.HORIZONTAL),
+    ('health_insurance_chip', admin.HORIZONTAL),
+    ('health_insurance_va', admin.HORIZONTAL),
+    ('health_insurance_employer', admin.HORIZONTAL),
+    ('health_insurance_cobra', admin.HORIZONTAL),
+    ('health_insurance_private', admin.HORIZONTAL),
+    ('health_insurance_state', admin.HORIZONTAL),
+)
+
+
+HEALTH_INSURANCE_FIELDSETS = (
+    (None, {
+        'fields': ('health_insurance',)
+    }),
+    ('If client has health insurance...', {
+        'classes': ('collapse',),
+        'fields': (
+            'health_insurance_medicaid',
+            'health_insurance_medicare', 'health_insurance_chip',
+            'health_insurance_va', 'health_insurance_employer',
+            'health_insurance_cobra', 'health_insurance_private',
+            'health_insurance_state', 'health_insurance_none_reason'
+        )
+    }),
+)
+
+
+DISABLING_CONDITION_FIELDSETS = (
+    (None, {
+        'fields': ('physical_disability', 'physical_disability_impairing',
+            'developmental_disability', 'developmental_disability_impairing',
+            'chronic_health', 'chronic_health_impairing',
+            'hiv_aids', 'hiv_aids_impairing',
+            'mental_health', 'mental_health_impairing',
+            'substance_abuse', 'substance_abuse_impairing')
+    }),
+)
+
+HOUSING_STATUS_FIELDSETS = (
+    (None, {
+        'fields': ('housing_status', 'homeless_at_least_one_year',
+            'homeless_in_three_years', 'homeless_months_in_three_years',
+            'homeless_months_prior', 'status_documented', 'prior_residence',
+            'prior_residence_other', 'length_at_prior_residence')
+    }),
+)
+
+DOMESTIC_VIOLENCE_FIELDSETS = (
+    (None, {
+        'fields': ('domestic_violence', 'domestic_violence_occurred')
+    }),
+)
+
+DESTINATION_FIELDSETS = (
+    (None, {
+        'fields': ('destination', 'destination_other')
+    }),
+)
+
+
 class ClientEntryAssessmentInline (admin.StackedInline):
     model = models.ClientEntryAssessment
     extra = 1
+    radio_fields = dict(HEALTH_INSURANCE_RADIO_FIELDS)
+    fieldsets = (
+        (None, {'fields': ('project_entry_date',)}),
+    ) + HEALTH_INSURANCE_FIELDSETS \
+      + DISABLING_CONDITION_FIELDSETS \
+      + HOUSING_STATUS_FIELDSETS \
+      + DOMESTIC_VIOLENCE_FIELDSETS
 
 
 class ClientExitAssessmentInline (admin.StackedInline):
     model = models.ClientExitAssessment
     extra = 0
+    radio_fields = dict(HEALTH_INSURANCE_RADIO_FIELDS)
+    fieldsets = (
+        (None, {'fields': ('project_exit_date',)}),
+    ) + HEALTH_INSURANCE_FIELDSETS \
+      + DISABLING_CONDITION_FIELDSETS \
+      + DOMESTIC_VIOLENCE_FIELDSETS \
+      + DESTINATION_FIELDSETS
 
 
 class ClientAnnualAssessmentInline (admin.StackedInline):
     model = models.ClientAnnualAssessment
     extra = 0
+    radio_fields = dict(HEALTH_INSURANCE_RADIO_FIELDS)
+    fieldsets = (
+        (None, {'fields': ('assessment_date',)}),
+    ) + HEALTH_INSURANCE_FIELDSETS \
+      + DISABLING_CONDITION_FIELDSETS \
+      + DOMESTIC_VIOLENCE_FIELDSETS
 
 
 class HouseholdMemberAdmin (admin.ModelAdmin):
