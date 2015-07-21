@@ -120,9 +120,40 @@ class Client (TimestampedModel):
         return '{} (SSN: {})'.format(self.name_display(), self.ssn_display())
 
 
-class HouseholdManager (models.Manager):
+class HouseholdManager (models.QuerySet):
     def get_queryset(self):
         return super().get_queryset().prefetch_related('members')
+
+    def filter_by_enrollment(self, status):
+        """
+        status can be:
+        -1 -- Has not yet ben enrolled in a program
+        0  -- Is currently enrolled in a program
+        1  -- Has exited a program
+        """
+        from django.db.models import Count, F, Q
+        if status is None:
+            return self
+
+        status = str(status)
+        if status == '-1':
+            qs = self\
+                .annotate(enrolled_count=Count('members__entry_assessment'))\
+                .filter(enrolled_count=0)
+        elif status == '0':
+            qs = self\
+                .annotate(total_member_count=Count('members'))\
+                .annotate(enrolled_count=Count('members__entry_assessment'))\
+                .filter(enrolled_count__gt=0)\
+                .filter(~Q(enrolled_count=F('total_member_count')))
+        elif status == '1':
+            qs = self\
+                .annotate(total_member_count=Count('members'))\
+                .annotate(enrolled_count=Count('members__entry_assessment'))\
+                .filter(enrolled_count=F('total_member_count'))
+        else:
+            raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
+        return qs
 
 
 class Household (TimestampedModel):
@@ -146,7 +177,7 @@ class Household (TimestampedModel):
     project = models.ForeignKey('Project', null=True, blank=True)
     referral_notes = models.TextField(_('Referral notes'), blank=True)
 
-    objects = HouseholdManager()
+    objects = HouseholdManager.as_manager()
 
     class Meta:
         permissions = [
