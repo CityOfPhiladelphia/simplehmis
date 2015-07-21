@@ -28,7 +28,7 @@ class HouseholdMemberInline (admin.TabularInline):
         else:
             client_url = reverse('admin:simplehmis_householdmember_change', args=(obj.id,))
             return (
-                '<a href="{}" target="_blank">'.format(client_url) +
+                '<a id="client_{}_assessments_link" href="{}" onclick="showAdminPopup(this, \'nosuchfield\');" target="_blank">'.format(obj.id, client_url) +
                 'Edit client assessments</a>'
             )
     link_to_assessments.allow_tags = True
