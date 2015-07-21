@@ -9,7 +9,7 @@ from . import models
 
 
 class AdminSite(admin.AdminSite):
-    site_header = 'Philadenphia Simple HMIS'
+    site_header = _('Philadelphia Simple HMIS')
 
 
 class HouseholdMemberFormset (forms.RequiredInlineFormSet):
