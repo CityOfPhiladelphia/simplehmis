@@ -208,6 +208,16 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
         js = ("js/show-strrep.js", "js/hmis-forms.js")
         css = {"all": ("css/hmis-forms.css",)}
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+
+        return qs\
+            .select_related('client')\
+            .select_related('entry_assessment')\
+            .select_related('exit_assessment')\
+            .select_related('household')\
+            .select_related('household__project')\
+
 
 class ProjectAdmin (admin.ModelAdmin):
     search_fields = ['name']
