@@ -76,13 +76,12 @@ class HouseholdAdmin (admin.ModelAdmin):
         if not user.is_superuser and user.is_project_staff():
             qs = qs.filter(project__in=user.projects.all())
 
-        qs = qs\
+        return qs\
             .select_related('project')\
             .prefetch_related('members')\
             .prefetch_related('members__entry_assessment')\
             .prefetch_related('members__exit_assessment')\
             .prefetch_related('members__client')
-        return qs
 
 
 class ClientAdmin (admin.ModelAdmin):
