@@ -202,6 +202,7 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
 
     list_display = ['__str__', 'is_enrolled', 'project', 'project_entry_date', 'project_exit_date']
     list_filter = [IsEnrolledListFilter]
+    search_fields = ['client__first', 'client__middle', 'client__last', 'client__ssn']
 
     class Media:
         js = ("js/show-strrep.js", "js/hmis-forms.js")
