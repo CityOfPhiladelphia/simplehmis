@@ -166,6 +166,15 @@ class ClientEntryAssessmentInline (admin.StackedInline):
       + HOUSING_STATUS_FIELDSETS \
       + DOMESTIC_VIOLENCE_FIELDSETS
 
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj=obj)
+
+        user = models.HMISUser(request.user)
+        if user.can_enroll_household():
+            fields.remove('project_entry_date')
+
+        return fields
+
 
 class ClientExitAssessmentInline (admin.StackedInline):
     model = models.ClientExitAssessment
