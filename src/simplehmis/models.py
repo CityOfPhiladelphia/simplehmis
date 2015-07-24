@@ -310,6 +310,12 @@ class HouseholdMember (TimestampedModel):
         except ClientExitAssessment.DoesNotExist: return False
 
     def is_enrolled(self):
+        if not self.has_entered():
+            return None
+        if not self.has_exited():
+            return True
+        else:
+            return False
         return self.has_entered() and not self.has_exited()
     is_enrolled.boolean = True
 
