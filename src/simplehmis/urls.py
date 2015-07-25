@@ -17,23 +17,7 @@ from django.conf.urls import include, url
 from . import admin
 
 
-def get_strrep(request):
-    ctype_string = request.GET['contenttype']
-    object_id = request.GET['id']
-
-    from django.contrib.contenttypes.models import ContentType
-    ctype_app, ctype_model = ctype_string.split('.')
-    ctype = ContentType.objects.get_by_natural_key(ctype_app, ctype_model)
-    obj = ctype.get_object_for_this_type(id=object_id)
-
-    from django.http import HttpResponse
-    from django.core.urlresolvers import reverse
-    # TODO: ensure that the user has permission to affect the given change.
-    return HttpResponse('<a href="{}" target="_blank">{}</a>'.format(
-        reverse('admin:{}_{}_change'.format(ctype_app, ctype_model), args=(obj.id,)), obj))
-
-
 urlpatterns = [
-    url(r'^get-strrep$', get_strrep),
+    url(r'^', include('phila.urls')),
     url(r'^', include(admin.site.urls)),
 ]

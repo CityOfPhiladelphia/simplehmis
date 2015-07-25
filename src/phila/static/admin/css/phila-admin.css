@@ -1,0 +1,8 @@
+/* ================================
+ * Raw ID fields
+ * ================================ */
+
+input.vForeignKeyRawIdAdminField {
+  display: none;
+}
+
