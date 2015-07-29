@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.utils.translation import ugettext as _
 
 HUD_CLIENT_DOESNT_KNOW = 8
