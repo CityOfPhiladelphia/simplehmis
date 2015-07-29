@@ -20,7 +20,9 @@ Now, install the project requirements:
 
     pip install -r requirements.txt
 
-Next, set up the database and initialize the data:
+Next, set up the database and initialize the data. If you are setting up a test or development instance, the default database connection settings should be sufficient (using [SQLite](https://www.sqlite.org/)). For production (or near-production staging) environments, create your database and set an environment variabled named `DATABASE_URL` to a [connection string](https://github.com/kennethreitz/dj-database-url#url-schema) for that database.
+
+Install the schema and initial data into your database:
 
     src/manage.py migrate
     src/manage.py loaddata staff-groups.yaml
