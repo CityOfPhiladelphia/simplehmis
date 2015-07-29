@@ -1,1 +1,1 @@
-web: gunicorn --chdir src simplehmis.wsgi -b 0.0.0.0:$PORT
+web: gunicorn --chdir src simplehmis.wsgi -b 0.0.0.0:$PORT -w ${WORKERS:-9}
