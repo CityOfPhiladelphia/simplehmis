@@ -1,3 +1,6 @@
 env/
+bin/
+include/
+lib/
 *.pyc
 *.sqlite3
