@@ -3,5 +3,6 @@ bin/
 include/
 lib/
 .env
+app.conf
 *.pyc
 *.sqlite3
