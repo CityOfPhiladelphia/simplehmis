@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm69vy!#^7&@bjm2n(a8t@kezmgd@95ydy3ei14=fer73^b836n'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'm69vy!#^7&@bjm2n(a8t@kezmg')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.environ('DEBUG', 'True') == 'True')
 
 ALLOWED_HOSTS = []
 
@@ -31,12 +31,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+
+    # SimpleHMIS depends on the auth.User model, so include
+    # simplehmis after django.auth (and contenttypes for good
+    # measure).
     'phila',
     'simplehmis',
 
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
