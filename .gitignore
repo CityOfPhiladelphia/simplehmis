@@ -2,6 +2,7 @@ env/
 bin/
 include/
 lib/
+dist/
 .env
 app.conf
 *.pyc
