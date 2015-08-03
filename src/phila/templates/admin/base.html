@@ -1,0 +1,149 @@
+{% load i18n admin_static %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}</title>
+    <link rel='icon' type='image/x-icon' href="//cityofphiladelphia.github.io/patterns/images/favicon.ico">
+    <meta name="description" content="">
+    {% block extrameta %}{% endblock %}
+
+    {% comment %}
+    <!-- Django admin style -->
+    <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+    <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+    {% endcomment %}
+    {% block extrastyle %}{% endblock %}
+
+    <!-- Phila.gov Boilerplate stle -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/0.9.1/css/patterns.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/phila-admin.css" %}" />
+
+    <link rel="canonical" href="">
+
+    <!-- Django Admin scripts -->
+    <script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
+    <script type="text/javascript">window.__admin_utc_offset__ = "{% filter escapejs %}{% now "Z" %}{% endfilter %}";</script>
+
+    <!-- Phila.gov Boilerplate head scripts -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+    {% block extrahead %}{% endblock %}
+    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+  </head>
+
+{% load i18n %}
+
+  <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+    <div class="site full" id="application">
+
+      {% if not is_popup %}
+      <!-- Begin .header -->
+      <header data-swiftype-index='false' class="site-header app" role="banner">
+        <div class="row">
+          <div class="small-24 medium-24 columns">
+            <a href="http://alpha.phila.gov"><img src="//cityofphiladelphia.github.io/patterns/images/city-of-philadelphia-logo.png" class="logo no-scale" alt="City of Philadelphia"></a>
+
+            {% block branding %}{% endblock %}
+          </div>
+
+          <!--
+          <div class="small-24 medium-12 columns">
+            <form class="search">
+              <input type="text" placeholder="Search alpha.phila.gov"><input type="submit">
+            </form>
+          </div>
+          -->
+        </div>
+
+        {% block usertools %}
+        {% if has_permission %}
+        <div class="row">
+          <div id="user-tools" class="small-24 medium-24 columns text-right">
+              {% block welcome-msg %}
+                  {% trans 'Welcome,' %}
+                  <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+              {% endblock %}
+              {% block userlinks %}
+                  {% if site_url %}
+                      <a href="{{ site_url }}">{% trans 'View site' %}</a> /
+                  {% endif %}
+                  {% if user.is_active and user.is_staff %}
+                      {% url 'django-admindocs-docroot' as docsroot %}
+                      {% if docsroot %}
+                          <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+                      {% endif %}
+                  {% endif %}
+                  {% if user.has_usable_password %}
+                  <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+                  {% endif %}
+                  <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+              {% endblock %}
+          </div>
+        </div>
+        {% endif %}
+        {% endblock %}
+        {% block nav-global %}{% endblock %}
+      </header>
+      <!-- End .header -->
+
+      <div class="row">
+        <div class="small-24 columns">
+          <div class="divider"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        {# block breadcrumbs #}
+        <div id="breadcrumbs" class="large-24 columns">
+          <ul class="inline-list">
+            <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+            {% if title %}<li>{{ title }}</li>{% endif %}
+          </ul>
+        </div>
+        {# endblock #}
+      </div>
+      {% endif %} {# not is_popup #}
+
+      {% block messages %}
+          {% if messages %}
+          <ul class="messagelist">{% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+          {% endfor %}</ul>
+          {% endif %}
+      {% endblock messages %}
+
+      <!-- Content -->
+      <article data-swiftype-name="body" data-swiftype-type="text">
+        <div class="row">
+          <div class="large-24 columns">
+      <!-- <div id="content" class="{% block coltype %}colM{% endblock %}"> -->
+          {% block pretitle %}{% endblock %}
+          {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+          {% block content %}
+          {% block object-tools %}{% endblock %}
+          {{ content }}
+          {% endblock %}
+          {% block sidebar %}{% endblock %}
+          <br class="clear" />
+      <!-- </div> -->
+          </div>
+        </div>
+      </article>
+      <!-- END Content -->
+
+    </div><!-- End #page -->
+
+    {% block footer %}<div id="footer"></div>{% endblock %}
+</div>
+<!-- END Container -->
+
+</body>
+</html>
