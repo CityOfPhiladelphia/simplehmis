@@ -6,3 +6,12 @@ input.vForeignKeyRawIdAdminField {
   display: none;
 }
 
+
+/* ================================
+ * Tables
+ * ================================ */
+
+table tbody tr th {
+	background-color: transparent;
+	text-transform: none;
+}
