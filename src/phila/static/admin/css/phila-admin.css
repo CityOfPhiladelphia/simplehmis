@@ -15,3 +15,8 @@ table tbody tr th {
 	background-color: transparent;
 	text-transform: none;
 }
+
+
+#user-tools {
+	font-size: 0.75rem;
+}
