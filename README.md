@@ -8,8 +8,8 @@ As noted by HUD:
 > Universal data elements enable the HMIS the ability to record unique, unduplicated client records, establish participation in a project within a date range, and identify clients who meet time criteria for chronic homelessness.
 
 
-Setting Up
-----------
+Setting Up For Development
+--------------------------
 
 To get the project set up and configured, first create and load a virtual environment for the project. There are several ways to do this and it is an optional but recommended step. Here's one way:
 
@@ -32,3 +32,10 @@ Finally, load information specific to your structure. This could include: partne
 For testing convenience, you can load some test data if you just want to get started. This includes a few projects, an intake staff user with username `'intake-admin'`, and two project staff users with usernames `'project-admin1'` and `'project-admin2'`. All test users have password `'password'`.
 
     src/manage.py loaddata hmis-test-data.yaml
+
+
+
+Deploying to an EC2 instance, or a droplet, etc.
+------------------------------------------------
+
+Run the initial script and your environment should get configuerd correctly.
