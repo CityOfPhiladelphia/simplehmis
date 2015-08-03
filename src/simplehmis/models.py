@@ -193,7 +193,7 @@ class Household (TimestampedModel):
     member_count.short_description = _('# of members in household')
 
     def members_display(self):
-        return ', '.join(str(m) for m in self.members.all())
+        return ',\n'.join(str(m) for m in self.members.all())
     members_display.short_description = _('Household composition')
 
     def hoh(self):

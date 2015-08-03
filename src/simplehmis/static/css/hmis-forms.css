@@ -24,6 +24,10 @@
 	max-width: 40em;
 }
 
+.field-members_display {
+	white-space: pre;
+}
+
 #householdmember_form .aligned p,
 #householdmember_form .aligned ul {
 	margin-left: 0;
