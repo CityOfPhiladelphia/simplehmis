@@ -43,6 +43,7 @@ sudo apt-get update
 sudo apt-get upgrade -y
 ./update-machine.sh
 EOF
+chmod 755 .git/hooks/post-update
 
 echo ""
 echo "***"

@@ -1,25 +1,24 @@
 #!/usr/bin/env bash
 
 # === After each pull...
+echo
+echo "=== Update & upgrade all dependencies..."
+echo
 
-# Update & upgrade the system files
-sudo apt-get update
-sudo apt-get upgrade -y
-
-# Install application dependencies
+echo "    Install system dependencies..."
 sudo apt-get install libpq-dev -y  # For psycopg2. If I could just not install psycopg2...
 sudo apt-get install supervisor -y
 sudo apt-get install nginx -y
 
-# Enter the app folder
+echo "    Make sure library dependencies are installed..."
 cd /srv/simplehmis
 pip install -r requirements.txt
 
-# Update the app database
+echo "    Update the app database..."
 foreman run src/manage.py migrate --noinput
 foreman run src/manage.py loaddata staff-groups
 
-# Update the app static files
+echo "    Update the app static files..."
 foreman run src/manage.py collectstatic --noinput
 
 ./restart-server.sh
