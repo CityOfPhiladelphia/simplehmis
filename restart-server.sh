@@ -25,5 +25,5 @@ sudo ln -fs /etc/nginx/sites-available/simplehmis /etc/nginx/sites-enabled/simpl
 # ----------------------------
 echo "    Restarting the supervisor & nginx..."
 sudo supervisorctl reread
-sudo supervisorctl restart
+sudo supervisorctl restart simplehmis:*
 sudo killall -HUP nginx
