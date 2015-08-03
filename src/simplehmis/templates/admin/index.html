@@ -11,29 +11,34 @@
 
 {% block content %}
 <div id="content-main">
+    <div class="row">
+        <div class="medium-12 medium-offset-6 large-8 large-offset-8 columns">
 
 {% if app_list %}
     {% if user.is_superuser %}
         {% include "admin/_full_app_list.html" %}
     {% else %}
         {% if perms.simplehmis.add_household %}
-            <div class="index-action"><a href="{% url "admin:simplehmis_household_add" %}" class="addlink">Refer a new household</a></div>
+            <div class="index-action"><a href="{% url "admin:simplehmis_household_add" %}" class="addlink button icon">Refer a new household<i class="fa fa-plus"></i></a></div>
         {% endif %}
         {% if perms.simplehmis.change_household %}
-            <div class="index-action"><a href="{% url "admin:simplehmis_household_changelist" %}" class="changelink">Browse existing households</a></div>
+            <div class="index-action"><a href="{% url "admin:simplehmis_household_changelist" %}" class="changelink button icon">Browse existing households<i class="fa fa-list"></i></a></div>
         {% endif %}
         {% if perms.simplehmis.add_clientexitassessment %}
-            <div class="index-action"><a href="{% url "admin:simplehmis_householdmember_changelist" %}" class="changelink">Add or edit a client assessment</a></div>
+            <div class="index-action"><a href="{% url "admin:simplehmis_householdmember_changelist" %}" class="changelink">Add or edit a client assessment<i class="fa fa-edit"></i></a></div>
         {% endif %}
     {% endif %}
 {% else %}
     <p>{% trans "You don't have permission to edit anything." %}</p>
 {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block sidebar %}
 <div id="content-related">
+    {% if user.is_superuser %}
     <div class="module" id="recent-actions-module">
         <h2>{% trans 'Recent Actions' %}</h2>
         <h3>{% trans 'My Actions' %}</h3>
@@ -61,5 +66,6 @@
             </ul>
             {% endif %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}
