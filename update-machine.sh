@@ -22,4 +22,4 @@ foreman run src/manage.py loaddata staff-groups
 # Update the app static files
 foreman run src/manage.py collectstatic --noinput
 
-./restart-server
+./restart-server.sh

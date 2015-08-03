@@ -41,7 +41,7 @@ cat > .git/hooks/post-update <<EOF
 cd ..
 sudo apt-get update
 sudo apt-get upgrade -y
-./update-machine
+./update-machine.sh
 EOF
 
 echo ""
