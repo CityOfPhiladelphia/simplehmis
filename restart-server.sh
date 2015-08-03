@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Update the app supervisor configuration
-foreman export supervisord . --log /home/ubuntu/simplehmis/log --app simplehmis --user nobody
+foreman export supervisord . --log /srv/simplehmis/log --app simplehmis --user nobody
 # Explicitly run the server command with bash, so that
 # environment variables are properly replaced.
 sed -i 's/^command=\(.*\)$/command=bash -c "\1"/' simplehmis.conf
