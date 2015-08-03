@@ -61,6 +61,7 @@ class HouseholdAdmin (admin.ModelAdmin):
     inlines = [HouseholdMemberInline]
     raw_id_fields = ['project']
 
+    actions_on_top = actions_on_bottom = False
     list_display = ['members_display', 'is_enrolled', 'project', 'date_of_entry']
     list_filter = [IsEnrolledListFilter]
     search_fields = ['project__name', 'members__first', 'members__middle', 'members__last']
@@ -85,6 +86,7 @@ class HouseholdAdmin (admin.ModelAdmin):
 
 
 class ClientAdmin (admin.ModelAdmin):
+    actions_on_top = actions_on_bottom = False
     list_display = ['name_display', 'ssn_display', 'dob']
     search_fields = ['first', 'middle', 'last', 'ssn']
     formfield_overrides = {
@@ -209,6 +211,7 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
         ClientExitAssessmentInline
     )
 
+    actions_on_top = actions_on_bottom = False
     list_display = ['__str__', 'is_enrolled', 'project', 'project_entry_date', 'project_exit_date']
     list_filter = [IsEnrolledListFilter]
     search_fields = ['client__first', 'client__middle', 'client__last', 'client__ssn']
@@ -234,6 +237,8 @@ class ProjectAdmin (admin.ModelAdmin):
     formfield_overrides = {
         fields.TextField: {'widget': widgets.TextInput(attrs={'size': '100'})},
     }
+
+    actions_on_top = actions_on_bottom = False
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.has_perm('simplehmis.add_project'):

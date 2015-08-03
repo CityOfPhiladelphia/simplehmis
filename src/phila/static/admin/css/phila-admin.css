@@ -17,6 +17,41 @@ table tbody tr th {
 }
 
 
+/* ================================
+ * User Tools (e.g., view site,
+ * change password, log out)
+ * ================================ */
+
 #user-tools {
 	font-size: 0.75rem;
+}
+
+
+/* ================================
+ * Object Tools
+ * ================================ */
+
+.object-tools {
+	float: right;
+	/*margin-top: -4.75em;*/
+	list-style: none;
+}
+.object-tools li {
+	float: left;
+}
+
+
+.change-list .filtered {
+	background: none!important;
+}
+
+.changelist-wrapper {
+	position: relative;
+	background: none;
+	clear: both;
+}
+
+
+#searchbar {
+	margin: 1em 0;
 }
