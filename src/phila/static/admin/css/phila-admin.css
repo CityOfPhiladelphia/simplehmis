@@ -105,6 +105,12 @@ table tbody tr th {
  * Object Edit Form
  * ================================ */
 
+fieldset.aligned {
+	max-width: 40em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .change-form .raised {
 	margin-top: -4.625rem;
 }

@@ -167,6 +167,9 @@ class ClientEntryAssessmentInline (admin.StackedInline):
     model = models.ClientEntryAssessment
     extra = 1
     radio_fields = dict(HEALTH_INSURANCE_RADIO_FIELDS)
+    formfield_overrides = {
+        fields.TextField: {'widget': widgets.TextInput(attrs={'size': '100'})},
+    }
     fieldsets = (
         (None, {'fields': ('project_entry_date',)}),
     ) + HEALTH_INSURANCE_FIELDSETS \
@@ -188,6 +191,9 @@ class ClientExitAssessmentInline (admin.StackedInline):
     model = models.ClientExitAssessment
     extra = 0
     radio_fields = dict(HEALTH_INSURANCE_RADIO_FIELDS)
+    formfield_overrides = {
+        fields.TextField: {'widget': widgets.TextInput(attrs={'size': '100'})},
+    }
     fieldsets = (
         (None, {'fields': ('project_exit_date',)}),
     ) + HEALTH_INSURANCE_FIELDSETS \
@@ -200,6 +206,9 @@ class ClientAnnualAssessmentInline (admin.StackedInline):
     model = models.ClientAnnualAssessment
     extra = 0
     radio_fields = dict(HEALTH_INSURANCE_RADIO_FIELDS)
+    formfield_overrides = {
+        fields.TextField: {'widget': widgets.TextInput(attrs={'size': '100'})},
+    }
     fieldsets = (
         (None, {'fields': ('assessment_date',)}),
     ) + HEALTH_INSURANCE_FIELDSETS \
