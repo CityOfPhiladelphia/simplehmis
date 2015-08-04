@@ -90,6 +90,11 @@ class HouseholdAdmin (admin.ModelAdmin):
             list_filter.append('project')
         return list_filter
 
+    def lookup_allowed(self, lookup, value):
+        if lookup in ('project__id__exact',):
+            return True
+        return super().lookup_allowed(lookup, value)
+
 
 class ClientAdmin (admin.ModelAdmin):
     actions_on_top = actions_on_bottom = False
@@ -254,6 +259,11 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
         if user.is_superuser or not user.is_project_staff():
             list_filter.append('household__project')
         return list_filter
+
+    def lookup_allowed(self, lookup, value):
+        if lookup in ('household__project__id__exact',):
+            return True
+        return super().lookup_allowed(lookup, value)
 
 
 class ProjectAdmin (admin.ModelAdmin):
