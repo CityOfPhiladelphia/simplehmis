@@ -1,19 +1,19 @@
 - fields:
-    date_joined: 2015-07-14 18:28:51.787293+00:00
+    date_joined: '2015-07-14 18:28:51.787293+00:00'
     email: ''
     first_name: ''
     groups: []
     is_active: true
     is_staff: true
     is_superuser: true
-    last_login: 2015-07-21 21:29:50.799738+00:00
+    last_login: '2015-07-21 21:29:50.799738+00:00'
     last_name: ''
     password: pbkdf2_sha256$20000$oAwVKukSbkN1$kGPRUgyg7mIX+qPpuGmiy6gciH3wedrl4EFm5pxlhyU=
     user_permissions: []
     username: admin
   model: auth.user
 - fields:
-    date_joined: 2015-07-15 23:41:11+00:00
+    date_joined: '2015-07-15 23:41:11+00:00'
     email: ''
     first_name: ''
     groups:
@@ -21,14 +21,14 @@
     is_active: true
     is_staff: true
     is_superuser: false
-    last_login: 2015-07-21 21:06:05.479550+00:00
+    last_login: '2015-07-21 21:06:05.479550+00:00'
     last_name: ''
     password: pbkdf2_sha256$20000$jag7Y2uM2tX9$shMZvoWJySxNamKilKUpwp7bQ2gXR+HB3+HqNfGBGSo=
     user_permissions: []
     username: project-admin1
   model: auth.user
 - fields:
-    date_joined: 2015-07-15 23:41:34+00:00
+    date_joined: '2015-07-15 23:41:34+00:00'
     email: ''
     first_name: ''
     groups:
@@ -36,14 +36,14 @@
     is_active: true
     is_staff: true
     is_superuser: false
-    last_login: 2015-07-21 19:06:31.879291+00:00
+    last_login: '2015-07-21 19:06:31.879291+00:00'
     last_name: ''
     password: pbkdf2_sha256$20000$dupDsLmIcPVQ$ehNG63K2t5wh3+TmVpGmHFRlyRH9ce8PknHTsCjkFRA=
     user_permissions: []
     username: intake-admin
   model: auth.user
 - fields:
-    date_joined: 2015-07-15 23:47:23+00:00
+    date_joined: '2015-07-15 23:47:23+00:00'
     email: ''
     first_name: ''
     groups:
@@ -51,7 +51,7 @@
     is_active: true
     is_staff: true
     is_superuser: false
-    last_login: 2015-07-21 21:06:24.495813+00:00
+    last_login: '2015-07-21 21:06:24.495813+00:00'
     last_name: ''
     password: pbkdf2_sha256$20000$3QfNVkGTwuEo$aTHMY/wy3/Q1qmPdRJ9z3pFyEU+zzsoXW2ou+uLp70s=
     user_permissions: []
@@ -60,132 +60,132 @@
 - fields:
     admins:
     - [project-admin1]
-    created_at: 2015-07-14 18:28:28.333841+00:00
+    created_at: '2015-07-14 18:28:28.333841+00:00'
     name: My Little Project
-    updated_at: 2015-07-15 23:48:23.885896+00:00
+    updated_at: '2015-07-15 23:48:23.885896+00:00'
   model: simplehmis.project
   pk: 1
 - fields:
     admins:
     - [project-admin2]
-    created_at: 2015-07-14 18:28:28.333903+00:00
+    created_at: '2015-07-14 18:28:28.333903+00:00'
     name: The Big Bad Project
-    updated_at: 2015-07-15 23:48:30.232879+00:00
+    updated_at: '2015-07-15 23:48:30.232879+00:00'
   model: simplehmis.project
   pk: 2
 - fields:
     admins:
     - [project-admin2]
-    created_at: 2015-07-14 18:28:28.333938+00:00
+    created_at: '2015-07-14 18:28:28.333938+00:00'
     name: Teenage Mutant Ninja Project
-    updated_at: 2015-07-15 23:48:35.350504+00:00
+    updated_at: '2015-07-15 23:48:35.350504+00:00'
   model: simplehmis.project
   pk: 3
-- fields: {created_at: ! '2015-07-21 19:03:00.286936+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:03:00.286936+00:00', dob: null, ethnicity: null,
     first: Vicenta, gender: null, last: Torgeson, middle: '', other_gender: '', race: null,
-    ssn: '123456789', suffix: '', updated_at: ! '2015-07-21 19:03:00.286977+00:00',
+    ssn: '123456789', suffix: '', updated_at: '2015-07-21 19:03:00.286977+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 1
-- fields: {created_at: ! '2015-07-21 19:03:18.551368+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:03:18.551368+00:00', dob: null, ethnicity: null,
     first: Long, gender: null, last: Leeson, middle: '', other_gender: '', race: null,
-    ssn: '234567891', suffix: '', updated_at: ! '2015-07-21 19:03:18.551429+00:00',
+    ssn: '234567891', suffix: '', updated_at: '2015-07-21 19:03:18.551429+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 2
-- fields: {created_at: ! '2015-07-21 19:03:40.997493+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:03:40.997493+00:00', dob: null, ethnicity: null,
     first: Marisol, gender: null, last: Leboeuf, middle: '', other_gender: '', race: null,
-    ssn: '345678912', suffix: '', updated_at: ! '2015-07-21 19:03:40.997533+00:00',
+    ssn: '345678912', suffix: '', updated_at: '2015-07-21 19:03:40.997533+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 3
-- fields: {created_at: ! '2015-07-21 19:04:06.992030+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:04:06.992030+00:00', dob: null, ethnicity: null,
     first: Rashad, gender: null, last: Halsey, middle: '', other_gender: '', race: null,
-    ssn: '456789123', suffix: '', updated_at: ! '2015-07-21 19:04:12.687188+00:00',
+    ssn: '456789123', suffix: '', updated_at: '2015-07-21 19:04:12.687188+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 4
-- fields: {created_at: ! '2015-07-21 19:04:40.006854+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:04:40.006854+00:00', dob: null, ethnicity: null,
     first: Eunice, gender: null, last: Lott, middle: '', other_gender: '', race: null,
-    ssn: '567891234', suffix: '', updated_at: ! '2015-07-21 19:04:40.006893+00:00',
+    ssn: '567891234', suffix: '', updated_at: '2015-07-21 19:04:40.006893+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 5
-- fields: {created_at: ! '2015-07-21 19:04:59.295295+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:04:59.295295+00:00', dob: null, ethnicity: null,
     first: Franklin, gender: null, last: Forth, middle: '', other_gender: '', race: null,
-    ssn: '678912345', suffix: '', updated_at: ! '2015-07-21 19:04:59.295332+00:00',
+    ssn: '678912345', suffix: '', updated_at: '2015-07-21 19:04:59.295332+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 6
-- fields: {created_at: ! '2015-07-21 19:05:13.744506+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:05:13.744506+00:00', dob: null, ethnicity: null,
     first: Magda, gender: null, last: Whichard, middle: '', other_gender: '', race: null,
-    ssn: '789123456', suffix: '', updated_at: ! '2015-07-21 19:05:16.765224+00:00',
+    ssn: '789123456', suffix: '', updated_at: '2015-07-21 19:05:16.765224+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 7
-- fields: {created_at: ! '2015-07-21 19:05:30.045454+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:05:30.045454+00:00', dob: null, ethnicity: null,
     first: Norine, gender: null, last: Chevalier, middle: '', other_gender: '', race: null,
-    ssn: '891234567', suffix: '', updated_at: ! '2015-07-21 19:05:30.045491+00:00',
+    ssn: '891234567', suffix: '', updated_at: '2015-07-21 19:05:30.045491+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 8
-- fields: {created_at: ! '2015-07-21 19:05:49.186290+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:05:49.186290+00:00', dob: null, ethnicity: null,
     first: Orlando, gender: null, last: Jahnke, middle: '', other_gender: '', race: null,
-    ssn: '912346578', suffix: '', updated_at: ! '2015-07-21 19:05:49.186332+00:00',
+    ssn: '912346578', suffix: '', updated_at: '2015-07-21 19:05:49.186332+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 9
-- fields: {created_at: ! '2015-07-21 19:06:06.355732+00:00', dob: null, ethnicity: null,
+- fields: {created_at: '2015-07-21 19:06:06.355732+00:00', dob: null, ethnicity: null,
     first: Dorris, gender: null, last: Purgason, middle: '', other_gender: '', race: null,
-    ssn: '987654321', suffix: '', updated_at: ! '2015-07-21 19:06:06.355775+00:00',
+    ssn: '987654321', suffix: '', updated_at: '2015-07-21 19:06:06.355775+00:00',
     veteran_status: null}
   model: simplehmis.client
   pk: 10
-- fields: {created_at: ! '2015-07-21 19:09:50.127144+00:00', project: 3, referral_notes: '',
-    updated_at: ! '2015-07-21 19:10:45.694611+00:00'}
+- fields: {created_at: '2015-07-21 19:09:50.127144+00:00', project: 3, referral_notes: '',
+    updated_at: '2015-07-21 19:10:45.694611+00:00'}
   model: simplehmis.household
   pk: 1
-- fields: {created_at: ! '2015-07-21 19:11:51.310858+00:00', project: 2, referral_notes: '',
-    updated_at: ! '2015-07-21 19:11:51.310896+00:00'}
+- fields: {created_at: '2015-07-21 19:11:51.310858+00:00', project: 2, referral_notes: '',
+    updated_at: '2015-07-21 19:11:51.310896+00:00'}
   model: simplehmis.household
   pk: 4
-- fields: {created_at: ! '2015-07-21 19:12:01.208928+00:00', project: 2, referral_notes: '',
-    updated_at: ! '2015-07-21 19:12:01.208968+00:00'}
+- fields: {created_at: '2015-07-21 19:12:01.208928+00:00', project: 2, referral_notes: '',
+    updated_at: '2015-07-21 19:12:01.208968+00:00'}
   model: simplehmis.household
   pk: 5
-- fields: {created_at: ! '2015-07-21 19:12:39.716138+00:00', project: 1, referral_notes: '',
-    updated_at: ! '2015-07-21 19:12:39.716176+00:00'}
+- fields: {created_at: '2015-07-21 19:12:39.716138+00:00', project: 1, referral_notes: '',
+    updated_at: '2015-07-21 19:12:39.716176+00:00'}
   model: simplehmis.household
   pk: 6
-- fields: {client: 10, created_at: ! '2015-07-21 19:09:50.131364+00:00', hoh_relationship: 1,
-    household: 1, present_at_enrollment: true, updated_at: ! '2015-07-21 21:25:50.958614+00:00'}
+- fields: {client: 10, created_at: '2015-07-21 19:09:50.131364+00:00', hoh_relationship: 1,
+    household: 1, present_at_enrollment: true, updated_at: '2015-07-21 21:25:50.958614+00:00'}
   model: simplehmis.householdmember
   pk: 1
-- fields: {client: 7, created_at: ! '2015-07-21 19:09:50.135602+00:00', hoh_relationship: 2,
-    household: 1, present_at_enrollment: true, updated_at: ! '2015-07-21 21:25:55.945147+00:00'}
+- fields: {client: 7, created_at: '2015-07-21 19:09:50.135602+00:00', hoh_relationship: 2,
+    household: 1, present_at_enrollment: true, updated_at: '2015-07-21 21:25:55.945147+00:00'}
   model: simplehmis.householdmember
   pk: 2
-- fields: {client: 6, created_at: ! '2015-07-21 19:11:51.314881+00:00', hoh_relationship: 1,
-    household: 4, present_at_enrollment: true, updated_at: ! '2015-07-21 21:24:29.550080+00:00'}
+- fields: {client: 6, created_at: '2015-07-21 19:11:51.314881+00:00', hoh_relationship: 1,
+    household: 4, present_at_enrollment: true, updated_at: '2015-07-21 21:24:29.550080+00:00'}
   model: simplehmis.householdmember
   pk: 5
-- fields: {client: 5, created_at: ! '2015-07-21 19:12:01.213437+00:00', hoh_relationship: 1,
-    household: 5, present_at_enrollment: true, updated_at: ! '2015-07-21 21:34:04.638951+00:00'}
+- fields: {client: 5, created_at: '2015-07-21 19:12:01.213437+00:00', hoh_relationship: 1,
+    household: 5, present_at_enrollment: true, updated_at: '2015-07-21 21:34:04.638951+00:00'}
   model: simplehmis.householdmember
   pk: 6
-- fields: {client: 9, created_at: ! '2015-07-21 19:12:39.725723+00:00', hoh_relationship: 3,
-    household: 6, present_at_enrollment: true, updated_at: ! '2015-07-21 19:12:39.725753+00:00'}
+- fields: {client: 9, created_at: '2015-07-21 19:12:39.725723+00:00', hoh_relationship: 3,
+    household: 6, present_at_enrollment: true, updated_at: '2015-07-21 19:12:39.725753+00:00'}
   model: simplehmis.householdmember
   pk: 8
-- fields: {client: 4, created_at: ! '2015-07-21 19:12:39.729468+00:00', hoh_relationship: 2,
-    household: 6, present_at_enrollment: true, updated_at: ! '2015-07-21 19:12:39.729494+00:00'}
+- fields: {client: 4, created_at: '2015-07-21 19:12:39.729468+00:00', hoh_relationship: 2,
+    household: 6, present_at_enrollment: true, updated_at: '2015-07-21 19:12:39.729494+00:00'}
   model: simplehmis.householdmember
   pk: 9
-- fields: {client: 3, created_at: ! '2015-07-21 19:12:39.733206+00:00', hoh_relationship: 2,
-    household: 6, present_at_enrollment: true, updated_at: ! '2015-07-21 19:12:39.733233+00:00'}
+- fields: {client: 3, created_at: '2015-07-21 19:12:39.733206+00:00', hoh_relationship: 2,
+    household: 6, present_at_enrollment: true, updated_at: '2015-07-21 19:12:39.733233+00:00'}
   model: simplehmis.householdmember
   pk: 10
-- fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
+- fields: {chronic_health: null, chronic_health_impairing: null, created_at: '2015-07-21
       21:06:45.929355+00:00', developmental_disability: null, developmental_disability_impairing: null,
     domestic_violence: null, domestic_violence_occurred: null, health_insurance: null,
     health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
@@ -196,11 +196,11 @@
     length_at_prior_residence: null, member: 6, mental_health: null, mental_health_impairing: null,
     physical_disability: null, physical_disability_impairing: null, prior_residence: null,
     prior_residence_other: '', project_entry_date: 2015-07-19, status_documented: null,
-    substance_abuse: null, substance_abuse_impairing: null, updated_at: ! '2015-07-21
+    substance_abuse: null, substance_abuse_impairing: null, updated_at: '2015-07-21
       21:34:04.652892+00:00'}
   model: simplehmis.cliententryassessment
   pk: 1
-- fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
+- fields: {chronic_health: null, chronic_health_impairing: null, created_at: '2015-07-21
       21:15:28.323522+00:00', developmental_disability: null, developmental_disability_impairing: null,
     domestic_violence: null, domestic_violence_occurred: null, health_insurance: null,
     health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
@@ -211,11 +211,11 @@
     length_at_prior_residence: null, member: 5, mental_health: null, mental_health_impairing: null,
     physical_disability: null, physical_disability_impairing: null, prior_residence: null,
     prior_residence_other: '', project_entry_date: 2015-07-21, status_documented: null,
-    substance_abuse: null, substance_abuse_impairing: null, updated_at: ! '2015-07-21
+    substance_abuse: null, substance_abuse_impairing: null, updated_at: '2015-07-21
       21:15:28.323553+00:00'}
   model: simplehmis.cliententryassessment
   pk: 2
-- fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
+- fields: {chronic_health: null, chronic_health_impairing: null, created_at: '2015-07-21
       21:25:19.466959+00:00', developmental_disability: null, developmental_disability_impairing: null,
     domestic_violence: null, domestic_violence_occurred: null, health_insurance: null,
     health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
@@ -226,11 +226,11 @@
     length_at_prior_residence: null, member: 1, mental_health: null, mental_health_impairing: null,
     physical_disability: null, physical_disability_impairing: null, prior_residence: null,
     prior_residence_other: '', project_entry_date: 2015-07-20, status_documented: null,
-    substance_abuse: null, substance_abuse_impairing: null, updated_at: ! '2015-07-21
+    substance_abuse: null, substance_abuse_impairing: null, updated_at: '2015-07-21
       21:25:50.963518+00:00'}
   model: simplehmis.cliententryassessment
   pk: 3
-- fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
+- fields: {chronic_health: null, chronic_health_impairing: null, created_at: '2015-07-21
       21:25:29.010609+00:00', developmental_disability: null, developmental_disability_impairing: null,
     domestic_violence: null, domestic_violence_occurred: null, health_insurance: null,
     health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
@@ -241,11 +241,11 @@
     length_at_prior_residence: null, member: 2, mental_health: null, mental_health_impairing: null,
     physical_disability: null, physical_disability_impairing: null, prior_residence: null,
     prior_residence_other: '', project_entry_date: 2015-07-20, status_documented: null,
-    substance_abuse: null, substance_abuse_impairing: null, updated_at: ! '2015-07-21
+    substance_abuse: null, substance_abuse_impairing: null, updated_at: '2015-07-21
       21:25:55.950134+00:00'}
   model: simplehmis.cliententryassessment
   pk: 4
-- fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
+- fields: {chronic_health: null, chronic_health_impairing: null, created_at: '2015-07-21
       21:25:50.969405+00:00', destination: null, destination_other: '', developmental_disability: null,
     developmental_disability_impairing: null, domestic_violence: null, domestic_violence_occurred: null,
     health_insurance: null, health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
@@ -253,11 +253,11 @@
     health_insurance_private: 0, health_insurance_state: 0, health_insurance_va: 0,
     hiv_aids: null, hiv_aids_impairing: null, member: 1, mental_health: null, mental_health_impairing: null,
     physical_disability: null, physical_disability_impairing: null, project_exit_date: 2015-07-21,
-    substance_abuse: null, substance_abuse_impairing: null, updated_at: ! '2015-07-21
+    substance_abuse: null, substance_abuse_impairing: null, updated_at: '2015-07-21
       21:25:50.969434+00:00'}
   model: simplehmis.clientexitassessment
   pk: 1
-- fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
+- fields: {chronic_health: null, chronic_health_impairing: null, created_at: '2015-07-21
       21:34:04.664061+00:00', destination: null, destination_other: '', developmental_disability: null,
     developmental_disability_impairing: null, domestic_violence: null, domestic_violence_occurred: null,
     health_insurance: null, health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
@@ -265,7 +265,7 @@
     health_insurance_private: 0, health_insurance_state: 0, health_insurance_va: 0,
     hiv_aids: null, hiv_aids_impairing: null, member: 6, mental_health: null, mental_health_impairing: null,
     physical_disability: null, physical_disability_impairing: null, project_exit_date: 2015-07-20,
-    substance_abuse: null, substance_abuse_impairing: null, updated_at: ! '2015-07-21
+    substance_abuse: null, substance_abuse_impairing: null, updated_at: '2015-07-21
       21:34:04.664092+00:00'}
   model: simplehmis.clientexitassessment
   pk: 2
