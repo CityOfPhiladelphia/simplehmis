@@ -20,8 +20,15 @@ def get_strrep(request):
     # TODO: Ensure that the user has permission to affect the given change. If
     #       the current user doesn't have change permission, they probably
     #       shouldn't be able to even see the string representation.
-    return HttpResponse('<a href="{}" target="_blank">{}</a>'.format(
-        reverse('admin:{}_{}_change'.format(ctype_app, ctype_model), args=(obj.id,)), obj))
+    link_text = ('<a id="{app}_{model}_{objid}_edit_link" href="{url}" '
+                 'onclick="showAdminPopup(this, \'nosuchfield\');" '
+                 'target="_blank">{repr}</a>')
+    return HttpResponse(link_text.format(
+        app=ctype_app,
+        model=ctype_model,
+        objid=obj.id,
+        url=reverse('admin:{}_{}_change'.format(ctype_app, ctype_model), args=(obj.id,)),
+        repr=obj))
 
 
 urlpatterns = [
