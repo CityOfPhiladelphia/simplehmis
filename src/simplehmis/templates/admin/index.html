@@ -22,10 +22,10 @@
             <div class="index-action"><a href="{% url "admin:simplehmis_household_add" %}" class="addlink button icon">Refer a new household<i class="fa fa-plus"></i></a></div>
         {% endif %}
         {% if perms.simplehmis.change_household %}
-            <div class="index-action"><a href="{% url "admin:simplehmis_household_changelist" %}" class="changelink button icon">Browse existing households<i class="fa fa-list"></i></a></div>
+            <div class="index-action"><a href="{% url "admin:simplehmis_household_changelist" %}" class="browselink button icon">Browse existing households</a></div>
         {% endif %}
         {% if perms.simplehmis.add_clientexitassessment %}
-            <div class="index-action"><a href="{% url "admin:simplehmis_householdmember_changelist" %}" class="changelink button icon">Add or edit a client assessment<i class="fa fa-edit"></i></a></div>
+            <div class="index-action"><a href="{% url "admin:simplehmis_householdmember_changelist" %}" class="changelink button icon">Add or edit a client assessment</a></div>
         {% endif %}
     {% endif %}
 {% else %}

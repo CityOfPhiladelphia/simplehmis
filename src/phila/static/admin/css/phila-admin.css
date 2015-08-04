@@ -18,6 +18,51 @@ table tbody tr th {
 
 
 /* ================================
+ * Icon Buttons
+ * ================================ */
+
+.button.icon {
+  padding: 0.625rem 3.4375rem 0.625rem 0.625rem;
+}
+
+.button.icon:after {
+  /* From font-awesome.css ... */
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+
+  box-sizing: inherit;
+
+  /* From patterns.css ... */
+  background: #000;
+  padding: .4em .5em .5em .4em;
+  font-size: 1.7em;
+  max-height: 40px;
+  vertical-align: sub;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2.8125rem;
+}
+
+.browselink:after {
+  content: "\f03a"; /* fa-list */
+}
+
+.changelink:after {
+  content: "\f044"; /* fa-edit */
+}
+
+.addlink:after {
+  content: "\f067"; /* fa-plus */
+}
+
+
+/* ================================
  * User Tools (e.g., view site,
  * change password, log out)
  * ================================ */
@@ -35,6 +80,8 @@ table tbody tr th {
 	float: right;
 	/*margin-top: -4.75em;*/
 	list-style: none;
+	position: relative;
+	z-index: 1000;
 }
 .object-tools li {
 	float: left;
