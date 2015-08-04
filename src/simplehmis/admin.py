@@ -63,7 +63,7 @@ class HouseholdAdmin (admin.ModelAdmin):
 
     actions_on_top = actions_on_bottom = False
     list_display = ['members_display', 'is_enrolled', 'project', 'date_of_entry']
-    list_filter = [IsEnrolledListFilter]
+    list_filter = [IsEnrolledListFilter, 'project']
     search_fields = ['project__name', 'members__first', 'members__middle', 'members__last']
 
     class Media:
@@ -83,6 +83,13 @@ class HouseholdAdmin (admin.ModelAdmin):
             .prefetch_related('members__entry_assessment')\
             .prefetch_related('members__exit_assessment')\
             .prefetch_related('members__client')
+
+    def get_list_filter(self, request):
+        list_filter = super().get_list_filter(request)
+        user = models.HMISUser(request.user)
+        if not user.is_superuser and user.is_project_staff():
+            list_filter.remove('project')
+        return list_filter
 
 
 class ClientAdmin (admin.ModelAdmin):
@@ -213,7 +220,7 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
 
     actions_on_top = actions_on_bottom = False
     list_display = ['__str__', 'is_enrolled', 'project', 'project_entry_date', 'project_exit_date']
-    list_filter = [IsEnrolledListFilter]
+    list_filter = [IsEnrolledListFilter, 'household__project']
     search_fields = ['client__first', 'client__middle', 'client__last', 'client__ssn']
 
     class Media:
@@ -233,6 +240,13 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
             .select_related('exit_assessment')\
             .select_related('household')\
             .select_related('household__project')\
+
+    def get_list_filter(self, request):
+        list_filter = super().get_list_filter(request)
+        user = models.HMISUser(request.user)
+        if not user.is_superuser and user.is_project_staff():
+            list_filter.remove('household__project')
+        return list_filter
 
 
 class ProjectAdmin (admin.ModelAdmin):
