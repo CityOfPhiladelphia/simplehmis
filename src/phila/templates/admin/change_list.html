@@ -73,27 +73,33 @@
       {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
 
       <div class="changelist-wrapper row">
+
+        <div class="medium-{% if cl.has_filters %}20{% else %}24{% endif %} columns">
+          <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %} novalidate>{% csrf_token %}
+          {% if cl.formset %}
+            <div>{{ cl.formset.management_form }}</div>
+          {% endif %}
+
+          {% block result_list %}
+              {% if action_form and actions_on_top and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+              {% result_list cl %}
+              {% if action_form and actions_on_bottom and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+          {% endblock %}
+          {% block pagination %}{% pagination cl %}{% endblock %}
+          </form>
+        </div>
+
         {% block filters %}
           {% if cl.has_filters %}
-            <div id="changelist-filter">
-              <h2>{% trans 'Filter' %}</h2>
-              {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+            <div class="medium-4 columns">
+              <div id="changelist-filter" class="medium-4 columns">
+                <h2>{% trans 'Filter' %}</h2>
+                {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+              </div>
             </div>
           {% endif %}
         {% endblock %}
 
-        <form id="changelist-form" class="medium-24 columns" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %} novalidate>{% csrf_token %}
-        {% if cl.formset %}
-          <div>{{ cl.formset.management_form }}</div>
-        {% endif %}
-
-        {% block result_list %}
-            {% if action_form and actions_on_top and cl.show_admin_actions %}{% admin_actions %}{% endif %}
-            {% result_list cl %}
-            {% if action_form and actions_on_bottom and cl.show_admin_actions %}{% admin_actions %}{% endif %}
-        {% endblock %}
-        {% block pagination %}{% pagination cl %}{% endblock %}
-        </form>
       </div>
     </div>
   </div>

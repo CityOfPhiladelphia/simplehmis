@@ -41,17 +41,63 @@ table tbody tr th {
 }
 
 
+/* ================================
+ * Object Search Bar
+ * ================================ */
+
+#changelist-search .search {
+	margin: 0.625rem 1.25rem 0.6875rem 0;
+}
+
+
+/* ================================
+ * Object Edit Form
+ * ================================ */
+
+.change-form #content-main {
+	margin-top: -4.625rem;
+}
+
+
+/* ================================
+ * changelists.css overrides
+ * ================================ */
+
+#changelist #toolbar form #searchbar {
+	padding: 0.5rem;
+}
+
+#changelist #toolbar {
+	background: none;
+	border-bottom: none;
+}
+
+#changelist-filter {
+	position: initial;
+	width: initial;
+}
+
 .change-list .filtered {
 	background: none!important;
 }
 
-.changelist-wrapper {
-	position: relative;
-	background: none;
-	clear: both;
+.change-list .filtered .results,
+.change-list .filtered .paginator,
+.filtered #toolbar,
+.filtered div.xfull {
+	margin-right: initial!important;
 }
 
+#changelist table thead th {
+	padding: 0.625rem;
+}
 
-#searchbar {
-	margin: 1em 0;
+#changelist table tbody td:first-child,
+#changelist table tbody td,
+#changelist table tbody th {
+	border: none;
+}
+
+.change-list .filtered table {
+	border: none;
 }
