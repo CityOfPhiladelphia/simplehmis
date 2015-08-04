@@ -268,8 +268,6 @@ class ProjectAdmin (admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if request.user.has_perm('simplehmis.add_project'):
             return []
-        elif obj in request.user.projects.all():
-            return []
         else:
             return ['name', 'admins']
 
