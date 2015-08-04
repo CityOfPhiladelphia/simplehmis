@@ -1,6 +1,8 @@
-[![Stories in Ready](https://badge.waffle.io/CityOfPhiladelphia/simplehmis.png?label=ready&title=Ready)](https://waffle.io/CityOfPhiladelphia/simplehmis)
 simpleHMIS
 ==========
+
+[![Build Status](https://travis-ci.org/CityOfPhiladelphia/simplehmis.svg?branch=master)](https://travis-ci.org/CityOfPhiladelphia/simplehmis)
+[![Stories in Ready](https://badge.waffle.io/CityOfPhiladelphia/simplehmis.png?label=ready&title=Ready)](https://waffle.io/CityOfPhiladelphia/simplehmis)
 
 The main point of this project is to allow partner programs to enter those [Universal Data Elements](https://www.hudexchange.info/hmis/hmis-data-and-technical-standards/#elements) required by HUD. As such, it is currently not and does not try to be a full homeless management information system (HMIS) as specified by HUD.
 
