@@ -1,6 +1,6 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
-from simplehmis import models
+from simplehmis import models, admin
 
 User = get_user_model()
 
@@ -23,6 +23,38 @@ class HMISUserTests (TestCase):
         project_admin = models.HMISUser(User.objects.get(username='project-admin1'))
         assert project_admin.is_project_staff()
         assert not intake_admin.is_project_staff()
+
+
+class AdminTests (TestCase):
+    fixtures = ['staff-groups.yaml', 'hmis-test-data.yaml']
+
+    def test_project_staff_only_see_members_in_their_programs(self):
+        request = RequestFactory().get('/simplehmis/householdmembers')
+        admin_view = admin.HouseholdMemberAdmin(models.HouseholdMember, admin.site)
+        # Set the first project admin as the request user.
+        project_admin = User.objects.get(username='project-admin1')
+        request.user = project_admin
+        # Make sure the project_admin only sees members in
+        # their own their own projects.
+        qs = admin_view.get_queryset(request)
+        projects = project_admin.projects.all()
+        assert all(member.household.project in projects for member in qs), \
+            "Some projects in {} not in {}".format(
+                [member.household.project for member in qs], projects)
+
+    def test_project_staff_only_see_households_in_their_programs(self):
+        request = RequestFactory().get('/simplehmis/households')
+        admin_view = admin.HouseholdAdmin(models.Household, admin.site)
+        # Set the first project admin as the request user.
+        project_admin = User.objects.get(username='project-admin1')
+        request.user = project_admin
+        # Make sure the project_admin only sees households
+        # in their own their own projects.
+        qs = admin_view.get_queryset(request)
+        projects = project_admin.projects.all()
+        assert all(household.project in projects for household in qs), \
+            "Some projects in {} not in {}".format(
+                [household.project for household in qs], projects)
 
 
 class EnrollmentFilterTests (TestCase):

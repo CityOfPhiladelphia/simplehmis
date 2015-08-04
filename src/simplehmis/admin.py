@@ -223,6 +223,10 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
 
+        user = models.HMISUser(request.user)
+        if not user.is_superuser and user.is_project_staff():
+            qs = qs.filter(household__project__in=user.projects.all())
+
         return qs\
             .select_related('client')\
             .select_related('entry_assessment')\
