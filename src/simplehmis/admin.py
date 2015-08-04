@@ -63,7 +63,6 @@ class HouseholdAdmin (admin.ModelAdmin):
 
     actions_on_top = actions_on_bottom = False
     list_display = ['members_display', 'is_enrolled', 'project', 'date_of_entry']
-    list_filter = [IsEnrolledListFilter, 'project']
     search_fields = ['project__name', 'members__first', 'members__middle', 'members__last']
 
     class Media:
@@ -85,10 +84,10 @@ class HouseholdAdmin (admin.ModelAdmin):
             .prefetch_related('members__client')
 
     def get_list_filter(self, request):
-        list_filter = super().get_list_filter(request)
+        list_filter = [IsEnrolledListFilter]
         user = models.HMISUser(request.user)
-        if not user.is_superuser and user.is_project_staff():
-            list_filter.remove('project')
+        if user.is_superuser or not user.is_project_staff():
+            list_filter.append('project')
         return list_filter
 
 
@@ -220,7 +219,6 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
 
     actions_on_top = actions_on_bottom = False
     list_display = ['__str__', 'is_enrolled', 'project', 'project_entry_date', 'project_exit_date']
-    list_filter = [IsEnrolledListFilter, 'household__project']
     search_fields = ['client__first', 'client__middle', 'client__last', 'client__ssn']
 
     class Media:
@@ -242,10 +240,10 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
             .select_related('household__project')\
 
     def get_list_filter(self, request):
-        list_filter = super().get_list_filter(request)
+        list_filter = [IsEnrolledListFilter]
         user = models.HMISUser(request.user)
-        if not user.is_superuser and user.is_project_staff():
-            list_filter.remove('household__project')
+        if user.is_superuser or not user.is_project_staff():
+            list_filter.append('household__project')
         return list_filter
 
 
