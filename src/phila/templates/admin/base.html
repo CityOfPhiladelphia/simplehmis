@@ -113,11 +113,12 @@
       {% endif %} {# not is_popup #}
 
       {% block messages %}
-          {% if messages %}
-          <ul class="messagelist">{% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
-          {% endfor %}</ul>
-          {% endif %}
+          {% for message in messages %}
+          <div data-alert class="alert-box{% if message.tags %} {{ message.tags }}{% endif %}">
+            {{ message|capfirst }}
+            <a href="#" class="close">&times;</a>
+          </div>
+          {% endfor %}
       {% endblock messages %}
 
       <!-- Content -->
