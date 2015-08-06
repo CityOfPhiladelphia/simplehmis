@@ -120,10 +120,11 @@ HEALTH_INSURANCE_RADIO_FIELDS = (
 
 HEALTH_INSURANCE_FIELDSETS = (
     (None, {
+        'classes': ('has-yes-dependency',),
         'fields': ('health_insurance',)
     }),
-    ('If client has health insurance...', {
-        'classes': ('collapse',),
+    (_('If client has health insurance, indicate all sources that apply:'), {
+        'classes': ('health_insurance_sources', 'indent',),
         'fields': (
             'health_insurance_medicaid',
             'health_insurance_medicare', 'health_insurance_chip',
@@ -137,33 +138,102 @@ HEALTH_INSURANCE_FIELDSETS = (
 
 DISABLING_CONDITION_FIELDSETS = (
     (None, {
-        'fields': ('physical_disability', 'physical_disability_impairing',
-            'developmental_disability', 'developmental_disability_impairing',
-            'chronic_health', 'chronic_health_impairing',
-            'hiv_aids', 'hiv_aids_impairing',
-            'mental_health', 'mental_health_impairing',
-            'substance_abuse', 'substance_abuse_impairing')
+        'classes': ('has-yes-dependency',),
+        'fields': ('physical_disability',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('physical_disability_impairing',)
+    }),
+    (None, {
+        'classes': ('has-yes-dependency',),
+        'fields': ('developmental_disability',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('developmental_disability_impairing',)
+    }),
+    (None, {
+        'classes': ('has-yes-dependency',),
+        'fields': ('chronic_health',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('chronic_health_impairing',)
+    }),
+    (None, {
+        'classes': ('has-yes-dependency',),
+        'fields': ('hiv_aids',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('hiv_aids_impairing',)
+    }),
+    (None, {
+        'classes': ('has-yes-dependency',),
+        'fields': ('mental_health',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('mental_health_impairing',)
+    }),
+    (None, {
+        'classes': ('fieldset-substance_abuse', 'has-dependency',),
+        'fields': ('substance_abuse',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('substance_abuse_impairing',)
     }),
 )
 
 HOUSING_STATUS_FIELDSETS = (
     (None, {
-        'fields': ('housing_status', 'homeless_at_least_one_year',
-            'homeless_in_three_years', 'homeless_months_in_three_years',
-            'homeless_months_prior', 'status_documented', 'prior_residence',
-            'prior_residence_other', 'length_at_prior_residence')
+        'fields': ('housing_status', 'homeless_at_least_one_year',)
+    }),
+    (None, {
+        'classes': ('fieldset-homeless_in_three_years', 'has-dependency',),
+        'fields': ('homeless_in_three_years',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('homeless_months_in_three_years',)
+    }),
+    (None, {
+        'fields': ('homeless_months_prior', 'status_documented',)
+    }),
+    (None, {
+        'classes': ('fieldset-prior_residence', 'has-dependency',),
+        'fields': ('prior_residence',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('prior_residence_other',)
+    }),
+    (None, {
+        'fields': ('length_at_prior_residence',)
     }),
 )
 
 DOMESTIC_VIOLENCE_FIELDSETS = (
     (None, {
-        'fields': ('domestic_violence', 'domestic_violence_occurred')
+        'classes': ('has-yes-dependency',),
+        'fields': ('domestic_violence',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('domestic_violence_occurred',)
     }),
 )
 
 DESTINATION_FIELDSETS = (
     (None, {
-        'fields': ('destination', 'destination_other')
+        'classes': ('has-dependency',),
+        'fields': ('destination',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('destination_other',)
     }),
 )
 

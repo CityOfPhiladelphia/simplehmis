@@ -40,3 +40,8 @@ fieldset.collapsed h2 {
   color: #333;
   padding-left: 12px;
 }
+
+/* Sub-fields */
+fieldset.indent {
+  padding-left: 5em;
+}
