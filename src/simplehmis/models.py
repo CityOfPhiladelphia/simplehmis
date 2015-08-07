@@ -86,7 +86,8 @@ class Client (TimestampedModel):
     middle = models.CharField(_('Middle name'), max_length=100, blank=True)
     last = models.CharField(_('Last name'), max_length=100, blank=True)
     suffix = models.CharField(_('Name suffix'), max_length=100, blank=True)
-    dob = models.DateField(_('Date of birth'), blank=True, null=True)
+    dob = models.DateField(_('Date of birth'), blank=True, null=True,
+        help_text=_('Use the format YYYY-MM-DD (EX: 1972-07-01 for July 01, 1972)'))
     ssn = models.CharField(_('SSN'), max_length=9, blank=True,
         help_text=_('Enter 9 digit SSN Do not enter hyphens EX: 555210987'))
     gender = models.PositiveIntegerField(_('Gender'), blank=True, null=True, choices=consts.HUD_CLIENT_GENDER, default=consts.HUD_DATA_NOT_COLLECTED)
