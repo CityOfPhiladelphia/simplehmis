@@ -45,3 +45,9 @@ fieldset.collapsed h2 {
 fieldset.indent {
   padding-left: 5em;
 }
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}

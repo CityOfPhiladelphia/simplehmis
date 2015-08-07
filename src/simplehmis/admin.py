@@ -103,6 +103,26 @@ class ClientAdmin (admin.ModelAdmin):
     formfield_overrides = {
         fields.TextField: {'widget': widgets.TextInput(attrs={'size': '40'})},
     }
+    fieldsets = (
+        (None, {
+            'fields': ('first', 'middle', 'last', 'suffix', 'dob', 'ssn',)
+        }),
+        (None, {
+            'classes': ('fieldset-gender',),
+            'fields': ('gender',)
+        }),
+        (None, {
+            'classes': ('indent',),
+            'fields': ('other_gender',)
+        }),
+        (None, {
+            'fields': ('ethnicity', 'race', 'veteran_status',)
+        })
+    )
+
+    class Media:
+        js = ("js/show-strrep.js", "js/hmis-forms.js")
+        css = {"all": ("css/hmis-forms.css",)}
 
 
 

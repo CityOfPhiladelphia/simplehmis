@@ -34,6 +34,23 @@ var HUD = HUD || {};
       .change(HUD.updateYesOptionDependentFields);
   };
 
+  /*== Generic 'Other' fields with dependencies ==*/
+
+  HUD.updateOtherOptionDependentFields = function(otherValue) {
+    // Show the fieldset following the select box if the
+    // selected value is 'Other'. Requires you to specify
+    // the value of the 'Other' option.
+    return function() {
+      HUD.updateOptionDependentFields.call(this, '[value="' + otherValue + '"]', 'fieldset');
+    };
+  };
+
+  HUD.initOtherOptionFields = function(fieldsetSelector, otherValue) {
+    $(fieldsetSelector).find('select')
+      .each(function(i, field) { HUD.updateOtherOptionDependentFields(otherValue).call(field); })
+      .change(HUD.updateOtherOptionDependentFields(otherValue));
+  };
+
   /*== Substance abuse fields ==*/
 
   HUD.updateSubstanceAbuseField = function() {
@@ -81,6 +98,7 @@ var HUD = HUD || {};
     HUD.initSubstanceAbuseField();
     HUD.initHomelessInThreeYearsField();
     HUD.initPriorResidenceField();
+    HUD.initOtherOptionFields('.fieldset-gender', '4');
   });
 
 })(django.jQuery);
