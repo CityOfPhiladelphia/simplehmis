@@ -26,8 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'm69vy!#^7&@bjm2n(a8t@kezmg')
 DEBUG = (os.environ.get('DEBUG', 'True') == 'True')
 
 ALLOWED_HOSTS = (
-    os.environ.get('ALLOWED_HOSTS', '').split(',') or
-    ['*']
+    os.environ.get('ALLOWED_HOSTS', '*').split(',')
 )
 
 
