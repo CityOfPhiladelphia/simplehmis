@@ -477,7 +477,7 @@ class DestinationFields (models.Model):
     ------------------
 
     """
-    destination = models.PositiveIntegerField(choices=consts.HUD_CLIENT_DESTINATION, null=True, blank=True)
+    destination = models.PositiveIntegerField(choices=consts.HUD_CLIENT_DESTINATION, null=True)
     destination_other = models.TextField(blank=True)
 
     class Meta:

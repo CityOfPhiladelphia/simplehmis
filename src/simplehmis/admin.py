@@ -259,7 +259,7 @@ DOMESTIC_VIOLENCE_FIELDSETS = (
 
 DESTINATION_FIELDSETS = (
     (None, {
-        'classes': ('has-dependency',),
+        'classes': ('fieldset-destination', 'has-dependency',),
         'fields': ('destination',)
     }),
     (None, {

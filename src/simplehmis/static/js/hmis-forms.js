@@ -99,6 +99,7 @@ var HUD = HUD || {};
     HUD.initHomelessInThreeYearsField();
     HUD.initPriorResidenceField();
     HUD.initOtherOptionFields('.fieldset-gender', '4');
+    HUD.initOtherOptionFields('.fieldset-destination', '17');
   });
 
 })(django.jQuery);
