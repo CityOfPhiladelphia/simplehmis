@@ -235,6 +235,17 @@ HOUSING_STATUS_FIELDSETS = (
     }),
 )
 
+INCOME_FIELDSETS = (
+    (None, {
+        'classes': ('has-yes-dependency',),
+        'fields': ('income_status',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('income_notes',)
+    }),
+)
+
 DOMESTIC_VIOLENCE_FIELDSETS = (
     (None, {
         'classes': ('has-yes-dependency',),
@@ -270,7 +281,8 @@ class ClientEntryAssessmentInline (admin.StackedInline):
     ) + HEALTH_INSURANCE_FIELDSETS \
       + DISABLING_CONDITION_FIELDSETS \
       + HOUSING_STATUS_FIELDSETS \
-      + DOMESTIC_VIOLENCE_FIELDSETS
+      + DOMESTIC_VIOLENCE_FIELDSETS \
+      + INCOME_FIELDSETS
 
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj=obj)
@@ -294,6 +306,7 @@ class ClientExitAssessmentInline (admin.StackedInline):
     ) + HEALTH_INSURANCE_FIELDSETS \
       + DISABLING_CONDITION_FIELDSETS \
       + DOMESTIC_VIOLENCE_FIELDSETS \
+      + INCOME_FIELDSETS \
       + DESTINATION_FIELDSETS
 
 
@@ -308,7 +321,8 @@ class ClientAnnualAssessmentInline (admin.StackedInline):
         (None, {'fields': ('assessment_date',)}),
     ) + HEALTH_INSURANCE_FIELDSETS \
       + DISABLING_CONDITION_FIELDSETS \
-      + DOMESTIC_VIOLENCE_FIELDSETS
+      + DOMESTIC_VIOLENCE_FIELDSETS \
+      + INCOME_FIELDSETS
 
 
 class HouseholdMemberAdmin (admin.ModelAdmin):

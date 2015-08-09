@@ -446,6 +446,18 @@ class HousingStatusFields (models.Model):
         abstract = True
 
 
+class IncomeFields (models.Model):
+    """
+    4.2   Income and Sources
+
+    """
+    income_status = models.PositiveIntegerField(_('Income from any source?'), null=True, choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED)
+    income_notes = models.TextField(_('Note all sources and dollar amounts for each source.'), blank=True)
+
+    class Meta:
+        abstract = True
+
+
 class DomesticViolenceFields (models.Model):
     """
     4.11   Domestic Violence
@@ -473,7 +485,7 @@ class DestinationFields (models.Model):
 
 
 class ClientEntryAssessment (TimestampedModel, HealthInsuranceFields,
-    DisablingConditionFields, HousingStatusFields, DomesticViolenceFields):
+    DisablingConditionFields, HousingStatusFields, DomesticViolenceFields, IncomeFields):
     """
     Contains all those data elements in the HMIS Data Dictionary that have a
     "Universal" element type, and a "Project Entry" collection point.
@@ -493,7 +505,7 @@ class ClientEntryAssessment (TimestampedModel, HealthInsuranceFields,
 
 
 class ClientAnnualAssessment (TimestampedModel, HealthInsuranceFields,
-    DisablingConditionFields, DomesticViolenceFields):
+    DisablingConditionFields, DomesticViolenceFields, IncomeFields):
     """
     The ClientExitInformation object contains all those data elements in the
     HMIS Data Dictionary that have a "Universal" element type, and a "Project
@@ -510,7 +522,7 @@ class ClientAnnualAssessment (TimestampedModel, HealthInsuranceFields,
 
 
 class ClientExitAssessment (TimestampedModel, HealthInsuranceFields,
-    DisablingConditionFields, DomesticViolenceFields, DestinationFields):
+    DisablingConditionFields, DomesticViolenceFields, IncomeFields, DestinationFields):
     """
     Contains all those data elements in the HMIS Data Dictionary that have a
     "Universal" element type, and a "Project Entry" collection point.
