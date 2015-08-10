@@ -41,4 +41,14 @@ For testing convenience, you can load some test data if you just want to get sta
 Deploying to an EC2 instance, or a droplet, etc.
 ------------------------------------------------
 
-Run the initial script and your environment should get configuerd correctly.
+Run the `init-machine.sh` script and your environment should get configuerd correctly.
+
+In order to send login emails, set up Amazon SES (or another SMTP email service), and add the following variables to your environment:
+
+    EMAIL_HOST
+    EMAIL_PORT
+    EMAIL_HOST_USER
+    EMAIL_HOST_PASSWORD
+    DEFAULT_FROM_EMAIL
+
+The `DEFAULT_FROM_EMAIL` must be an address able to send mail for the given user on the given host.
