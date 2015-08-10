@@ -31,6 +31,7 @@ ALLOWED_HOSTS = (
 
 
 # Application definition
+from django.utils.translation import ugettext_lazy as _
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -66,6 +67,7 @@ AUTHENTICATION_BACKENDS = (
     'nopassword.backends.email.EmailBackend',
 )
 
+NOPASSWORD_LOGIN_EMAIL_SUBJECT = _('Login code for SimpleHMIS')
 try:
     EMAIL_HOST = os.environ['EMAIL_HOST']
     EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '465'))
