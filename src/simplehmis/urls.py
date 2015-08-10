@@ -18,6 +18,7 @@ from . import admin
 
 
 urlpatterns = [
+    url(r'^', include('nopassword.urls')),
     url(r'^', include('phila.urls')),
     url(r'^', include(admin.site.urls)),
 ]

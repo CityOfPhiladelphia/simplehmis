@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # 'floppyforms',
     'debug_toolbar',
+    'nopassword',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,6 +61,20 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
+AUTHENTICATION_BACKENDS = (
+    'nopassword.backends.email.EmailBackend',
+)
+
+try:
+    EMAIL_HOST = os.environ['EMAIL_HOST']
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '465'))
+    EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+    DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
+    EMAIL_USE_SSL = True
+except KeyError:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = 'simplehmis.urls'
 
