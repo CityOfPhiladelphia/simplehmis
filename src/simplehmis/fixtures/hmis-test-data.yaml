@@ -1,6 +1,6 @@
 - fields:
     date_joined: '2015-07-14 18:28:51.787293+00:00'
-    email: ''
+    email: 'admin@example.com'
     first_name: ''
     groups: []
     is_active: true
@@ -14,7 +14,7 @@
   model: auth.user
 - fields:
     date_joined: '2015-07-15 23:41:11+00:00'
-    email: ''
+    email: 'project.admin.1@example.com'
     first_name: ''
     groups:
     - [project-staff]
@@ -29,7 +29,7 @@
   model: auth.user
 - fields:
     date_joined: '2015-07-15 23:41:34+00:00'
-    email: ''
+    email: 'intake.admin@example.com'
     first_name: ''
     groups:
     - [intake-staff]
@@ -44,7 +44,7 @@
   model: auth.user
 - fields:
     date_joined: '2015-07-15 23:47:23+00:00'
-    email: ''
+    email: 'project.admin.2@example.com'
     first_name: ''
     groups:
     - [project-staff]
