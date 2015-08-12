@@ -40,8 +40,8 @@ INSTALLED_APPS = (
     # SimpleHMIS depends on the auth.User model, so include
     # simplehmis after django.auth (and contenttypes for good
     # measure).
-    'phila',
     'simplehmis',
+    'phila',
 
     'django.contrib.admin',
     'django.contrib.sessions',
