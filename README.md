@@ -23,7 +23,7 @@ Now, install the project requirements:
 
     pip install -r requirements.txt
 
-Next, set up the database and initialize the data. If you are setting up a test or development instance, the default database connection settings should be sufficient (using [SQLite](https://www.sqlite.org/)). For production (or near-production staging) environments, create your database and set an environment variabled named `DATABASE_URL` to a [connection string](https://github.com/kennethreitz/dj-database-url#url-schema) for that database.
+These next commands will set up the database and initialize the data. If you are setting up a test or development instance, the default database connection settings should be sufficient (using [SQLite](https://www.sqlite.org/)). For production (or near-production staging) environments, create your database and set an environment variabled named `DATABASE_URL` to a [connection string](https://github.com/kennethreitz/dj-database-url#url-schema) for that database.
 
 Install the schema and initial data into your database:
 
@@ -32,7 +32,7 @@ Install the schema and initial data into your database:
 
 Finally, load information specific to your structure. This could include: partner projects, project staff, etc. For information on doing that, run `src/manage.py load_projects -h`. As a superuser user you can always add this data manually. You can create a new superuser with the `src/manage.py createsuperuser` command.
 
-For testing convenience, you can load some test data if you just want to get started. This includes a few projects, an intake staff user with username `'intake-admin'`, and two project staff users with usernames `'project-admin1'` and `'project-admin2'`. All test users have password `'password'`.
+For testing convenience, you can load some test data if you just want to get started. This includes a few projects, an intake staff user with username `'intake-admin'`, and two project staff users with usernames `'project-admin1'` and `'project-admin2'`.
 
     src/manage.py loaddata hmis-test-data.yaml
 
