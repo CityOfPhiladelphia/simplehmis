@@ -189,6 +189,57 @@ fieldset.aligned {
 	border: none;
 }
 
+.change-list th.sortable {
+	position: relative;
+	background-color: #027EA4;
+}
+
+.change-list th.sortable a {
+	color: white;
+}
+
+.change-list th.sortable:after {
+  /* From font-awesome.css ... */
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+
+  box-sizing: inherit;
+
+  /* From patterns.css ... */
+  padding: .6em .5em;
+  font-size: 1.3em;
+  max-height: 40px;
+  vertical-align: sub;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2.4rem;
+}
+
+.change-list th.sortable:after {
+  content: "\f0dc"; /* fa-sort */
+}
+
+.change-list th.sorted.ascending:after {
+  content: "\f0de"; /* fa-sort-asc */
+}
+
+.change-list th.sorted.descending:after {
+  content: "\f0dd"; /* fa-sort-desc */
+}
+
+.sortpriority {
+  float: right;
+  margin-right: 2.2em;
+}
+
+
+
 
 .errorlist {
 	list-style: none;
