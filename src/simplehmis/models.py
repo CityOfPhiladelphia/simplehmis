@@ -154,20 +154,30 @@ class ClientManager (models.Manager):
     def get_or_create_client_from_row(self, row):
         ssn = parse_ssn(row['SSN'])
 
-        client_values = dict(
+        name_and_dob = dict(
             first=row['First Name'],
             last=row['Last Name'],
+            dob=parse_date(row['DOB'])
+        )
+
+        client_values = dict(
+            name_and_dob,
             middle=row['Middle Name'],
-            dob=parse_date(row['DOB']),
             race=[hud_code(race, consts.HUD_CLIENT_RACE) for race in row['Race (HUD)'].split(';')][0] if row['Race (HUD)'] else 99,
             ethnicity=hud_code(row['Ethnicity (HUD)'], consts.HUD_CLIENT_ETHNICITY),
             gender=hud_code(row['Gender (HUD)'], consts.HUD_CLIENT_GENDER),
             veteran_status=hud_code(row['Veteran Status (HUD)'], consts.HUD_YES_NO),
         )
 
-        # Only try to match on SSN
+        # First, try to match on SSN
         if ssn:
             client, created = self.get_or_create(ssn=ssn, defaults=client_values)
+
+        # Failing that, try first, last, and date of birth
+        elif all(name_and_dob.values()):
+            client, created = self.get_or_create(defaults=client_values, **name_and_dob)
+
+        # Otherwise, just create a new client.
         else:
             client = self.create(ssn=ssn, **client_values)
             created = True
