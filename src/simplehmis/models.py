@@ -3,12 +3,66 @@
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.utils.timezone import now, timedelta
+from django.utils.timezone import now, timedelta, datetime
 from django.utils.translation import ugettext as _
 from simplehmis import consts
 
 import logging
 logger = logging.getLogger(__name__)
+
+
+def hud_code(value, items):
+    """
+    Get the corresponding HUD code from a string value.
+    """
+    equivalents = {
+        # Mapping sheet strings to equivalent consts strings
+        'Permanent housing for formerly homeless persons': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
+        'Client Refused': 'Client refused',
+        'Staying or living with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
+        'Data Not Collected': 'Data not collected',
+        'Client Doesn’t Know': 'Client doesn’t know',
+        'Staying or living in a family member\'s room, apartment or house': 'Staying or living in a family member’s room, apartment or house',
+        'Jail, prison, or juvenile facility': 'Jail, prison or juvenile detention facility',
+        'Staying or living in a friend\'s room, apartment or house': 'Staying or living in a friend’s room, apartment or house',
+        '4': '4 or more',
+        'Non-Hispanic / Non-Latino': 'Non-Hispanic/Non-Latino',
+        'NO': 'No',
+        'On the street or other place not meant for human habitation': 'Place not meant for habitation (e.g., a vehicle, an abandoned building, bus/train/subway station/airport or anywhere outside)',
+        'Hispanic / Latino': 'Hispanic/Latino',
+        'YES': 'Yes',
+        'Client doesn\'t know': 'Client doesn’t know',
+        'Rental by client, no ongoing housing subsidy (Private Market)': 'Rental by client, no ongoing housing subsidy',
+    }
+
+    for number, string in items:
+        if string == value:
+            return number
+
+        # As a special case, interpret the empty string as
+        # "Data not collected" when "Data not collected" is
+        # available as an option.
+        if value == '' and string == 'Data not collected':
+            return number
+
+        if equivalents.get(value) == string:
+            return number
+
+    raise KeyError('No value {!r} found'.format(value))
+
+
+def parse_date(d):
+    """
+    Parse a mm/dd/yyyy date.
+    """
+    return datetime.strptime(d, '%m/%d/%Y').date() if d else None
+
+
+def parse_ssn(ssn):
+    """
+    Remove extra dashes and spaces from an SSN.
+    """
+    return ssn.replace('-', '').strip()
 
 
 class HMISUser (object):
@@ -72,6 +126,179 @@ class Project (TimestampedModel):
         return self.name
 
 
+class ClientManager (models.Manager):
+    def load_from_csv_file(self, filename):
+        import csv
+        logger.debug('Opening the CSV file {}'.format(filename))
+
+        with open(filename, 'rU') as csvfile:
+            reader = csv.DictReader(csvfile)
+            rows = list(reader)
+
+            # First create all the clients. We do the clients and households in
+            # separate steps just in case any dependents are listed before the
+            # head of household in the CSV.
+            for row in rows:
+                client, created = self.get_or_create_client_from_row(row)
+                logger.debug('{} client'.format('Created' if created else 'Updated'))
+
+            # Next, for all those rows where a household member was not created,
+            # create one.
+            for row in rows:
+                if '_member' not in row:
+                    self.get_or_create_household_member_from_row(row)
+                    self.get_or_create_assessments_from_row(row)
+
+            return (row['_client'] for row in rows)
+
+    def get_or_create_client_from_row(self, row):
+        ssn = parse_ssn(row['SSN'])
+
+        client_values = dict(
+            first=row['First Name'],
+            last=row['Last Name'],
+            middle=row['Middle Name'],
+            dob=parse_date(row['DOB']),
+            race=[hud_code(race, consts.HUD_CLIENT_RACE) for race in row['Race (HUD)'].split(';')][0] if row['Race (HUD)'] else 99,
+            ethnicity=hud_code(row['Ethnicity (HUD)'], consts.HUD_CLIENT_ETHNICITY),
+            gender=hud_code(row['Gender (HUD)'], consts.HUD_CLIENT_GENDER),
+            veteran_status=hud_code(row['Veteran Status (HUD)'], consts.HUD_YES_NO),
+        )
+
+        # Only try to match on SSN
+        if ssn:
+            client, created = self.get_or_create(ssn=ssn, defaults=client_values)
+        else:
+            client = self.create(ssn=ssn, **client_values)
+            created = True
+
+        row['_client'] = client
+
+        for k, v in client_values.items():
+            if getattr(client, k) != v:
+                logger.warn('Warning: {} changed for client {} while loading from CSV: {!r} --> {!r}'.format(k, ssn, getattr(client, k), v))
+
+        # The following only apply to clients that are listed as a head of
+        # household.
+        hoh_rel = row['Relationship to HoH']
+        if hoh_rel == 'Self (head of household)':
+            # Make sure that the HoH SSN matches the client's.
+            hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
+            assert ssn == hoh_ssn, \
+                ('Client is listed as the head of household, but does not '
+                 'match the head of household\'s SSN: {!r} vs {!r}.'
+                 ).format(ssn, hoh_ssn)
+
+            # Check whether a household exists for this HoH's project and entry
+            # date. If not, create one.
+            self.get_or_create_household_member_from_row(row)
+            self.get_or_create_assessments_from_row(row)
+
+        return client, created
+
+    def get_or_create_household_member_from_row(self, row):
+        client = row['_client']
+        project_name = row['Program Name']
+        entry_date = parse_date(row['Program Start Date'])
+
+        try:
+            # If we can find a household membership that already exists for
+            # this client in this project on this date, then use it
+            # immediately.
+            member = client.memberships.get(
+                household__project__name=project_name,
+                entry_assessment__project_entry_date=entry_date)
+            row['_member'] = member
+            return member, False
+        except HouseholdMember.DoesNotExist:
+            pass
+
+        if row['Relationship to HoH'] == 'Self (head of household)':
+            # For heads of households, if we haven't found an existing
+            # membership, then we can assume that we need to create a new
+            # household.
+            project, _ = Project.objects.get_or_create(name=project_name)
+            household = Household.objects.create(project=project)
+        else:
+            # For dependants, we should use the household that exists for the
+            # corresponding head of household.
+            hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
+            entry_date=parse_date(row['Program Start Date'])
+            hoh = HouseholdMember.objects.get(client__ssn=hoh_ssn, entry_assessment__project_entry_date=entry_date)
+            household = hoh.household
+
+        member = HouseholdMember.objects.create(
+            client=client,
+            household=household,
+            hoh_relationship=hud_code(row['Relationship to HoH'], consts.HUD_CLIENT_HOH_RELATIONSHIP)
+        )
+        row['_member'] = member
+        return member, True
+
+    def get_or_create_assessments_from_row(self, row):
+        member = row['_member']
+        entry_date = parse_date(row['Program Start Date'])
+        exit_date = parse_date(row['Program End Date'])
+
+        if 'never' in row['Exit Destination'].lower():
+            # Treat clients with a destination including "never" as never
+            # having shown up (there's no valid HUD destination code with
+            # "never" in it).
+            member.present_at_enrollment = False
+            member.save()
+            return None, None
+
+        shared_values = dict(
+            physical_disability=hud_code(row['Physical Disability'], consts.HUD_YES_NO),
+            developmental_disability=hud_code(row['Developmental Disability'], consts.HUD_YES_NO),
+            chronic_health=hud_code(row['Chronic Health Condition'], consts.HUD_YES_NO),
+            hiv_aids=hud_code(row['HIV/AIDS'], consts.HUD_YES_NO),
+            mental_health=hud_code(row['Mental Health Problem'], consts.HUD_YES_NO),
+            substance_abuse=hud_code(row['Substance Abuse'], consts.HUD_CLIENT_SUBSTANCE_ABUSE),
+            domestic_violence=hud_code(row['Domestic Violence'], consts.HUD_YES_NO),
+        )
+
+        entry_values = dict(
+            shared_values,
+            homeless_at_least_one_year=hud_code(row['Has Been Continuously Homeless (on the streets, in EH or in a Safe Haven) for at Least One Year'], consts.HUD_YES_NO),
+            homeless_in_three_years=hud_code(row['Number of Times the Client has Been Homeless in the Past Three Years (streets, in EH, or in a safe haven)'], consts.HUD_CLIENT_HOMELESS_COUNT),
+            prior_residence=hud_code(row['Residence Prior to Program Entry - Type of Residence'], consts.HUD_CLIENT_PRIOR_RESIDENCE),
+            length_at_prior_residence=hud_code(row['Residence Prior to Program Entry - Length of Stay in Previous Place'], consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE),
+        )
+
+        exit_values = dict(
+            shared_values,
+            destination=hud_code(row['Exit Destination'], consts.HUD_CLIENT_DESTINATION),
+        )
+
+        # Get or create the entry and exit assessments, if there is an entry
+        # or exit date, respectively. Spit a warning if there are different
+        # values for the assessments.
+        if entry_date:
+            entry, _ = ClientEntryAssessment.objects.get_or_create(
+                member=member,
+                project_entry_date=entry_date,
+                defaults=entry_values)
+            for k, v in entry_values.items():
+                if getattr(entry, k) != v:
+                    logger.warn('Warning: {} changed for entry assessment on client {} while loading from CSV: {!r} --> {!r}'.format(k, entry.member, getattr(entry, k), v))
+        else:
+            entry = None
+
+        if exit_date:
+            exit, _ = ClientExitAssessment.objects.get_or_create(
+                member=member,
+                project_exit_date=exit_date,
+                defaults=exit_values)
+            for k, v in exit_values.items():
+                if getattr(exit, k) != v:
+                    logger.warn('Warning: {} changed for exit assessment on client {} while loading from CSV: {!r} --> {!r}'.format(k, exit.member, getattr(exit, k), v))
+        else:
+            exit = None
+
+        return entry, exit
+
+
 class Client (TimestampedModel):
     """
     The Client object contains all those data elements in the HMIS Data
@@ -90,14 +317,16 @@ class Client (TimestampedModel):
         help_text=_('Use the format YYYY-MM-DD (EX: 1972-07-01 for July 01, 1972)'))
     ssn = models.CharField(_('SSN'), max_length=9, blank=True,
         help_text=_('Enter 9 digit SSN Do not enter hyphens EX: 555210987'))
-    gender = models.PositiveIntegerField(_('Gender'), blank=True, null=True, choices=consts.HUD_CLIENT_GENDER, default=consts.HUD_DATA_NOT_COLLECTED)
+    gender = models.PositiveIntegerField(_('Gender'), blank=True, null=True, choices=consts.HUD_CLIENT_GENDER, default=consts.HUD_BLANK)
     other_gender = models.TextField(_('If "Other" for gender, please specify'), blank=True)
-    ethnicity = models.PositiveIntegerField(_('Ethnicity'), blank=True, null=True, choices=consts.HUD_CLIENT_ETHNICITY, default=consts.HUD_DATA_NOT_COLLECTED)
-    race = models.PositiveIntegerField(_('Race'), blank=True, null=True, choices=consts.HUD_CLIENT_RACE, default=consts.HUD_DATA_NOT_COLLECTED)
+    ethnicity = models.PositiveIntegerField(_('Ethnicity'), blank=True, null=True, choices=consts.HUD_CLIENT_ETHNICITY, default=consts.HUD_BLANK)
+    race = models.PositiveIntegerField(_('Race'), blank=True, null=True, choices=consts.HUD_CLIENT_RACE, default=consts.HUD_BLANK)
     # TODO: veteran status field should not validate if it conflicts with the
     #       client's age.
-    veteran_status = models.PositiveIntegerField(_('Veteran status (adults only)'), blank=True, null=True, choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED,
+    veteran_status = models.PositiveIntegerField(_('Veteran status (adults only)'), blank=True, null=True, choices=consts.HUD_YES_NO, default=consts.HUD_BLANK,
         help_text=_('Only collect veteran status if client is over 18.'))
+
+    objects = ClientManager()
 
     def name_display(self):
         name_pieces = []
@@ -327,7 +556,7 @@ class HealthInsuranceFields (models.Model):
     ----------------------
 
     """
-    health_insurance = models.PositiveIntegerField(_('Client has health insurance'), choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED, null=True)
+    health_insurance = models.PositiveIntegerField(_('Client has health insurance'), choices=consts.HUD_YES_NO, default=consts.HUD_BLANK, null=True)
     health_insurance_medicaid = models.PositiveIntegerField(_('MEDICAID'), choices=consts.YES_NO, default=0)
     health_insurance_medicare = models.PositiveIntegerField(_('MEDICARE'), choices=consts.YES_NO, default=0)
     health_insurance_chip = models.PositiveIntegerField(_('State Children’s Health Insurance Program (or use local name)'), choices=consts.YES_NO, default=0)
@@ -337,7 +566,7 @@ class HealthInsuranceFields (models.Model):
     health_insurance_private = models.PositiveIntegerField(_('Private Pay Health Insurance'), choices=consts.YES_NO, default=0)
     health_insurance_state = models.PositiveIntegerField(_('State Health Insurance for Adults (or use local name)'), choices=consts.YES_NO, default=0)
     # TODO: This next is HOPWA-only; should we omit?
-    health_insurance_none_reason = models.PositiveIntegerField(_('If none of the above, give reason'), choices=consts.HUD_CLIENT_UNINSURED_REASON, default=consts.HUD_DATA_NOT_COLLECTED, blank=True, null=True)
+    health_insurance_none_reason = models.PositiveIntegerField(_('If none of the above, give reason'), choices=consts.HUD_CLIENT_UNINSURED_REASON, default=consts.HUD_BLANK, blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -370,18 +599,18 @@ class DisablingConditionFields (models.Model):
     4.10  Substance Abuse
 
     """
-    physical_disability = models.PositiveIntegerField(_('Does the client have a physical disability?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    physical_disability_impairing = models.PositiveIntegerField(_('If yes, is the physical disability expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    developmental_disability = models.PositiveIntegerField(_('Does the client have a developmental disability?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    developmental_disability_impairing = models.PositiveIntegerField(_('If yes, is the developmental disability expected to substantially impair ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    chronic_health = models.PositiveIntegerField(_('Does the client have a chronic health condition?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    chronic_health_impairing = models.PositiveIntegerField(_('If yes, is the chronic health condition expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    hiv_aids = models.PositiveIntegerField(_('Does the client have HIV/AIDS?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    hiv_aids_impairing = models.PositiveIntegerField(_('If yes, is HIV/AIDS expected to substantially impair ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    mental_health = models.PositiveIntegerField(_('Does the client have a mental health problem?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    mental_health_impairing = models.PositiveIntegerField(_('If yes, is the mental health problem expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    substance_abuse = models.PositiveIntegerField(_('Does the client have a substance abuse problem?'), choices=consts.HUD_CLIENT_SUBSTANCE_ABUSE, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    substance_abuse_impairing = models.PositiveIntegerField(_('If yes for alcohol abuse, drug abuse, or both, is the substance abuse problem expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    physical_disability = models.PositiveIntegerField(_('Does the client have a physical disability?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    physical_disability_impairing = models.PositiveIntegerField(_('If yes, is the physical disability expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_BLANK)
+    developmental_disability = models.PositiveIntegerField(_('Does the client have a developmental disability?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    developmental_disability_impairing = models.PositiveIntegerField(_('If yes, is the developmental disability expected to substantially impair ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_BLANK)
+    chronic_health = models.PositiveIntegerField(_('Does the client have a chronic health condition?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    chronic_health_impairing = models.PositiveIntegerField(_('If yes, is the chronic health condition expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_BLANK)
+    hiv_aids = models.PositiveIntegerField(_('Does the client have HIV/AIDS?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    hiv_aids_impairing = models.PositiveIntegerField(_('If yes, is HIV/AIDS expected to substantially impair ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_BLANK)
+    mental_health = models.PositiveIntegerField(_('Does the client have a mental health problem?'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    mental_health_impairing = models.PositiveIntegerField(_('If yes, is the mental health problem expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_BLANK)
+    substance_abuse = models.PositiveIntegerField(_('Does the client have a substance abuse problem?'), choices=consts.HUD_CLIENT_SUBSTANCE_ABUSE, null=True, default=consts.HUD_BLANK)
+    substance_abuse_impairing = models.PositiveIntegerField(_('If yes for alcohol abuse, drug abuse, or both, is the substance abuse problem expected to be of long–continued and indefinite duration and substantially impairs ability to live independently'), choices=consts.HUD_YES_NO, blank=True, null=True, default=consts.HUD_BLANK)
 
     @property
     def disabling_condition(self):
@@ -429,18 +658,18 @@ class HousingStatusFields (models.Model):
     household comprised of only children.
 
     """
-    housing_status = models.PositiveIntegerField(_('Housing status'), choices=consts.HUD_CLIENT_HOUSING_STATUS, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    housing_status = models.PositiveIntegerField(_('Housing status'), choices=consts.HUD_CLIENT_HOUSING_STATUS, null=True, default=consts.HUD_BLANK)
 
-    homeless_at_least_one_year = models.PositiveIntegerField(_('Continuously homeless for at least one year'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    homeless_in_three_years = models.PositiveIntegerField(_('Number of times the client has been homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_COUNT, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    homeless_months_in_three_years = models.PositiveIntegerField(_('If client has been homeless 4 or more times, how many total months homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_MONTHS, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    homeless_at_least_one_year = models.PositiveIntegerField(_('Continuously homeless for at least one year'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    homeless_in_three_years = models.PositiveIntegerField(_('Number of times the client has been homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_COUNT, null=True, default=consts.HUD_BLANK)
+    homeless_months_in_three_years = models.PositiveIntegerField(_('If client has been homeless 4 or more times, how many total months homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_MONTHS, blank=True, null=True, default=consts.HUD_BLANK)
     homeless_months_prior = models.PositiveIntegerField(_('Total number of months continuously homeless immediately prior to project entry (partial months should be rounded UP)'), null=True)
     status_documented = models.PositiveIntegerField(choices=consts.YES_NO, blank=True, null=True)
     # TODO: WHAT DOES status_documented MEAN?
 
-    prior_residence = models.PositiveIntegerField(_('Type of residence prior to project entry'), choices=consts.HUD_CLIENT_PRIOR_RESIDENCE, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    prior_residence = models.PositiveIntegerField(_('Type of residence prior to project entry'), choices=consts.HUD_CLIENT_PRIOR_RESIDENCE, null=True, default=consts.HUD_BLANK)
     prior_residence_other = models.TextField(_('If "Other" for type of residence, specify where'), blank=True)
-    length_at_prior_residence = models.PositiveIntegerField(_('Length of time at prior residence'), choices=consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    length_at_prior_residence = models.PositiveIntegerField(_('Length of time at prior residence'), choices=consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE, null=True, default=consts.HUD_BLANK)
 
     class Meta:
         abstract = True
@@ -451,7 +680,7 @@ class IncomeFields (models.Model):
     4.2   Income and Sources
 
     """
-    income_status = models.PositiveIntegerField(_('Income from any source?'), null=True, choices=consts.HUD_YES_NO, default=consts.HUD_DATA_NOT_COLLECTED)
+    income_status = models.PositiveIntegerField(_('Income from any source?'), null=True, choices=consts.HUD_YES_NO, default=consts.HUD_BLANK)
     income_notes = models.TextField(_('Note all sources and dollar amounts for each source.'), blank=True)
 
     class Meta:
@@ -464,8 +693,8 @@ class DomesticViolenceFields (models.Model):
     ------------------------
 
     """
-    domestic_violence = models.PositiveIntegerField(_('Client is a victim/survivor of domestic violence'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
-    domestic_violence_occurred = models.PositiveIntegerField(_('If Client has experience domestic violence, when?'), choices=consts.HUD_CLIENT_DOMESTIC_VIOLENCE, blank=True, null=True, default=consts.HUD_DATA_NOT_COLLECTED)
+    domestic_violence = models.PositiveIntegerField(_('Client is a victim/survivor of domestic violence'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    domestic_violence_occurred = models.PositiveIntegerField(_('If Client has experience domestic violence, when?'), choices=consts.HUD_CLIENT_DOMESTIC_VIOLENCE, blank=True, null=True, default=consts.HUD_BLANK)
 
     class Meta:
         abstract = True

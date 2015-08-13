@@ -4,12 +4,14 @@ from django.utils.translation import ugettext as _
 
 HUD_CLIENT_DOESNT_KNOW = 8
 HUD_CLIENT_REFUSED = 9
-HUD_DATA_NOT_COLLECTED = None
+HUD_DATA_NOT_COLLECTED = 99
+HUD_BLANK = None
 
 HUD_DEFAULT_DATA_QUALITY = [
     (HUD_CLIENT_DOESNT_KNOW, _('Client doesn’t know')),
     (HUD_CLIENT_REFUSED,     _('Client refused')),
-    (HUD_DATA_NOT_COLLECTED, _('(Please choose an option)')),
+    (HUD_DATA_NOT_COLLECTED, _('Data not collected')),
+    (HUD_BLANK, _('(Please choose an option)')),
 ]
 
 def with_data_quality(d):
