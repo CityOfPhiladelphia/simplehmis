@@ -59,12 +59,17 @@ class HouseholdAdmin (admin.ModelAdmin):
     raw_id_fields = ['project']
 
     actions_on_top = actions_on_bottom = False
-    list_display = ['members_display', 'is_enrolled', 'project', 'date_of_entry']
+    list_display = ['members_display', 'is_enrolled', 'project', 'date_of_intake', 'date_of_entry']
     search_fields = ['project__name', 'members__first', 'members__middle', 'members__last']
 
     class Media:
         js = ("js/show-strrep.js", "js/hmis-forms.js")
         css = {"all": ("css/hmis-forms.css",)}
+
+    def date_of_intake(self, obj):
+        return obj.created_at.date()
+    date_of_intake.short_description = _('Date of referral')
+    date_of_intake.admin_order_field = 'created_at'
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
