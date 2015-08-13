@@ -31,7 +31,7 @@
 <div id="content-main">
 
 <!-- Passwordless login form -->
-<form method="post" class="form-vertical" id="login-form">
+<form method="post" class="form-vertical panel" id="login-form">
   {% csrf_token %}
   {{ form.media }}
 
@@ -42,7 +42,7 @@
     {{ form.username.label_tag }} {{ form.username }}
   </div>
   <div class="submit-row">
-    <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
+    <input type="submit" value="{% trans 'Log in' %}" class="button pull-right" />
   </div>
 </form>
 

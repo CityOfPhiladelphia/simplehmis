@@ -1,0 +1,8 @@
+.login #content-main {
+  max-width: 40em;
+  margin: 5em auto;
+}
+
+.login h3 {
+  text-align: center;
+}
