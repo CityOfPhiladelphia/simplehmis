@@ -29,6 +29,11 @@ ALLOWED_HOSTS = (
     os.environ.get('ALLOWED_HOSTS', '*').split(',')
 )
 
+ADMINS = [
+    (addr.strip().split('@')[0], addr.strip())
+    for addr in os.environ.get('ADMINS', '').split(',')
+]
+
 
 # Application definition
 from django.utils.translation import ugettext_lazy as _
