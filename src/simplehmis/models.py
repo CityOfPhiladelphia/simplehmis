@@ -90,6 +90,48 @@ class HMISUser (object):
         user = self.user
         return user.is_superuser or user.has_perm('simplehmis.enroll_household')
 
+    def login_url(self, secure=False, host=None):
+        from django.core.urlresolvers import reverse_lazy
+        host = host or getattr(settings, 'SERVER_URL', None) or 'example.com'
+        view = reverse_lazy('login'),
+
+        return '%s://%s%s' % (
+            'https' if secure else 'http',
+            host,
+            view[0]
+        )
+
+    def send_onboarding_email(self, secure=False, host=None):
+        if not self.email:
+            return
+
+        from django.core.mail import send_mail
+        from django.template.loader import render_to_string
+        subject = _('Welcome to SimpleHMIS')
+        to_email = [self.email]
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'root@example.com')
+
+        if self.is_superuser:
+            staff_type = 'a site-wide administrator'
+        elif self.is_project_staff():
+            staff_type = 'a project staff member for {}'.format(', '.join(p.name for p in self.projects.all()))
+        elif self.is_intake_staff():
+            staff_type = 'an intake staff member'
+        else:
+            staff_type = 'a site staff member'
+
+        context = {
+            'login_url': self.login_url(secure=secure, host=host),
+            'username': self.username,
+            'staff_type': staff_type,
+            'help_email': getattr(settings, 'HELP_EMAIL', 'help@example.com'),
+        }
+
+        text_content = render_to_string('onboarding_email.txt', context)
+        html_content = render_to_string('onboarding_email.html', context)
+
+        send_mail(subject, text_content, from_email, to_email, html_message=html_content)
+
     def __getattr__(self, key):
         return getattr(self.user, key)
 

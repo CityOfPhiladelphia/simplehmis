@@ -1,0 +1,13 @@
+Welcome to SimpleHMIS!
+
+This is a simple application used to collect data necessary
+for generating HUD reports. You have been given access to the
+application as {{ staff_type }}.
+
+Your username is {{ username }}. You can log in at
+{{ login_url }}. After entering your username into the login box, check your email here for a log in code.
+
+If you have any issues, please let us know at
+{{ help_email }}.
+
+Thanks!

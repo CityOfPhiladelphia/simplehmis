@@ -401,11 +401,26 @@ class ProjectAdmin (admin.ModelAdmin):
         return qs
 
 
+from django.contrib.auth.admin import Group, GroupAdmin, User, UserAdmin
+
+
+class HMISUserAdmin (UserAdmin):
+    actions = ['send_onboarding_messages']
+
+    def send_onboarding_messages(self, request, queryset):
+        for user in queryset:
+            user = models.HMISUser(user)
+            user.send_onboarding_email(secure=(request.scheme == 'https'), host=request.get_host())
+
+            count = len(queryset)
+        self.message_user(request, 'Successfully sent {} onbaording message{}.'.format(count, '' if count == 1 else 's'))
+    send_onboarding_messages.short_description = "Send onboarding emails to the selected users"
+
+
 site = sites.HMISAdminSite()
 
-from django.contrib.auth.admin import Group, GroupAdmin, User, UserAdmin
 site.register(Group, GroupAdmin)
-site.register(User, UserAdmin)
+site.register(User, HMISUserAdmin)
 
 site.register(models.Client, ClientAdmin)
 site.register(models.Project, ProjectAdmin)
