@@ -174,9 +174,21 @@ class ClientManager (models.Manager):
 
         row['_client'] = client
 
+        client_changed = False
         for k, v in client_values.items():
             if getattr(client, k) != v:
-                logger.warn('Warning: {} changed for client {} while loading from CSV: {!r} --> {!r}'.format(k, ssn, getattr(client, k), v))
+                # If the value has gotten more specific, use the new value.
+                if getattr(client, k) in (None, '', 99):
+                    setattr(client, k, v)
+                    client_changed = True
+
+                # If the value has gotten less specific, ignore it.
+                elif v in (None, '', 99):
+                    pass
+
+                # Otherwise, warn.
+                else:
+                    logger.warn('Warning: {} changed for client {} while loading from CSV: {!r} --> {!r}'.format(k, ssn, getattr(client, k), v))
 
         # The following only apply to clients that are listed as a head of
         # household.
