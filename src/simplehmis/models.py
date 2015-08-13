@@ -163,11 +163,16 @@ class ClientManager (models.Manager):
         client_values = dict(
             name_and_dob,
             middle=row['Middle Name'],
-            race=[hud_code(race, consts.HUD_CLIENT_RACE) for race in row['Race (HUD)'].split(';')][0] if row['Race (HUD)'] else 99,
             ethnicity=hud_code(row['Ethnicity (HUD)'], consts.HUD_CLIENT_ETHNICITY),
             gender=hud_code(row['Gender (HUD)'], consts.HUD_CLIENT_GENDER),
             veteran_status=hud_code(row['Veteran Status (HUD)'], consts.HUD_YES_NO),
         )
+
+        # Race, as a many-to-many field, gets applied separately.
+        race = [
+            hud_code(race, consts.HUD_CLIENT_RACE)
+            for race in row['Race (HUD)'].split(';')
+        ]
 
         # First, try to match on SSN
         if ssn:
@@ -182,6 +187,7 @@ class ClientManager (models.Manager):
             client = self.create(ssn=ssn, **client_values)
             created = True
 
+        client.race = ClientRace.objects.filter(hud_value__in=race)
         row['_client'] = client
 
         client_changed = False
@@ -323,7 +329,7 @@ class ClientManager (models.Manager):
 
 class ClientRace (models.Model):
     label = models.CharField(max_length=100)
-    hud_value = models.PositiveIntegerField()
+    hud_value = models.PositiveIntegerField(primary_key=True)
 
     def __str__(self):
         return self.label
@@ -350,7 +356,7 @@ class Client (TimestampedModel):
     gender = models.PositiveIntegerField(_('Gender'), blank=True, null=True, choices=consts.HUD_CLIENT_GENDER, default=consts.HUD_BLANK)
     other_gender = models.TextField(_('If "Other" for gender, please specify'), blank=True)
     ethnicity = models.PositiveIntegerField(_('Ethnicity'), blank=True, null=True, choices=consts.HUD_CLIENT_ETHNICITY, default=consts.HUD_BLANK)
-    race = models.ManyToManyField(ClientRace, verbose_name=_('Race'), blank=True, null=True, default=consts.HUD_BLANK)
+    race = models.ManyToManyField(ClientRace, verbose_name=_('Race'), blank=True, default=consts.HUD_BLANK)
     # TODO: veteran status field should not validate if it conflicts with the
     #       client's age.
     veteran_status = models.PositiveIntegerField(_('Veteran status (adults only)'), blank=True, null=True, choices=consts.HUD_YES_NO, default=consts.HUD_BLANK,

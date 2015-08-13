@@ -27,9 +27,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ClientRace',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
                 ('label', models.CharField(max_length=100)),
-                ('hud_value', models.PositiveIntegerField()),
+                ('hud_value', models.PositiveIntegerField(primary_key=True)),
             ],
         ),
         migrations.RemoveField(
@@ -39,7 +38,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='client',
             name='race',
-            field=models.ManyToManyField(null=True, verbose_name='Race', blank=True, to='simplehmis.ClientRace', default=None),
+            field=models.ManyToManyField(verbose_name='Race', blank=True, to='simplehmis.ClientRace', default=None),
         ),
         migrations.RunPython(
             make_race_entries,
