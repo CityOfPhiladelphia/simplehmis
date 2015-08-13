@@ -136,3 +136,22 @@ STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(os.path.dirname(BASE_DI
 # Application specific settings
 
 HELP_EMAIL = os.environ.get('HELP_EMAIL', 'test@example.com')
+
+
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'simplehmis': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
