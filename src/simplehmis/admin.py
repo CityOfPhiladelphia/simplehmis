@@ -88,7 +88,8 @@ class HouseholdAdmin (admin.ModelAdmin):
         return list_filter
 
     def lookup_allowed(self, lookup, value):
-        if lookup in ('project__id__exact',):
+        if lookup in ('project__id__exact',
+                      'project__isnull',):
             return True
         return super().lookup_allowed(lookup, value)
 
@@ -362,7 +363,8 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
         return list_filter
 
     def lookup_allowed(self, lookup, value):
-        if lookup in ('household__project__id__exact',):
+        if lookup in ('household__project__id__exact',
+                      'household__project__isnull',):
             return True
         return super().lookup_allowed(lookup, value)
 
