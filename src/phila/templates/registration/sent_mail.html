@@ -17,7 +17,16 @@
 <div id="content-main">
 
 <!-- Passwordless login confirmation -->
-<h3>{% trans "Please check your email for a log-in link." %}</h3>
+<div class="panel">
+  <h3>{% trans "Please check your email for a log-in link." %}</h3>
+  {% blocktrans with email_subject=settings.NOPASSWORD_LOGIN_EMAIL_SUBJECT help_email=settings.HELP_EMAIL %}
+  <ul class="email-instructions">
+    <li>The email subject should be &quot;{{ email_subject }}&quot;.</li>
+    <li>Check your Junk Mail folder if you do not see the email within a couple of minutes.</li>
+    <li>If you don't see the email is not in any of your folders, please report the issue to <a href="mailto:{{ help_email }}">{{ help_email }}</a>.</li>
+  </ul>
+  {% endblocktrans %}
+</div>
 
 </div>
 {% endblock %}

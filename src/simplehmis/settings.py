@@ -131,3 +131,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(os.path.dirname(BASE_DIR), 'dist', 'static'))
+
+
+# Application specific settings
+
+HELP_EMAIL = os.environ.get('HELP_EMAIL', 'test@example.com')
