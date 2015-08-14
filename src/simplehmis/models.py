@@ -93,7 +93,8 @@ class HMISUser (object):
     def login_url(self, secure=False, host=None):
         from django.core.urlresolvers import reverse_lazy
         host = host or getattr(settings, 'SERVER_URL', None) or 'example.com'
-        view = reverse_lazy('login'),
+        # view = reverse_lazy('login'),
+        view = '/'
 
         return '%s://%s%s' % (
             'https' if secure else 'http',
