@@ -12,7 +12,7 @@ class HouseholdMemberInline (admin.TabularInline):
     model = models.HouseholdMember
     formset = forms.HouseholdMemberFormset
     raw_id_fields = ['client']
-    readonly_fields = ['link_to_assessments']
+    readonly_fields = ['is_enrolled', 'link_to_assessments']
     verbose_name = _('Household member')
     verbose_name_plural = _('Household members')
 
