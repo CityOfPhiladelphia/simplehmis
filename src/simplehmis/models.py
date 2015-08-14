@@ -447,10 +447,12 @@ class HouseholdManager (models.QuerySet):
         status = str(status)
         if status == '-1':
             qs = self\
+                .filter(members__present_at_enrollment=True)\
                 .annotate(enrolled_count=Count('members__entry_assessment'))\
                 .filter(enrolled_count=0)
         elif status == '0':
             qs = self\
+                .filter(members__present_at_enrollment=True)\
                 .annotate(total_member_count=Count('members'))\
                 .annotate(enrolled_count=Count('members__entry_assessment'))\
                 .annotate(exited_count=Count('members__exit_assessment'))\
@@ -458,6 +460,7 @@ class HouseholdManager (models.QuerySet):
                 .filter(~Q(exited_count=F('total_member_count')))
         elif status == '1':
             qs = self\
+                .filter(members__present_at_enrollment=True)\
                 .annotate(total_member_count=Count('members'))\
                 .annotate(exited_count=Count('members__exit_assessment'))\
                 .filter(exited_count=F('total_member_count'))
@@ -518,7 +521,25 @@ class Household (TimestampedModel):
     dependents_display.short_description = _('Dependents')
 
     def is_enrolled(self):
-        return any(member.is_enrolled() for member in self.members.all())
+        members = self.members.all()
+
+        # If any present member is pending, then the whole
+        # household is pending
+        for member in members:
+            if member.present_at_enrollment:
+                if member.is_enrolled() is None:
+                    return None
+
+        # If none are pending, then if any member is
+        # enrolled, then the whole household is enrolled.
+        for member in members:
+            if member.present_at_enrollment:
+                if member.is_enrolled() is True:
+                    return True
+
+        # If no one present is pending or enrolled, then
+        # The whole household is exited.
+        return False
     is_enrolled.boolean = True
 
     def date_of_entry(self):
@@ -545,13 +566,18 @@ class HouseholdMemberQuerySet (models.QuerySet):
 
         status = str(status)
         if status == '-1':
-            qs = self.filter(entry_assessment__isnull=True)
+            qs = self\
+                .filter(present_at_enrollment=True)\
+                .filter(entry_assessment__isnull=True)
         elif status == '0':
             qs = self\
+                .filter(present_at_enrollment=True)\
                 .filter(exit_assessment__isnull=True)\
                 .filter(entry_assessment__isnull=False)
         elif status == '1':
-            qs = self.filter(exit_assessment__isnull=False)
+            qs = self\
+                .filter(present_at_enrollment=True)\
+                .filter(exit_assessment__isnull=False)
         else:
             raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
         return qs
@@ -619,6 +645,8 @@ class HouseholdMember (TimestampedModel):
         except ClientExitAssessment.DoesNotExist: return False
 
     def is_enrolled(self):
+        if not self.present_at_enrollment:
+            return False
         if not self.has_entered():
             return None
         if not self.has_exited():
