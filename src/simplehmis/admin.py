@@ -60,7 +60,7 @@ class HouseholdAdmin (admin.ModelAdmin):
 
     actions_on_top = actions_on_bottom = False
     list_display = ['members_display', 'is_enrolled', 'project', 'date_of_intake', 'date_of_entry']
-    search_fields = ['project__name', 'members__first', 'members__middle', 'members__last']
+    search_fields = ['project__name', 'members__client__first', 'members__client__middle', 'members__client__last', 'members__client__ssn']
 
     class Media:
         js = ("js/show-strrep.js", "js/hmis-forms.js")
