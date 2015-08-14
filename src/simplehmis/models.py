@@ -484,7 +484,7 @@ class Household (TimestampedModel):
     into the project is  unacceptable.
 
     """
-    project = models.ForeignKey('Project', null=True, blank=True)
+    project = models.ForeignKey('Project', null=True)
     referral_notes = models.TextField(_('Referral notes'), blank=True)
 
     objects = HouseholdManager.as_manager()
