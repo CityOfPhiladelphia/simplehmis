@@ -436,9 +436,9 @@ class HouseholdManager (models.QuerySet):
     def filter_by_enrollment(self, status):
         """
         status can be:
-        -1 -- Has not yet ben enrolled in a program
-        0  -- Is currently enrolled in a program
-        1  -- Has exited a program
+        -1 -- Has not yet been fully enrolled in a program
+        0  -- Is currently at least partially enrolled in a program
+        1  -- Has completely exited a program
         """
         from django.db.models import Count, F, Q
         if status is None:
@@ -448,16 +448,17 @@ class HouseholdManager (models.QuerySet):
         if status == '-1':
             qs = self\
                 .filter(members__present_at_enrollment=True)\
+                .annotate(total_member_count=Count('members'))\
                 .annotate(enrolled_count=Count('members__entry_assessment'))\
-                .filter(enrolled_count=0)
+                .filter(enrolled_count__lt=F('total_member_count'))
         elif status == '0':
             qs = self\
                 .filter(members__present_at_enrollment=True)\
                 .annotate(total_member_count=Count('members'))\
                 .annotate(enrolled_count=Count('members__entry_assessment'))\
                 .annotate(exited_count=Count('members__exit_assessment'))\
-                .filter(enrolled_count__gt=0)\
-                .filter(~Q(exited_count=F('total_member_count')))
+                .filter(enrolled_count=F('total_member_count'))\
+                .filter(exited_count__lt=F('total_member_count'))
         elif status == '1':
             qs = self\
                 .filter(members__present_at_enrollment=True)\

@@ -1211,18 +1211,6 @@
   model: simplehmis.cliententryassessment
   pk: 8
 - fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
-      21:25:50.969405+00:00', destination: null, destination_other: '', developmental_disability: null,
-    developmental_disability_impairing: null, domestic_violence: null, domestic_violence_occurred: null,
-    health_insurance: null, health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
-    health_insurance_medicaid: 0, health_insurance_medicare: 0, health_insurance_none_reason: null,
-    health_insurance_private: 0, health_insurance_state: 0, health_insurance_va: 0,
-    hiv_aids: null, hiv_aids_impairing: null, income_notes: '', income_status: null,
-    member: 1, mental_health: null, mental_health_impairing: null, physical_disability: null,
-    physical_disability_impairing: null, project_exit_date: 2015-07-21, substance_abuse: null,
-    substance_abuse_impairing: null, updated_at: ! '2015-07-21 21:25:50.969434+00:00'}
-  model: simplehmis.clientexitassessment
-  pk: 1
-- fields: {chronic_health: null, chronic_health_impairing: null, created_at: ! '2015-07-21
       21:34:04.664061+00:00', destination: null, destination_other: '', developmental_disability: null,
     developmental_disability_impairing: null, domestic_violence: null, domestic_violence_occurred: null,
     health_insurance: null, health_insurance_chip: 0, health_insurance_cobra: 0, health_insurance_employer: 0,
