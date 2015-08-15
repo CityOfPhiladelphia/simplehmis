@@ -62,8 +62,8 @@ class EnrollmentFilterTests (TestCase):
 
     def test_householdmember_pending_status(self):
         pending_members = models.HouseholdMember.objects.filter_by_enrollment('-1')
-        assert len(pending_members) == 3
-        assert set(member.client.first for member in pending_members) == set(['Marisol', 'Rashad', 'Orlando'])
+        assert len(pending_members) == 5
+        assert set(member.client.first for member in pending_members) == set(['Ronny', 'Rashad', 'Orlando', 'Marisol', 'Kendrick'])
 
     def test_householdmember_enrolled_status(self):
         enrolled_members = models.HouseholdMember.objects.filter_by_enrollment('0')
@@ -72,5 +72,6 @@ class EnrollmentFilterTests (TestCase):
 
     def test_householdmember_exited_status(self):
         exited_members = models.HouseholdMember.objects.filter_by_enrollment('1')
-        assert len(exited_members) == 2
-        assert set(member.client.first for member in exited_members) == set(['Eunice', 'Dorris'])
+        assert len(exited_members) == 3
+        assert set(member.client.first for member in exited_members) == set(['Eunice', 'Dorris', 'Hung'])
+
