@@ -79,7 +79,8 @@ try:
     EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
     DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
-    EMAIL_USE_SSL = True
+    EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'True'
 except KeyError:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

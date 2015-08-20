@@ -51,4 +51,6 @@ In order to send login emails, set up Amazon SES (or another SMTP email service)
     EMAIL_HOST_PASSWORD
     DEFAULT_FROM_EMAIL
 
+It is also recommended that you use SSL or TLS to send your emails. Set either the `EMAIL_USE_SSL` or `EMAIL_USE_TLS` environment variable to `True`.
+
 The `DEFAULT_FROM_EMAIL` must be an address able to send mail for the given user on the given host.
