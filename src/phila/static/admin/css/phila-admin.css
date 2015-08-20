@@ -145,6 +145,16 @@ fieldset.aligned {
 	margin-top: -4.625rem;
 }
 
+.submit-row.panel .button {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.submit-row .deletelink {
+  background-image: none;
+  padding-left: 1.25rem;
+}
+
 
 /* ================================
  * changelists.css overrides
