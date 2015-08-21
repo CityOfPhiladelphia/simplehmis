@@ -95,6 +95,18 @@ table tbody tr th {
   padding: 0.5rem;
 }
 
+.related-lookup + strong {
+  display: inline-block;
+  min-height: 2.5rem;
+  line-height: 2.5rem;
+  padding-left: 0.5rem;
+}
+
+.related-lookup + strong > a {
+  display: inline-block;
+  line-height: normal;
+}
+
 
 /* ================================
  * User Tools (e.g., view site,
