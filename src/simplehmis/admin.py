@@ -406,6 +406,13 @@ from django.contrib.auth.admin import Group, GroupAdmin, User, UserAdmin
 
 class HMISUserAdmin (UserAdmin):
     actions = ['send_onboarding_messages']
+    add_form = forms.PasswordlessUserCreationForm
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username',),
+        }),
+    )
 
     def send_onboarding_messages(self, request, queryset):
         for user in queryset:

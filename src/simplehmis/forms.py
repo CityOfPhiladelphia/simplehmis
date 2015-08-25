@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.forms.models import ModelForm, BaseInlineFormSet
 from django.forms import ValidationError
+from django.contrib.auth import get_user_model
 
 
 class RequiredInlineFormSet(BaseInlineFormSet):
@@ -29,3 +30,14 @@ class HouseholdMemberFormset (RequiredInlineFormSet):
                 hoh_count += 1
         if hoh_count != 1:
             raise ValidationError(_('There should be exactly one head of household.'))
+
+
+class PasswordlessUserCreationForm(ModelForm):
+    """
+    A form that creates a user, with no privileges and no password, from
+    the given username.
+    """
+
+    class Meta:
+        model = get_user_model()
+        fields = ("username",)
