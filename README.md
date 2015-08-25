@@ -41,6 +41,8 @@ For testing convenience, you can load some test data if you just want to get sta
 Deploying to an EC2 instance, or a droplet, etc.
 ------------------------------------------------
 
+The address *simplehmis.phila.gov* is currently hard-coded into the nginx.conf file. You will have to update this with your domain (or simply comment out the `server_name` directive). Also, the nginx conf redirects all traffic to HTTPS. This application should be served over HTTPS, but if you want to serve it over HTTP, simply comment out the first `server` block and add `listen 80` to the top of the second.
+
 Run the `init-machine.sh` script and your environment should get configuerd correctly.
 
 In order to send login emails, set up Amazon SES (or another SMTP email service), and add the following variables to your environment:
