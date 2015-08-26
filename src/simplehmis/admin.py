@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import fields
 from django.forms import widgets
 from django.utils.translation import ugettext as _
+from reversion import VersionAdmin
 from . import forms
 from . import models
 from . import sites
@@ -54,7 +55,7 @@ class IsEnrolledListFilter(admin.SimpleListFilter):
         return queryset.filter_by_enrollment(self.value())
 
 
-class HouseholdAdmin (admin.ModelAdmin):
+class HouseholdAdmin (VersionAdmin):
     inlines = [HouseholdMemberInline]
     raw_id_fields = ['project']
 
@@ -99,7 +100,7 @@ class HouseholdAdmin (admin.ModelAdmin):
         return super().lookup_allowed(lookup, value)
 
 
-class ClientAdmin (admin.ModelAdmin):
+class ClientAdmin (VersionAdmin):
     actions_on_top = actions_on_bottom = False
     list_display = ['name_display', 'ssn_display', 'dob']
     search_fields = ['first', 'middle', 'last', 'ssn']
@@ -328,7 +329,7 @@ class ClientAnnualAssessmentInline (admin.StackedInline):
       + INCOME_FIELDSETS
 
 
-class HouseholdMemberAdmin (admin.ModelAdmin):
+class HouseholdMemberAdmin (VersionAdmin):
     raw_id_fields = ('client',)
     exclude = ('household', 'present_at_enrollment')
     readonly_fields = ('hoh_relationship',)
@@ -374,7 +375,7 @@ class HouseholdMemberAdmin (admin.ModelAdmin):
         return super().lookup_allowed(lookup, value)
 
 
-class ProjectAdmin (admin.ModelAdmin):
+class ProjectAdmin (VersionAdmin):
     search_fields = ['name']
     filter_horizontal = ['admins']
     formfield_overrides = {

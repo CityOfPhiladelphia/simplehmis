@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     # 'floppyforms',
     'debug_toolbar',
     'nopassword',
+    'reversion',
 )
 
 MIDDLEWARE_CLASSES = (

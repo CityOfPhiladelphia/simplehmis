@@ -65,6 +65,10 @@ table tbody tr th {
   content: "\f017"; /* fa-time */
 }
 
+.recoverlink.button.icon:after {
+  content: "\f0d0"; /* fa-magic */
+}
+
 .related-lookup {
   position: relative;
   padding: 0;
@@ -131,6 +135,7 @@ table tbody tr th {
 }
 .object-tools li {
 	float: left;
+  margin-left: 0.625rem;
 }
 
 
