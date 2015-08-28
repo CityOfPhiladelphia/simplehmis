@@ -1541,6 +1541,22 @@
     username: project-admin1
   model: auth.user
 - fields:
+    date_joined: '2015-07-15 23:41:11+00:00'
+    email: dual.admin@example.com
+    first_name: ''
+    groups:
+    - [project-staff]
+    - [intake-staff]
+    is_active: true
+    is_staff: true
+    is_superuser: false
+    last_login: '2015-07-21 21:06:05.479550+00:00'
+    last_name: ''
+    password: pbkdf2_sha256$20000$jag7Y2uM2tX9$shMZvoWJySxNamKilKUpwp7bQ2gXR+HB3+HqNfGBGSo=
+    user_permissions: []
+    username: dual-admin
+  model: auth.user
+- fields:
     date_joined: '2015-07-15 23:41:34+00:00'
     email: intake.admin@example.com
     first_name: ''
@@ -1573,6 +1589,7 @@
 - fields:
     admins:
     - [project-admin1]
+    - [dual-admin]
     created_at: '2015-07-14 18:28:28.333841+00:00'
     name: My Little Project
     updated_at: '2015-07-15 23:48:23.885896+00:00'

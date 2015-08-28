@@ -56,6 +56,38 @@ class AdminTests (TestCase):
             "Some projects in {} not in {}".format(
                 [household.project for household in qs], projects)
 
+    def test_intake_staff_see_all_households(self):
+        request = RequestFactory().get('/simplehmis/households')
+        admin_view = admin.HouseholdAdmin(models.Household, admin.site)
+        # Set the intake admin as the request user.
+        intake_admin = User.objects.get(username='intake-admin')
+        request.user = intake_admin
+        # Make sure the intake_admin only sees households
+        # in their own their own projects.
+        qs_households = set(admin_view.get_queryset(request))
+        all_households = set(models.Household.objects.all())
+        assert qs_households == all_households, \
+            "Some households are missing from the queryset: {}".format(
+                all_households - qs_households)
+
+    def test_dual_staff_see_all_households(self):
+        request = RequestFactory().get('/simplehmis/households')
+        admin_view = admin.HouseholdAdmin(models.Household, admin.site)
+        # Set the dual admin as the request user.
+        dual_admin = User.objects.get(username='dual-admin')
+        request.user = dual_admin
+        # Make sure the dual_admin only sees households
+        # in their own their own projects.
+        qs_households = set(admin_view.get_queryset(request))
+        all_households = set(models.Household.objects.all())
+        assert qs_households == all_households, \
+            "Some households are missing from the queryset: {}".format(
+                all_households - qs_households)
+
+
+class ClientAssessmentInitializationTests (TestCase):
+    pass
+
 
 class EnrollmentFilterTests (TestCase):
     fixtures = ['staff-groups.yaml', 'hmis-test-data.yaml']

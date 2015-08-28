@@ -76,7 +76,7 @@ class HouseholdAdmin (VersionAdmin):
         qs = super().get_queryset(request)
 
         user = models.HMISUser(request.user)
-        if not user.is_superuser and user.is_project_staff():
+        if not user.can_refer_household():
             qs = qs.filter(project__in=user.projects.all())
 
         return qs\
@@ -89,7 +89,7 @@ class HouseholdAdmin (VersionAdmin):
     def get_list_filter(self, request):
         list_filter = [IsEnrolledListFilter]
         user = models.HMISUser(request.user)
-        if user.is_superuser or not user.is_project_staff():
+        if user.can_refer_household():
             list_filter.append('project')
         return list_filter
 
@@ -351,7 +351,7 @@ class HouseholdMemberAdmin (VersionAdmin):
         qs = super().get_queryset(request)
 
         user = models.HMISUser(request.user)
-        if not user.is_superuser and user.is_project_staff():
+        if not user.can_refer_household():
             qs = qs.filter(household__project__in=user.projects.all())
 
         return qs\
@@ -364,7 +364,7 @@ class HouseholdMemberAdmin (VersionAdmin):
     def get_list_filter(self, request):
         list_filter = [IsEnrolledListFilter]
         user = models.HMISUser(request.user)
-        if user.is_superuser or not user.is_project_staff():
+        if user.can_refer_household():
             list_filter.append('household__project')
         return list_filter
 
