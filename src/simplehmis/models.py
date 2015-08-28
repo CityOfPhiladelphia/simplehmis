@@ -19,30 +19,44 @@ def hud_code(value, items):
         # Mapping sheet strings to equivalent consts strings
         'Permanent housing for formerly homeless persons': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
         'Client Refused': 'Client refused',
-        'Staying or living with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
-        'Data Not Collected': 'Data not collected',
+        'Refused': 'Client refused',
+        'Client doesn\'t know': 'Client doesn’t know',
         'Client Doesn’t Know': 'Client doesn’t know',
+        'Client Doesn\'t Know': 'Client doesn’t know',
+        'YES': 'Yes',
+        'NO': 'No',
+
+        # Destinations
+        'Staying or living with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
+        'Staying or living  with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
+        'Staying or living  with friends, permanent tenure': 'Staying or living with friends, permanent tenure',
         'Staying or living in a family member\'s room, apartment or house': 'Staying or living in a family member’s room, apartment or house',
-        'Jail, prison, or juvenile facility': 'Jail, prison or juvenile detention facility',
         'Staying or living in a friend\'s room, apartment or house': 'Staying or living in a friend’s room, apartment or house',
+        'Staying or living with family, temporary tenure': 'Staying or living with family, temporary tenure (e.g., room, apartment or house)',
+        'Place not meant for human habitation': 'Place not meant for habitation (e.g., a vehicle, an abandoned building, bus/train/subway station/airport or anywhere outside)',
+        'On the street or other place not meant for human habitation': 'Place not meant for habitation (e.g., a vehicle, an abandoned building, bus/train/subway station/airport or anywhere outside)',
+        'Rental by client': 'Rental by client, no ongoing housing subsidy',
+        'Permanent Housing': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
+
+        'Data Not Collected': 'Data not collected',
+        'Jail, prison, or juvenile facility': 'Jail, prison or juvenile detention facility',
         '4': '4 or more',
         'Non-Hispanic / Non-Latino': 'Non-Hispanic/Non-Latino',
-        'NO': 'No',
-        'On the street or other place not meant for human habitation': 'Place not meant for habitation (e.g., a vehicle, an abandoned building, bus/train/subway station/airport or anywhere outside)',
+        'Non- Hispanic/Non-Latino': 'Non-Hispanic/Non-Latino',
         'Hispanic / Latino': 'Hispanic/Latino',
-        'YES': 'Yes',
-        'Client doesn\'t know': 'Client doesn’t know',
+        'Hispanic': 'Hispanic/Latino',
+        'Black': 'Black or African American',
         'Rental by client, no ongoing housing subsidy (Private Market)': 'Rental by client, no ongoing housing subsidy',
     }
 
     for number, string in items:
-        if string == value:
+        if string.lower() == value.lower():
             return number
 
         # As a special case, interpret the empty string as
         # "Data not collected" when "Data not collected" is
         # available as an option.
-        if value == '' and string == 'Data not collected':
+        if value.lower() == '' and string.lower() == 'data not collected':
             return number
 
         if equivalents.get(value) == string:
@@ -55,7 +69,10 @@ def parse_date(d):
     """
     Parse a mm/dd/yyyy date.
     """
-    return datetime.strptime(d, '%m/%d/%Y').date() if d else None
+    try:
+        return datetime.strptime(d, '%m/%d/%Y').date() if d else None
+    except ValueError:
+        raise ValueError('Could not parse the date {!r}'.format(d))
 
 
 def parse_ssn(ssn):
@@ -311,7 +328,8 @@ class ClientManager (models.Manager):
         entry_date = parse_date(row['Program Start Date'])
         exit_date = parse_date(row['Program End Date'])
 
-        if 'never' in row['Exit Destination'].lower():
+        if 'never' in row['Exit Destination'].lower() or \
+           'no show' in row['Exit Destination'].lower():
             # Treat clients with a destination including "never" as never
             # having shown up (there's no valid HUD destination code with
             # "never" in it).
