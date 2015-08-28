@@ -13,7 +13,7 @@ class HouseholdMemberInline (admin.TabularInline):
     model = models.HouseholdMember
     formset = forms.HouseholdMemberFormset
     raw_id_fields = ['client']
-    readonly_fields = ['is_enrolled', 'link_to_assessments']
+    readonly_fields = ['link_to_assessments']
     verbose_name = _('Household member')
     verbose_name_plural = _('Household members')
 
@@ -27,7 +27,9 @@ class HouseholdMemberInline (admin.TabularInline):
             client_url = reverse('admin:simplehmis_householdmember_change', args=(obj.id,))
             return (
                 '<a id="client_{}_assessments_link" href="{}" onclick="showAdminPopup(this, \'nosuchfield\');" target="_blank">'.format(obj.id, client_url) +
-                'Edit client assessments</a>'
+                'Edit client assessments</a>' +
+                '<br>Entry: <em>' + ('Complete' if obj.has_entry_assessment() else 'Not Complete') + '</em>' +
+                '<br>Exit: <em>' + ('Complete' if obj.has_exit_assessment() else 'Not Complete') + '</em>'
             )
     link_to_assessments.allow_tags = True
     link_to_assessments.short_description = _('Assessments')
@@ -37,6 +39,8 @@ class HouseholdMemberInline (admin.TabularInline):
         user = models.HMISUser(request.user)
         if not user.can_enroll_household():
             fields.remove('present_at_enrollment')
+            fields.remove('entry_date')
+            fields.remove('exit_date')
         return fields
 
 

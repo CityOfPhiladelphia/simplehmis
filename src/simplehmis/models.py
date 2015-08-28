@@ -569,16 +569,16 @@ class HouseholdMemberQuerySet (models.QuerySet):
         if status == '-1':
             qs = self\
                 .filter(present_at_enrollment=True)\
-                .filter(entry_assessment__isnull=True)
+                .filter(entry_date__isnull=True)
         elif status == '0':
             qs = self\
                 .filter(present_at_enrollment=True)\
-                .filter(exit_assessment__isnull=True)\
-                .filter(entry_assessment__isnull=False)
+                .filter(exit_date__isnull=True)\
+                .filter(entry_date__isnull=False)
         elif status == '1':
             qs = self\
                 .filter(present_at_enrollment=True)\
-                .filter(exit_assessment__isnull=False)
+                .filter(exit_date__isnull=False)
         else:
             raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
         return qs
@@ -611,7 +611,10 @@ class HouseholdMember (TimestampedModel):
     # household members.
 
     hoh_relationship = models.PositiveIntegerField(_('Relationship to head of household'), choices=consts.HUD_CLIENT_HOH_RELATIONSHIP)
-    present_at_enrollment = models.BooleanField(_('Present at enrollment'), default=True)
+    present_at_enrollment = models.BooleanField(_('Present?'), default=True)
+
+    entry_date = models.DateField(null=True, blank=True)
+    exit_date = models.DateField(null=True, blank=True)
 
     objects = HouseholdMemberQuerySet.as_manager()
 
@@ -656,6 +659,20 @@ class HouseholdMember (TimestampedModel):
             return False
         return self.has_entered() and not self.has_exited()
     is_enrolled.boolean = True
+
+    def has_entry_assessment(self):
+        try:
+            self.entry_assessment
+            return True
+        except ClientEntryAssessment.DoesNotExist:
+            return False
+
+    def has_exit_assessment(self):
+        try:
+            self.exit_assessment
+            return True
+        except ClientExitAssessment.DoesNotExist:
+            return False
 
 
 class HealthInsuranceFields (models.Model):
