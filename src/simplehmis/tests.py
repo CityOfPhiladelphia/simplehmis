@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class HMISUserTests (TestCase):
-    fixtures = ['staff-groups.yaml', 'hmis-test-data.yaml']
+    fixtures = ['staff-groups', 'hmis-test-data']
 
     def test_group_names(self):
         intake_admin = models.HMISUser(User.objects.get(username='intake-admin'))
@@ -26,7 +26,7 @@ class HMISUserTests (TestCase):
 
 
 class AdminTests (TestCase):
-    fixtures = ['staff-groups.yaml', 'hmis-test-data.yaml']
+    fixtures = ['staff-groups', 'hmis-test-data']
 
     def test_project_staff_only_see_members_in_their_programs(self):
         request = RequestFactory().get('/simplehmis/householdmembers')
@@ -90,7 +90,7 @@ class ClientAssessmentInitializationTests (TestCase):
 
 
 class EnrollmentFilterTests (TestCase):
-    fixtures = ['staff-groups.yaml', 'hmis-test-data.yaml']
+    fixtures = ['staff-groups', 'hmis-test-data']
 
     def test_householdmember_pending_status(self):
         pending_members = models.HouseholdMember.objects.filter_by_enrollment('-1')

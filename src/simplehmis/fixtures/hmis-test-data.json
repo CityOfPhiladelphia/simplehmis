@@ -1,0 +1,2876 @@
+[
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_permission",
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_permission",
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_permission",
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_group",
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_group",
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_group",
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_user",
+    "name": "Can add user",
+    "content_type": [
+      "auth",
+      "user"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_user",
+    "name": "Can change user",
+    "content_type": [
+      "auth",
+      "user"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_user",
+    "name": "Can delete user",
+    "content_type": [
+      "auth",
+      "user"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_contenttype",
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_contenttype",
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_contenttype",
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_project",
+    "name": "Can add project",
+    "content_type": [
+      "simplehmis",
+      "project"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_project",
+    "name": "Can change project",
+    "content_type": [
+      "simplehmis",
+      "project"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_project",
+    "name": "Can delete project",
+    "content_type": [
+      "simplehmis",
+      "project"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_clientrace",
+    "name": "Can add client race",
+    "content_type": [
+      "simplehmis",
+      "clientrace"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_clientrace",
+    "name": "Can change client race",
+    "content_type": [
+      "simplehmis",
+      "clientrace"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_clientrace",
+    "name": "Can delete client race",
+    "content_type": [
+      "simplehmis",
+      "clientrace"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_client",
+    "name": "Can add client",
+    "content_type": [
+      "simplehmis",
+      "client"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_client",
+    "name": "Can change client",
+    "content_type": [
+      "simplehmis",
+      "client"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_client",
+    "name": "Can delete client",
+    "content_type": [
+      "simplehmis",
+      "client"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_household",
+    "name": "Can add household referral",
+    "content_type": [
+      "simplehmis",
+      "household"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_household",
+    "name": "Can change household referral",
+    "content_type": [
+      "simplehmis",
+      "household"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_household",
+    "name": "Can delete household referral",
+    "content_type": [
+      "simplehmis",
+      "household"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "refer_household",
+    "name": "Can refer household to a project",
+    "content_type": [
+      "simplehmis",
+      "household"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "enroll_household",
+    "name": "Can enroll household in a project",
+    "content_type": [
+      "simplehmis",
+      "household"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_householdmember",
+    "name": "Can add household member",
+    "content_type": [
+      "simplehmis",
+      "householdmember"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_householdmember",
+    "name": "Can change household member",
+    "content_type": [
+      "simplehmis",
+      "householdmember"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_householdmember",
+    "name": "Can delete household member",
+    "content_type": [
+      "simplehmis",
+      "householdmember"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_cliententryassessment",
+    "name": "Can add client entry assessment",
+    "content_type": [
+      "simplehmis",
+      "cliententryassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_cliententryassessment",
+    "name": "Can change client entry assessment",
+    "content_type": [
+      "simplehmis",
+      "cliententryassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_cliententryassessment",
+    "name": "Can delete client entry assessment",
+    "content_type": [
+      "simplehmis",
+      "cliententryassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_clientannualassessment",
+    "name": "Can add client annual assessment",
+    "content_type": [
+      "simplehmis",
+      "clientannualassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_clientannualassessment",
+    "name": "Can change client annual assessment",
+    "content_type": [
+      "simplehmis",
+      "clientannualassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_clientannualassessment",
+    "name": "Can delete client annual assessment",
+    "content_type": [
+      "simplehmis",
+      "clientannualassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_clientexitassessment",
+    "name": "Can add client exit assessment",
+    "content_type": [
+      "simplehmis",
+      "clientexitassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_clientexitassessment",
+    "name": "Can change client exit assessment",
+    "content_type": [
+      "simplehmis",
+      "clientexitassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_clientexitassessment",
+    "name": "Can delete client exit assessment",
+    "content_type": [
+      "simplehmis",
+      "clientexitassessment"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_logentry",
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_logentry",
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_logentry",
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_session",
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_session",
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_session",
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_logincode",
+    "name": "Can add login code",
+    "content_type": [
+      "nopassword",
+      "logincode"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_logincode",
+    "name": "Can change login code",
+    "content_type": [
+      "nopassword",
+      "logincode"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_logincode",
+    "name": "Can delete login code",
+    "content_type": [
+      "nopassword",
+      "logincode"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_revision",
+    "name": "Can add revision",
+    "content_type": [
+      "reversion",
+      "revision"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_revision",
+    "name": "Can change revision",
+    "content_type": [
+      "reversion",
+      "revision"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_revision",
+    "name": "Can delete revision",
+    "content_type": [
+      "reversion",
+      "revision"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "add_version",
+    "name": "Can add version",
+    "content_type": [
+      "reversion",
+      "version"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "change_version",
+    "name": "Can change version",
+    "content_type": [
+      "reversion",
+      "version"
+    ]
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "codename": "delete_version",
+    "name": "Can delete version",
+    "content_type": [
+      "reversion",
+      "version"
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "fields": {
+    "permissions": [
+      [
+        "add_client",
+        "simplehmis",
+        "client"
+      ],
+      [
+        "change_client",
+        "simplehmis",
+        "client"
+      ],
+      [
+        "add_cliententryassessment",
+        "simplehmis",
+        "cliententryassessment"
+      ],
+      [
+        "change_cliententryassessment",
+        "simplehmis",
+        "cliententryassessment"
+      ],
+      [
+        "add_household",
+        "simplehmis",
+        "household"
+      ],
+      [
+        "change_household",
+        "simplehmis",
+        "household"
+      ],
+      [
+        "refer_household",
+        "simplehmis",
+        "household"
+      ],
+      [
+        "add_householdmember",
+        "simplehmis",
+        "householdmember"
+      ],
+      [
+        "change_householdmember",
+        "simplehmis",
+        "householdmember"
+      ],
+      [
+        "change_project",
+        "simplehmis",
+        "project"
+      ]
+    ],
+    "name": "intake-staff"
+  }
+},
+{
+  "model": "auth.group",
+  "fields": {
+    "permissions": [
+      [
+        "change_client",
+        "simplehmis",
+        "client"
+      ],
+      [
+        "add_clientannualassessment",
+        "simplehmis",
+        "clientannualassessment"
+      ],
+      [
+        "change_clientannualassessment",
+        "simplehmis",
+        "clientannualassessment"
+      ],
+      [
+        "add_cliententryassessment",
+        "simplehmis",
+        "cliententryassessment"
+      ],
+      [
+        "change_cliententryassessment",
+        "simplehmis",
+        "cliententryassessment"
+      ],
+      [
+        "add_clientexitassessment",
+        "simplehmis",
+        "clientexitassessment"
+      ],
+      [
+        "change_clientexitassessment",
+        "simplehmis",
+        "clientexitassessment"
+      ],
+      [
+        "change_household",
+        "simplehmis",
+        "household"
+      ],
+      [
+        "enroll_household",
+        "simplehmis",
+        "household"
+      ],
+      [
+        "add_householdmember",
+        "simplehmis",
+        "householdmember"
+      ],
+      [
+        "change_householdmember",
+        "simplehmis",
+        "householdmember"
+      ],
+      [
+        "change_project",
+        "simplehmis",
+        "project"
+      ]
+    ],
+    "name": "project-staff"
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "email": "admin@example.com",
+    "is_staff": true,
+    "user_permissions": [],
+    "date_joined": "2015-07-14T18:28:51.787Z",
+    "last_name": "",
+    "is_superuser": true,
+    "password": "pbkdf2_sha256$20000$oAwVKukSbkN1$kGPRUgyg7mIX+qPpuGmiy6gciH3wedrl4EFm5pxlhyU=",
+    "last_login": "2015-08-15T18:03:22.525Z",
+    "username": "admin",
+    "is_active": true,
+    "first_name": "",
+    "groups": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "email": "project.admin.1@example.com",
+    "is_staff": true,
+    "user_permissions": [],
+    "date_joined": "2015-07-15T23:41:11Z",
+    "last_name": "",
+    "is_superuser": false,
+    "password": "pbkdf2_sha256$20000$jag7Y2uM2tX9$shMZvoWJySxNamKilKUpwp7bQ2gXR+HB3+HqNfGBGSo=",
+    "last_login": "2015-07-21T21:06:05.479Z",
+    "username": "project-admin1",
+    "is_active": true,
+    "first_name": "",
+    "groups": [
+      [
+        "project-staff"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "email": "dual.admin@example.com",
+    "is_staff": true,
+    "user_permissions": [],
+    "date_joined": "2015-07-15T23:41:11Z",
+    "last_name": "",
+    "is_superuser": false,
+    "password": "pbkdf2_sha256$20000$jag7Y2uM2tX9$shMZvoWJySxNamKilKUpwp7bQ2gXR+HB3+HqNfGBGSo=",
+    "last_login": "2015-07-21T21:06:05.479Z",
+    "username": "dual-admin",
+    "is_active": true,
+    "first_name": "",
+    "groups": [
+      [
+        "intake-staff"
+      ],
+      [
+        "project-staff"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "email": "intake.admin@example.com",
+    "is_staff": true,
+    "user_permissions": [],
+    "date_joined": "2015-07-15T23:41:34Z",
+    "last_name": "",
+    "is_superuser": false,
+    "password": "pbkdf2_sha256$20000$dupDsLmIcPVQ$ehNG63K2t5wh3+TmVpGmHFRlyRH9ce8PknHTsCjkFRA=",
+    "last_login": "2015-07-21T19:06:31.879Z",
+    "username": "intake-admin",
+    "is_active": true,
+    "first_name": "",
+    "groups": [
+      [
+        "intake-staff"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "email": "project.admin.2@example.com",
+    "is_staff": true,
+    "user_permissions": [],
+    "date_joined": "2015-07-15T23:47:23Z",
+    "last_name": "",
+    "is_superuser": false,
+    "password": "pbkdf2_sha256$20000$3QfNVkGTwuEo$aTHMY/wy3/Q1qmPdRJ9z3pFyEU+zzsoXW2ou+uLp70s=",
+    "last_login": "2015-07-21T21:06:24.495Z",
+    "username": "project-admin2",
+    "is_active": true,
+    "first_name": "",
+    "groups": [
+      [
+        "project-staff"
+      ]
+    ]
+  }
+},
+{
+  "model": "simplehmis.project",
+  "pk": 1,
+  "fields": {
+    "admins": [
+      [
+        "project-admin1"
+      ],
+      [
+        "dual-admin"
+      ]
+    ],
+    "updated_at": "2015-07-15T23:48:23.885Z",
+    "name": "My Little Project",
+    "created_at": "2015-07-14T18:28:28.333Z"
+  }
+},
+{
+  "model": "simplehmis.project",
+  "pk": 2,
+  "fields": {
+    "admins": [
+      [
+        "project-admin2"
+      ]
+    ],
+    "updated_at": "2015-07-15T23:48:30.232Z",
+    "name": "The Big Bad Project",
+    "created_at": "2015-07-14T18:28:28.333Z"
+  }
+},
+{
+  "model": "simplehmis.project",
+  "pk": 3,
+  "fields": {
+    "admins": [
+      [
+        "project-admin2"
+      ]
+    ],
+    "updated_at": "2015-07-15T23:48:35.350Z",
+    "name": "Teenage Mutant Ninja Project",
+    "created_at": "2015-07-14T18:28:28.333Z"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 1,
+  "fields": {
+    "label": "American Indian or Alaska Native"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 2,
+  "fields": {
+    "label": "Asian"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 3,
+  "fields": {
+    "label": "Black or African American"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 4,
+  "fields": {
+    "label": "Native Hawaiian or Other Pacific Islander"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 5,
+  "fields": {
+    "label": "White"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 8,
+  "fields": {
+    "label": "Client doesn\u2019t know"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 9,
+  "fields": {
+    "label": "Client refused"
+  }
+},
+{
+  "model": "simplehmis.clientrace",
+  "pk": 99,
+  "fields": {
+    "label": "Data not collected"
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 1,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:03:00.286Z",
+    "veteran_status": null,
+    "first": "Vicenta",
+    "gender": null,
+    "suffix": "",
+    "ssn": "123456789",
+    "updated_at": "2015-07-21T19:03:00.286Z",
+    "middle": "",
+    "last": "Torgeson",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 2,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:03:18.551Z",
+    "veteran_status": null,
+    "first": "Long",
+    "gender": null,
+    "suffix": "",
+    "ssn": "234567891",
+    "updated_at": "2015-07-21T19:03:18.551Z",
+    "middle": "",
+    "last": "Leeson",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 3,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:03:40.997Z",
+    "veteran_status": null,
+    "first": "Marisol",
+    "gender": null,
+    "suffix": "",
+    "ssn": "345678912",
+    "updated_at": "2015-07-21T19:03:40.997Z",
+    "middle": "",
+    "last": "Leboeuf",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 4,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:04:06.992Z",
+    "veteran_status": null,
+    "first": "Rashad",
+    "gender": null,
+    "suffix": "",
+    "ssn": "456789123",
+    "updated_at": "2015-07-21T19:04:12.687Z",
+    "middle": "",
+    "last": "Halsey",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 5,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:04:40.006Z",
+    "veteran_status": null,
+    "first": "Eunice",
+    "gender": null,
+    "suffix": "",
+    "ssn": "567891234",
+    "updated_at": "2015-07-21T19:04:40.006Z",
+    "middle": "",
+    "last": "Lott",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 6,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:04:59.295Z",
+    "veteran_status": null,
+    "first": "Franklin",
+    "gender": null,
+    "suffix": "",
+    "ssn": "678912345",
+    "updated_at": "2015-07-21T19:04:59.295Z",
+    "middle": "",
+    "last": "Forth",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 7,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:05:13.744Z",
+    "veteran_status": null,
+    "first": "Magda",
+    "gender": null,
+    "suffix": "",
+    "ssn": "789123456",
+    "updated_at": "2015-07-21T19:05:16.765Z",
+    "middle": "",
+    "last": "Whichard",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 8,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:05:30.045Z",
+    "veteran_status": null,
+    "first": "Norine",
+    "gender": null,
+    "suffix": "",
+    "ssn": "891234567",
+    "updated_at": "2015-07-21T19:05:30.045Z",
+    "middle": "",
+    "last": "Chevalier",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 9,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:05:49.186Z",
+    "veteran_status": null,
+    "first": "Orlando",
+    "gender": null,
+    "suffix": "",
+    "ssn": "912346578",
+    "updated_at": "2015-07-21T19:05:49.186Z",
+    "middle": "",
+    "last": "Jahnke",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 10,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-07-21T19:06:06.355Z",
+    "veteran_status": null,
+    "first": "Dorris",
+    "gender": null,
+    "suffix": "",
+    "ssn": "987654321",
+    "updated_at": "2015-07-21T19:06:06.355Z",
+    "middle": "",
+    "last": "Purgason",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 11,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.134Z",
+    "veteran_status": null,
+    "first": "Nadia",
+    "gender": null,
+    "suffix": "",
+    "ssn": "986678931",
+    "updated_at": "2015-08-15T18:19:49.840Z",
+    "middle": "",
+    "last": "Stewart",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 12,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.137Z",
+    "veteran_status": null,
+    "first": "Broderick",
+    "gender": null,
+    "suffix": "",
+    "ssn": "577880297",
+    "updated_at": "2015-08-15T18:19:49.842Z",
+    "middle": "",
+    "last": "Daoust",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 13,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.138Z",
+    "veteran_status": null,
+    "first": "Yee",
+    "gender": null,
+    "suffix": "",
+    "ssn": "518665341",
+    "updated_at": "2015-08-15T18:19:49.845Z",
+    "middle": "",
+    "last": "Durio",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 14,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.139Z",
+    "veteran_status": null,
+    "first": "Nella",
+    "gender": null,
+    "suffix": "",
+    "ssn": "779232436",
+    "updated_at": "2015-08-15T18:19:49.846Z",
+    "middle": "",
+    "last": "Orzechowski",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 15,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.140Z",
+    "veteran_status": null,
+    "first": "Kay",
+    "gender": null,
+    "suffix": "",
+    "ssn": "590815847",
+    "updated_at": "2015-08-15T18:19:49.847Z",
+    "middle": "",
+    "last": "Asbell",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 16,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.141Z",
+    "veteran_status": null,
+    "first": "Erich",
+    "gender": null,
+    "suffix": "",
+    "ssn": "333281579",
+    "updated_at": "2015-08-15T18:19:49.848Z",
+    "middle": "",
+    "last": "Meadows",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 17,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.142Z",
+    "veteran_status": null,
+    "first": "Marshall",
+    "gender": null,
+    "suffix": "",
+    "ssn": "331325794",
+    "updated_at": "2015-08-15T18:19:49.849Z",
+    "middle": "",
+    "last": "Mauer",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 18,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.143Z",
+    "veteran_status": null,
+    "first": "Clarisa",
+    "gender": null,
+    "suffix": "",
+    "ssn": "786443103",
+    "updated_at": "2015-08-15T18:19:49.850Z",
+    "middle": "",
+    "last": "Armistead",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 19,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.144Z",
+    "veteran_status": null,
+    "first": "Ricki",
+    "gender": null,
+    "suffix": "",
+    "ssn": "402403314",
+    "updated_at": "2015-08-15T18:19:49.851Z",
+    "middle": "",
+    "last": "Cerrone",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 20,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.145Z",
+    "veteran_status": null,
+    "first": "Donella",
+    "gender": null,
+    "suffix": "",
+    "ssn": "749795605",
+    "updated_at": "2015-08-15T18:19:49.852Z",
+    "middle": "",
+    "last": "Hintze",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 21,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.146Z",
+    "veteran_status": null,
+    "first": "Denny",
+    "gender": null,
+    "suffix": "",
+    "ssn": "942209336",
+    "updated_at": "2015-08-15T18:19:49.853Z",
+    "middle": "",
+    "last": "Brazier",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 22,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.146Z",
+    "veteran_status": null,
+    "first": "Alva",
+    "gender": null,
+    "suffix": "",
+    "ssn": "806886422",
+    "updated_at": "2015-08-15T18:19:49.853Z",
+    "middle": "",
+    "last": "Rolon",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 23,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.147Z",
+    "veteran_status": null,
+    "first": "Athena",
+    "gender": null,
+    "suffix": "",
+    "ssn": "864758078",
+    "updated_at": "2015-08-15T18:19:49.854Z",
+    "middle": "",
+    "last": "Armstong",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 24,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.147Z",
+    "veteran_status": null,
+    "first": "Valencia",
+    "gender": null,
+    "suffix": "",
+    "ssn": "081148309",
+    "updated_at": "2015-08-15T18:19:49.855Z",
+    "middle": "",
+    "last": "Dusenberry",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 25,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.148Z",
+    "veteran_status": null,
+    "first": "Jewell",
+    "gender": null,
+    "suffix": "",
+    "ssn": "524382510",
+    "updated_at": "2015-08-15T18:19:49.856Z",
+    "middle": "",
+    "last": "Aune",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 26,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.148Z",
+    "veteran_status": null,
+    "first": "Vince",
+    "gender": null,
+    "suffix": "",
+    "ssn": "178340008",
+    "updated_at": "2015-08-15T18:19:49.857Z",
+    "middle": "",
+    "last": "Brendle",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 27,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.148Z",
+    "veteran_status": null,
+    "first": "Antione",
+    "gender": null,
+    "suffix": "",
+    "ssn": "028451273",
+    "updated_at": "2015-08-15T18:19:49.858Z",
+    "middle": "",
+    "last": "Parkman",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 28,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.149Z",
+    "veteran_status": null,
+    "first": "Anneliese",
+    "gender": null,
+    "suffix": "",
+    "ssn": "320683068",
+    "updated_at": "2015-08-15T18:19:49.859Z",
+    "middle": "",
+    "last": "Boshart",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 29,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.149Z",
+    "veteran_status": null,
+    "first": "Zachary",
+    "gender": null,
+    "suffix": "",
+    "ssn": "116561886",
+    "updated_at": "2015-08-15T18:19:49.859Z",
+    "middle": "",
+    "last": "Asberry",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 30,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.150Z",
+    "veteran_status": null,
+    "first": "Elane",
+    "gender": null,
+    "suffix": "",
+    "ssn": "935920969",
+    "updated_at": "2015-08-15T18:19:49.860Z",
+    "middle": "",
+    "last": "Cleek",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 31,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.150Z",
+    "veteran_status": null,
+    "first": "Clementine",
+    "gender": null,
+    "suffix": "",
+    "ssn": "261572885",
+    "updated_at": "2015-08-15T18:19:49.861Z",
+    "middle": "",
+    "last": "Cork",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 32,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.151Z",
+    "veteran_status": null,
+    "first": "Adella",
+    "gender": null,
+    "suffix": "",
+    "ssn": "574472259",
+    "updated_at": "2015-08-15T18:19:49.862Z",
+    "middle": "",
+    "last": "Mckeown",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 33,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.151Z",
+    "veteran_status": null,
+    "first": "Santa",
+    "gender": null,
+    "suffix": "",
+    "ssn": "143175218",
+    "updated_at": "2015-08-15T18:19:49.863Z",
+    "middle": "",
+    "last": "Dekker",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 34,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.151Z",
+    "veteran_status": null,
+    "first": "Perry",
+    "gender": null,
+    "suffix": "",
+    "ssn": "221053091",
+    "updated_at": "2015-08-15T18:19:49.863Z",
+    "middle": "",
+    "last": "Alldredge",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 35,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.152Z",
+    "veteran_status": null,
+    "first": "Rossie",
+    "gender": null,
+    "suffix": "",
+    "ssn": "784797540",
+    "updated_at": "2015-08-15T18:19:49.864Z",
+    "middle": "",
+    "last": "Kerber",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 36,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.152Z",
+    "veteran_status": null,
+    "first": "Michal",
+    "gender": null,
+    "suffix": "",
+    "ssn": "662527046",
+    "updated_at": "2015-08-15T18:19:49.865Z",
+    "middle": "",
+    "last": "Ribble",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 37,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.152Z",
+    "veteran_status": null,
+    "first": "Sharika",
+    "gender": null,
+    "suffix": "",
+    "ssn": "721054451",
+    "updated_at": "2015-08-15T18:19:49.865Z",
+    "middle": "",
+    "last": "Funnell",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 38,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.153Z",
+    "veteran_status": null,
+    "first": "Ellan",
+    "gender": null,
+    "suffix": "",
+    "ssn": "766042763",
+    "updated_at": "2015-08-15T18:19:49.866Z",
+    "middle": "",
+    "last": "Bahe",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 39,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.153Z",
+    "veteran_status": null,
+    "first": "Modesto",
+    "gender": null,
+    "suffix": "",
+    "ssn": "960233253",
+    "updated_at": "2015-08-15T18:19:49.867Z",
+    "middle": "",
+    "last": "Melecio",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 40,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.154Z",
+    "veteran_status": null,
+    "first": "Rodger",
+    "gender": null,
+    "suffix": "",
+    "ssn": "643516911",
+    "updated_at": "2015-08-15T18:19:49.868Z",
+    "middle": "",
+    "last": "Goates",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 41,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.154Z",
+    "veteran_status": null,
+    "first": "Cameron",
+    "gender": null,
+    "suffix": "",
+    "ssn": "015466800",
+    "updated_at": "2015-08-15T18:19:49.868Z",
+    "middle": "",
+    "last": "Delorey",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 42,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.155Z",
+    "veteran_status": null,
+    "first": "Dorine",
+    "gender": null,
+    "suffix": "",
+    "ssn": "193374430",
+    "updated_at": "2015-08-15T18:19:49.869Z",
+    "middle": "",
+    "last": "Ligon",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 43,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.155Z",
+    "veteran_status": null,
+    "first": "Yoshiko",
+    "gender": null,
+    "suffix": "",
+    "ssn": "486868292",
+    "updated_at": "2015-08-15T18:19:49.870Z",
+    "middle": "",
+    "last": "Rolland",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 44,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.156Z",
+    "veteran_status": null,
+    "first": "Korey",
+    "gender": null,
+    "suffix": "",
+    "ssn": "720400861",
+    "updated_at": "2015-08-15T18:19:49.870Z",
+    "middle": "",
+    "last": "Pritts",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 45,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.156Z",
+    "veteran_status": null,
+    "first": "Dominga",
+    "gender": null,
+    "suffix": "",
+    "ssn": "584737060",
+    "updated_at": "2015-08-15T18:19:49.871Z",
+    "middle": "",
+    "last": "Conkling",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 46,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.157Z",
+    "veteran_status": null,
+    "first": "Clemente",
+    "gender": null,
+    "suffix": "",
+    "ssn": "397043740",
+    "updated_at": "2015-08-15T18:19:49.871Z",
+    "middle": "",
+    "last": "Sainz",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 47,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.157Z",
+    "veteran_status": null,
+    "first": "Nu",
+    "gender": null,
+    "suffix": "",
+    "ssn": "362639987",
+    "updated_at": "2015-08-15T18:19:49.872Z",
+    "middle": "",
+    "last": "Erdmann",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 48,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.157Z",
+    "veteran_status": null,
+    "first": "Cheryll",
+    "gender": null,
+    "suffix": "",
+    "ssn": "054624244",
+    "updated_at": "2015-08-15T18:19:49.872Z",
+    "middle": "",
+    "last": "Sharpless",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 49,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.158Z",
+    "veteran_status": null,
+    "first": "Jarod",
+    "gender": null,
+    "suffix": "",
+    "ssn": "084761453",
+    "updated_at": "2015-08-15T18:19:49.873Z",
+    "middle": "",
+    "last": "Wininger",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 50,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.158Z",
+    "veteran_status": null,
+    "first": "Dannette",
+    "gender": null,
+    "suffix": "",
+    "ssn": "029949089",
+    "updated_at": "2015-08-15T18:19:49.873Z",
+    "middle": "",
+    "last": "Kagan",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 51,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.159Z",
+    "veteran_status": null,
+    "first": "Shirely",
+    "gender": null,
+    "suffix": "",
+    "ssn": "443504460",
+    "updated_at": "2015-08-15T18:19:49.874Z",
+    "middle": "",
+    "last": "Ishee",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 52,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.160Z",
+    "veteran_status": null,
+    "first": "Nannie",
+    "gender": null,
+    "suffix": "",
+    "ssn": "006481607",
+    "updated_at": "2015-08-15T18:19:49.874Z",
+    "middle": "",
+    "last": "Shelor",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 53,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.160Z",
+    "veteran_status": null,
+    "first": "Josephine",
+    "gender": null,
+    "suffix": "",
+    "ssn": "384990694",
+    "updated_at": "2015-08-15T18:19:49.875Z",
+    "middle": "",
+    "last": "Button",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 54,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.161Z",
+    "veteran_status": null,
+    "first": "Diamond",
+    "gender": null,
+    "suffix": "",
+    "ssn": "227566245",
+    "updated_at": "2015-08-15T18:19:49.875Z",
+    "middle": "",
+    "last": "Lal",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 55,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.161Z",
+    "veteran_status": null,
+    "first": "Libbie",
+    "gender": null,
+    "suffix": "",
+    "ssn": "403660539",
+    "updated_at": "2015-08-15T18:19:49.876Z",
+    "middle": "",
+    "last": "Martelli",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 56,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.162Z",
+    "veteran_status": null,
+    "first": "Clarence",
+    "gender": null,
+    "suffix": "",
+    "ssn": "753307175",
+    "updated_at": "2015-08-15T18:19:49.876Z",
+    "middle": "",
+    "last": "Hulings",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 57,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.162Z",
+    "veteran_status": null,
+    "first": "Hung",
+    "gender": null,
+    "suffix": "",
+    "ssn": "570827343",
+    "updated_at": "2015-08-15T18:19:49.877Z",
+    "middle": "",
+    "last": "Macfarlane",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 58,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.163Z",
+    "veteran_status": null,
+    "first": "Kendrick",
+    "gender": null,
+    "suffix": "",
+    "ssn": "596689723",
+    "updated_at": "2015-08-15T18:19:49.877Z",
+    "middle": "",
+    "last": "Lauzon",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 59,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.163Z",
+    "veteran_status": null,
+    "first": "Belen",
+    "gender": null,
+    "suffix": "",
+    "ssn": "898456939",
+    "updated_at": "2015-08-15T18:19:49.878Z",
+    "middle": "",
+    "last": "Caffee",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.client",
+  "pk": 60,
+  "fields": {
+    "dob": null,
+    "race": [],
+    "created_at": "2015-08-15T18:17:19.163Z",
+    "veteran_status": null,
+    "first": "Ronny",
+    "gender": null,
+    "suffix": "",
+    "ssn": "432532558",
+    "updated_at": "2015-08-15T18:19:49.878Z",
+    "middle": "",
+    "last": "Knox",
+    "ethnicity": null,
+    "other_gender": ""
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 1,
+  "fields": {
+    "updated_at": "2015-08-15T18:04:07.016Z",
+    "referral_notes": "",
+    "created_at": "2015-07-21T19:09:50.127Z",
+    "project": 3
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 4,
+  "fields": {
+    "updated_at": "2015-07-21T19:11:51.310Z",
+    "referral_notes": "",
+    "created_at": "2015-07-21T19:11:51.310Z",
+    "project": 2
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 5,
+  "fields": {
+    "updated_at": "2015-07-21T19:12:01.208Z",
+    "referral_notes": "",
+    "created_at": "2015-07-21T19:12:01.208Z",
+    "project": 2
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 6,
+  "fields": {
+    "updated_at": "2015-07-21T19:12:39.716Z",
+    "referral_notes": "",
+    "created_at": "2015-07-21T19:12:39.716Z",
+    "project": 1
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 7,
+  "fields": {
+    "updated_at": "2015-08-15T18:23:01.757Z",
+    "referral_notes": "",
+    "created_at": "2015-08-15T18:23:01.757Z",
+    "project": 2
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 8,
+  "fields": {
+    "updated_at": "2015-08-15T20:23:09.787Z",
+    "referral_notes": "",
+    "created_at": "2015-08-15T18:23:28.254Z",
+    "project": 1
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 9,
+  "fields": {
+    "updated_at": "2015-08-15T20:16:07.687Z",
+    "referral_notes": "",
+    "created_at": "2015-08-15T20:15:35.547Z",
+    "project": 3
+  }
+},
+{
+  "model": "simplehmis.household",
+  "pk": 10,
+  "fields": {
+    "updated_at": "2015-08-15T20:29:14.804Z",
+    "referral_notes": "",
+    "created_at": "2015-08-15T20:28:09.738Z",
+    "project": 2
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 1,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.956Z",
+    "hoh_relationship": 1,
+    "created_at": "2015-07-21T19:09:50.131Z",
+    "client": 10,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": "2015-07-20",
+    "household": 1
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 2,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.974Z",
+    "hoh_relationship": 2,
+    "created_at": "2015-07-21T19:09:50.135Z",
+    "client": 7,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": "2015-07-20",
+    "household": 1
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 5,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.959Z",
+    "hoh_relationship": 1,
+    "created_at": "2015-07-21T19:11:51.314Z",
+    "client": 6,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": "2015-07-21",
+    "household": 4
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 6,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.961Z",
+    "hoh_relationship": 1,
+    "created_at": "2015-07-21T19:12:01.213Z",
+    "client": 5,
+    "exit_date": "2015-07-20",
+    "present_at_enrollment": true,
+    "entry_date": "2015-07-19",
+    "household": 5
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 8,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.985Z",
+    "hoh_relationship": 3,
+    "created_at": "2015-07-21T19:12:39.725Z",
+    "client": 9,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": null,
+    "household": 6
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 9,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.976Z",
+    "hoh_relationship": 2,
+    "created_at": "2015-07-21T19:12:39.729Z",
+    "client": 4,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": null,
+    "household": 6
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 10,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.978Z",
+    "hoh_relationship": 2,
+    "created_at": "2015-07-21T19:12:39.733Z",
+    "client": 3,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": null,
+    "household": 6
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 11,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.990Z",
+    "hoh_relationship": 4,
+    "created_at": "2015-08-15T18:04:07.022Z",
+    "client": 4,
+    "exit_date": null,
+    "present_at_enrollment": false,
+    "entry_date": null,
+    "household": 1
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 12,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.963Z",
+    "hoh_relationship": 1,
+    "created_at": "2015-08-15T18:23:01.762Z",
+    "client": 60,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": null,
+    "household": 7
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 13,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.988Z",
+    "hoh_relationship": 3,
+    "created_at": "2015-08-15T18:23:01.766Z",
+    "client": 59,
+    "exit_date": null,
+    "present_at_enrollment": false,
+    "entry_date": null,
+    "household": 7
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 14,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.980Z",
+    "hoh_relationship": 2,
+    "created_at": "2015-08-15T18:23:01.770Z",
+    "client": 58,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": null,
+    "household": 7
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 15,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.966Z",
+    "hoh_relationship": 1,
+    "created_at": "2015-08-15T18:23:28.258Z",
+    "client": 57,
+    "exit_date": "2015-08-14",
+    "present_at_enrollment": true,
+    "entry_date": "2015-07-15",
+    "household": 8
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 16,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.992Z",
+    "hoh_relationship": 4,
+    "created_at": "2015-08-15T18:23:28.263Z",
+    "client": 56,
+    "exit_date": null,
+    "present_at_enrollment": false,
+    "entry_date": null,
+    "household": 8
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 17,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.968Z",
+    "hoh_relationship": 1,
+    "created_at": "2015-08-15T20:15:35.552Z",
+    "client": 52,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": "2015-08-15",
+    "household": 9
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 18,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.995Z",
+    "hoh_relationship": 4,
+    "created_at": "2015-08-15T20:15:35.556Z",
+    "client": 51,
+    "exit_date": null,
+    "present_at_enrollment": false,
+    "entry_date": null,
+    "household": 9
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 19,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.997Z",
+    "hoh_relationship": 5,
+    "created_at": "2015-08-15T20:15:35.560Z",
+    "client": 50,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": null,
+    "household": 9
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 20,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.971Z",
+    "hoh_relationship": 1,
+    "created_at": "2015-08-15T20:28:09.743Z",
+    "client": 37,
+    "exit_date": "2015-08-15",
+    "present_at_enrollment": true,
+    "entry_date": "2015-08-15",
+    "household": 10
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 21,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.983Z",
+    "hoh_relationship": 2,
+    "created_at": "2015-08-15T20:28:09.750Z",
+    "client": 36,
+    "exit_date": null,
+    "present_at_enrollment": true,
+    "entry_date": "2015-08-15",
+    "household": 10
+  }
+},
+{
+  "model": "simplehmis.householdmember",
+  "pk": 22,
+  "fields": {
+    "updated_at": "2015-08-29T04:03:53.999Z",
+    "hoh_relationship": 5,
+    "created_at": "2015-08-15T20:28:09.755Z",
+    "client": 34,
+    "exit_date": null,
+    "present_at_enrollment": false,
+    "entry_date": null,
+    "household": 10
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 1,
+  "fields": {
+    "developmental_disability": null,
+    "income_notes": "",
+    "homeless_in_three_years": null,
+    "created_at": "2015-07-21T21:06:45.929Z",
+    "status_documented": null,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": null,
+    "homeless_months_prior": null,
+    "homeless_months_in_three_years": null,
+    "chronic_health": null,
+    "member": 6,
+    "income_status": null,
+    "health_insurance_state": 0,
+    "hiv_aids": null,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": null,
+    "health_insurance": null,
+    "substance_abuse": null,
+    "mental_health": null,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": null,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": null,
+    "health_insurance_none_reason": null,
+    "prior_residence": null,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-07-21T21:34:04.652Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-07-19",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": null
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 2,
+  "fields": {
+    "developmental_disability": null,
+    "income_notes": "",
+    "homeless_in_three_years": null,
+    "created_at": "2015-07-21T21:15:28.323Z",
+    "status_documented": null,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": null,
+    "homeless_months_prior": null,
+    "homeless_months_in_three_years": null,
+    "chronic_health": null,
+    "member": 5,
+    "income_status": null,
+    "health_insurance_state": 0,
+    "hiv_aids": null,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": null,
+    "health_insurance": null,
+    "substance_abuse": null,
+    "mental_health": null,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": null,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": null,
+    "health_insurance_none_reason": null,
+    "prior_residence": null,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-07-21T21:15:28.323Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-07-21",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": null
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 3,
+  "fields": {
+    "developmental_disability": null,
+    "income_notes": "",
+    "homeless_in_three_years": null,
+    "created_at": "2015-07-21T21:25:19.466Z",
+    "status_documented": null,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": null,
+    "homeless_months_prior": null,
+    "homeless_months_in_three_years": null,
+    "chronic_health": null,
+    "member": 1,
+    "income_status": null,
+    "health_insurance_state": 0,
+    "hiv_aids": null,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": null,
+    "health_insurance": null,
+    "substance_abuse": null,
+    "mental_health": null,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": null,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": null,
+    "health_insurance_none_reason": null,
+    "prior_residence": null,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-07-21T21:25:50.963Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-07-20",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": null
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 4,
+  "fields": {
+    "developmental_disability": null,
+    "income_notes": "",
+    "homeless_in_three_years": null,
+    "created_at": "2015-07-21T21:25:29.010Z",
+    "status_documented": null,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": null,
+    "homeless_months_prior": null,
+    "homeless_months_in_three_years": null,
+    "chronic_health": null,
+    "member": 2,
+    "income_status": null,
+    "health_insurance_state": 0,
+    "hiv_aids": null,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": null,
+    "health_insurance": null,
+    "substance_abuse": null,
+    "mental_health": null,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": null,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": null,
+    "health_insurance_none_reason": null,
+    "prior_residence": null,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-07-21T21:25:55.950Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-07-20",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": null
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 5,
+  "fields": {
+    "developmental_disability": 99,
+    "income_notes": "",
+    "homeless_in_three_years": 99,
+    "created_at": "2015-08-15T18:24:22.955Z",
+    "status_documented": 0,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": 99,
+    "homeless_months_prior": 0,
+    "homeless_months_in_three_years": null,
+    "chronic_health": 99,
+    "member": 15,
+    "income_status": 99,
+    "health_insurance_state": 0,
+    "hiv_aids": 99,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": 99,
+    "health_insurance": 99,
+    "substance_abuse": 99,
+    "mental_health": 99,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": 99,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": 99,
+    "health_insurance_none_reason": null,
+    "prior_residence": 99,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-08-15T18:24:22.955Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-07-15",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": 99
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 6,
+  "fields": {
+    "developmental_disability": 99,
+    "income_notes": "",
+    "homeless_in_three_years": 99,
+    "created_at": "2015-08-15T20:16:02.210Z",
+    "status_documented": 0,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": 99,
+    "homeless_months_prior": 0,
+    "homeless_months_in_three_years": null,
+    "chronic_health": 99,
+    "member": 17,
+    "income_status": 99,
+    "health_insurance_state": 0,
+    "hiv_aids": 99,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": 99,
+    "health_insurance": 99,
+    "substance_abuse": 99,
+    "mental_health": 99,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": 99,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": 99,
+    "health_insurance_none_reason": null,
+    "prior_residence": 99,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-08-15T20:16:02.210Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-08-15",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": 99
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 7,
+  "fields": {
+    "developmental_disability": 99,
+    "income_notes": "",
+    "homeless_in_three_years": 99,
+    "created_at": "2015-08-15T20:28:51.599Z",
+    "status_documented": 0,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": 99,
+    "homeless_months_prior": 0,
+    "homeless_months_in_three_years": null,
+    "chronic_health": 99,
+    "member": 20,
+    "income_status": 99,
+    "health_insurance_state": 0,
+    "hiv_aids": 99,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": 99,
+    "health_insurance": 99,
+    "substance_abuse": 99,
+    "mental_health": 99,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": 99,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": 99,
+    "health_insurance_none_reason": null,
+    "prior_residence": 99,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-08-15T20:28:51.599Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-08-15",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": 99
+  }
+},
+{
+  "model": "simplehmis.cliententryassessment",
+  "pk": 8,
+  "fields": {
+    "developmental_disability": 99,
+    "income_notes": "",
+    "homeless_in_three_years": 99,
+    "created_at": "2015-08-15T20:29:12.357Z",
+    "status_documented": 0,
+    "chronic_health_impairing": null,
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "homeless_at_least_one_year": 99,
+    "homeless_months_prior": 0,
+    "homeless_months_in_three_years": null,
+    "chronic_health": 99,
+    "member": 21,
+    "income_status": 99,
+    "health_insurance_state": 0,
+    "hiv_aids": 99,
+    "health_insurance_employer": 0,
+    "length_at_prior_residence": 99,
+    "health_insurance": 99,
+    "substance_abuse": 99,
+    "mental_health": 99,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "housing_status": 99,
+    "prior_residence_other": "",
+    "health_insurance_private": 0,
+    "domestic_violence": 99,
+    "health_insurance_none_reason": null,
+    "prior_residence": 99,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-08-15T20:29:12.357Z",
+    "developmental_disability_impairing": null,
+    "project_entry_date": "2015-08-15",
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": 99
+  }
+},
+{
+  "model": "simplehmis.clientexitassessment",
+  "pk": 2,
+  "fields": {
+    "developmental_disability": null,
+    "income_notes": "",
+    "created_at": "2015-07-21T21:34:04.664Z",
+    "chronic_health_impairing": null,
+    "destination_other": "",
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "chronic_health": null,
+    "member": 6,
+    "income_status": null,
+    "health_insurance_state": 0,
+    "hiv_aids": null,
+    "health_insurance_employer": 0,
+    "health_insurance": null,
+    "substance_abuse": null,
+    "mental_health": null,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "destination": null,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "project_exit_date": "2015-07-20",
+    "health_insurance_private": 0,
+    "domestic_violence": null,
+    "health_insurance_none_reason": null,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-07-21T21:34:04.664Z",
+    "developmental_disability_impairing": null,
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": null
+  }
+},
+{
+  "model": "simplehmis.clientexitassessment",
+  "pk": 3,
+  "fields": {
+    "developmental_disability": 99,
+    "income_notes": "",
+    "created_at": "2015-08-15T18:24:22.960Z",
+    "chronic_health_impairing": null,
+    "destination_other": "",
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "chronic_health": 99,
+    "member": 15,
+    "income_status": 99,
+    "health_insurance_state": 0,
+    "hiv_aids": 99,
+    "health_insurance_employer": 0,
+    "health_insurance": 99,
+    "substance_abuse": 99,
+    "mental_health": 99,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "destination": 99,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "project_exit_date": "2015-08-14",
+    "health_insurance_private": 0,
+    "domestic_violence": 99,
+    "health_insurance_none_reason": null,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-08-15T18:24:22.960Z",
+    "developmental_disability_impairing": null,
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": 99
+  }
+},
+{
+  "model": "simplehmis.clientexitassessment",
+  "pk": 4,
+  "fields": {
+    "developmental_disability": 99,
+    "income_notes": "",
+    "created_at": "2015-08-15T20:28:51.605Z",
+    "chronic_health_impairing": null,
+    "destination_other": "",
+    "physical_disability_impairing": null,
+    "mental_health_impairing": null,
+    "health_insurance_chip": 0,
+    "chronic_health": 99,
+    "member": 20,
+    "income_status": 99,
+    "health_insurance_state": 0,
+    "hiv_aids": 99,
+    "health_insurance_employer": 0,
+    "health_insurance": 99,
+    "substance_abuse": 99,
+    "mental_health": 99,
+    "substance_abuse_impairing": null,
+    "health_insurance_va": 0,
+    "destination": 99,
+    "health_insurance_medicare": 0,
+    "health_insurance_cobra": 0,
+    "project_exit_date": "2015-08-15",
+    "health_insurance_private": 0,
+    "domestic_violence": 99,
+    "health_insurance_none_reason": null,
+    "health_insurance_medicaid": 0,
+    "updated_at": "2015-08-15T20:28:51.605Z",
+    "developmental_disability_impairing": null,
+    "hiv_aids_impairing": null,
+    "domestic_violence_occurred": null,
+    "physical_disability": 99
+  }
+}
+]
