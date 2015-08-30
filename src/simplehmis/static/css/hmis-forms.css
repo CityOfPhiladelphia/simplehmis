@@ -51,3 +51,10 @@ fieldset {
   margin: 0;
   padding: 0;
 }
+
+.assessment-complete {
+	color: green;
+}
+.assessment-incomplete {
+	color: gray;
+}

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.db.models import fields
 from django.forms import widgets
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from reversion import VersionAdmin
 from . import forms
@@ -25,12 +26,9 @@ class HouseholdMemberInline (admin.TabularInline):
             return '(Click "Save and continue editing" below to see the entry assessment information)'
         else:
             client_url = reverse('admin:simplehmis_householdmember_change', args=(obj.id,))
-            return (
-                '<a id="client_{}_assessments_link" href="{}" onclick="showAdminPopup(this, \'nosuchfield\');" target="_blank">'.format(obj.id, client_url) +
-                'Edit client assessments</a>' +
-                '<br>Entry: <em>' + ('Complete' if obj.has_entry_assessment() else 'Not Complete') + '</em>' +
-                '<br>Exit: <em>' + ('Complete' if obj.has_exit_assessment() else 'Not Complete') + '</em>'
-            )
+            return render_to_string(
+                'admin/_assessments_display.html',
+                {'member': obj, 'url': client_url})
     link_to_assessments.allow_tags = True
     link_to_assessments.short_description = _('Assessments')
 

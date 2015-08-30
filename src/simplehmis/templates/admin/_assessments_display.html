@@ -1,0 +1,28 @@
+<a id="client_{{member.id}}_assessments_link"
+    href="{{url}}"
+    onclick="showAdminPopup(this, 'nosuchfield');"
+    target="_blank">
+  Edit client assessments
+</a>
+
+<br>
+
+<span>
+  Entry:
+  {% if member.has_entry_assessment %}
+  <em class="assessment-complete">Complete</em>
+  {% else %}
+  <em class="assessment-incomplete">Not Complete</em>
+  {% endif %}
+</span>
+
+<br>
+
+<span>
+  Exit:
+  {% if member.has_exit_assessment %}
+  <em class="assessment-complete">Complete</em>
+  {% else %}
+  <em class="assessment-incomplete">Not Complete</em>
+  {% endif %}
+</span>
