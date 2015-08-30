@@ -333,7 +333,7 @@ class ClientAnnualAssessmentInline (admin.StackedInline):
 
 class HouseholdMemberAdmin (VersionAdmin):
     raw_id_fields = ('client',)
-    exclude = ('household', 'present_at_enrollment')
+    exclude = ('household', 'present_at_enrollment', 'entry_date', 'exit_date')
     readonly_fields = ('hoh_relationship',)
     inlines = (
         ClientEntryAssessmentInline,
