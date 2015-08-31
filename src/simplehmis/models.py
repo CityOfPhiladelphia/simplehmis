@@ -467,21 +467,21 @@ class HouseholdManager (models.QuerySet):
             qs = self\
                 .filter(members__present_at_enrollment=True)\
                 .annotate(total_member_count=Count('members'))\
-                .annotate(enrolled_count=Count('members__entry_assessment'))\
+                .annotate(enrolled_count=Count('members__entry_date'))\
                 .filter(enrolled_count__lt=F('total_member_count'))
         elif status == '0':
             qs = self\
                 .filter(members__present_at_enrollment=True)\
                 .annotate(total_member_count=Count('members'))\
-                .annotate(enrolled_count=Count('members__entry_assessment'))\
-                .annotate(exited_count=Count('members__exit_assessment'))\
+                .annotate(enrolled_count=Count('members__entry_date'))\
+                .annotate(exited_count=Count('members__exit_date'))\
                 .filter(enrolled_count=F('total_member_count'))\
                 .filter(exited_count__lt=F('total_member_count'))
         elif status == '1':
             qs = self\
                 .filter(members__present_at_enrollment=True)\
                 .annotate(total_member_count=Count('members'))\
-                .annotate(exited_count=Count('members__exit_assessment'))\
+                .annotate(exited_count=Count('members__exit_date'))\
                 .filter(exited_count=F('total_member_count'))
         else:
             raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
@@ -659,12 +659,10 @@ class HouseholdMember (TimestampedModel):
     project_exit_date.admin_order_field = 'exit_assessment__project_exit_date'
 
     def has_entered(self):
-        try: return self.entry_assessment is not None
-        except ClientEntryAssessment.DoesNotExist: return False
+        return self.entry_date is not None
 
     def has_exited(self):
-        try: return self.exit_assessment is not None
-        except ClientExitAssessment.DoesNotExist: return False
+        return self.exit_date is not None
 
     def is_enrolled(self):
         if not self.present_at_enrollment:
@@ -875,12 +873,12 @@ class ClientEntryAssessment (TimestampedModel, HealthInsuranceFields,
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.project_entry_date is None:
-            self.copy_entry_date_from_member()
+            self.copy_assessment_date_from_member()
 
     def __str__(self):
         return '{} Entry Information'.format(self.member)
 
-    def copy_entry_date_from_member(self):
+    def copy_assessment_date_from_member(self):
         try:
             self.project_entry_date = self.member.entry_date
         except HouseholdMember.DoesNotExist:
@@ -919,12 +917,12 @@ class ClientExitAssessment (TimestampedModel, HealthInsuranceFields,
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.project_exit_date is None:
-            self.copy_exit_date_from_member()
+            self.copy_assessment_date_from_member()
 
     def __str__(self):
         return '{} Exit Information'.format(self.member)
 
-    def copy_exit_date_from_member(self):
+    def copy_assessment_date_from_member(self):
         try:
             self.project_exit_date = self.member.exit_date
         except HouseholdMember.DoesNotExist:
