@@ -101,6 +101,45 @@ class HouseholdAdmin (VersionAdmin):
             return True
         return super().lookup_allowed(lookup, value)
 
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for obj in instances:
+            self.save_member_form(request, obj, form, change)
+        formset.save_m2m()
+
+    def save_member_form(self, request, obj, form, change):
+        # Copy the entry and exit dates to the assessments.
+        if obj.id is None:
+            obj.save()
+
+        # If the member has an entry_date, then copy it to the
+        # assessment. Otherwise, try to copy the assessment date
+        # to the member.
+        if obj.entry_date:
+            try:
+                obj.entry_assessment.project_entry_date = obj.entry_date
+                obj.entry_assessment.save()
+            except models.ClientEntryAssessment.DoesNotExist:
+                pass
+        else:
+            try: obj.entry_date = obj.entry_assessment.project_entry_date
+            except models.ClientEntryAssessment.DoesNotExist: pass
+
+        # If the member has an exit_date, then copy it to the
+        # assessment. Otherwise, try to copy the assessment date
+        # to the member.
+        if obj.exit_date:
+            try:
+                obj.exit_assessment.project_exit_date = obj.exit_date
+                obj.exit_assessment.save()
+            except models.ClientExitAssessment.DoesNotExist:
+                pass
+        else:
+            try: obj.exit_date = obj.exit_assessment.project_exit_date
+            except models.ClientExitAssessment.DoesNotExist: pass
+
+        obj.save()
+
 
 class ClientAdmin (VersionAdmin):
     actions_on_top = actions_on_bottom = False
@@ -375,6 +414,16 @@ class HouseholdMemberAdmin (VersionAdmin):
                       'household__project__isnull',):
             return True
         return super().lookup_allowed(lookup, value)
+
+    def save_model(self, request, obj, form, change):
+        # Copy the entry and exit dates from the assessments
+        try: obj.entry_date = obj.entry_assessment.project_entry_date
+        except models.ClientEntryAssessment.DoesNotExist: pass
+
+        try: obj.exit_date = obj.exit_assessment.project_exit_date
+        except models.ClientExitAssessment.DoesNotExist: pass
+
+        obj.save()
 
 
 class ProjectAdmin (VersionAdmin):

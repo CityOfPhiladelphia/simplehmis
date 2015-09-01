@@ -870,19 +870,8 @@ class ClientEntryAssessment (TimestampedModel, HealthInsuranceFields,
     class Meta:
         verbose_name_plural = _('Client entry assessment')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.project_entry_date is None:
-            self.copy_assessment_date_from_member()
-
     def __str__(self):
         return '{} Entry Information'.format(self.member)
-
-    def copy_assessment_date_from_member(self):
-        try:
-            self.project_entry_date = self.member.entry_date
-        except HouseholdMember.DoesNotExist:
-            pass
 
 
 class ClientAnnualAssessment (TimestampedModel, HealthInsuranceFields,
@@ -914,16 +903,5 @@ class ClientExitAssessment (TimestampedModel, HealthInsuranceFields,
     member = models.OneToOneField('HouseholdMember', related_name='exit_assessment')
     project_exit_date = models.DateField()
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.project_exit_date is None:
-            self.copy_assessment_date_from_member()
-
     def __str__(self):
         return '{} Exit Information'.format(self.member)
-
-    def copy_assessment_date_from_member(self):
-        try:
-            self.project_exit_date = self.member.exit_date
-        except HouseholdMember.DoesNotExist:
-            pass
