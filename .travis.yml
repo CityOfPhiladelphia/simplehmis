@@ -3,4 +3,6 @@ python:
   - "3.4"
 
 install: "pip install -r requirements.txt"
-script: "src/manage.py test simplehmis"
+script:
+	- "coverage run src/manage.py test simplehmis"
+	- "coverage report -i 'src/simplehmis/*'"
