@@ -106,7 +106,7 @@ class ProjectManager (models.Manager):
 
 
 class Project (TimestampedModel):
-    name = models.TextField()
+    name = models.TextField(db_index=True)
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='projects')
 
     objects = ProjectManager()
@@ -156,13 +156,13 @@ class Client (TimestampedModel):
     - Collection Point = Record Creation
     """
 
-    first = models.CharField(_('First name'), max_length=100, blank=True)
-    middle = models.CharField(_('Middle name'), max_length=100, blank=True)
-    last = models.CharField(_('Last name'), max_length=100, blank=True)
+    first = models.CharField(_('First name'), max_length=100, blank=True, db_index=True)
+    middle = models.CharField(_('Middle name'), max_length=100, blank=True, db_index=True)
+    last = models.CharField(_('Last name'), max_length=100, blank=True, db_index=True)
     suffix = models.CharField(_('Name suffix'), max_length=100, blank=True)
     dob = models.DateField(_('Date of birth'), blank=True, null=True,
         help_text=_('Use the format YYYY-MM-DD (EX: 1972-07-01 for July 01, 1972)'))
-    ssn = models.CharField(_('SSN'), max_length=9, blank=True,
+    ssn = models.CharField(_('SSN'), max_length=9, blank=True, db_index=True,
         help_text=_('Enter 9 digit SSN Do not enter hyphens EX: 555210987'))
     gender = models.PositiveIntegerField(_('Gender'), blank=True, null=True, choices=consts.HUD_CLIENT_GENDER, default=consts.HUD_BLANK)
     other_gender = models.TextField(_('If "Other" for gender, please specify'), blank=True)
@@ -195,7 +195,6 @@ class Client (TimestampedModel):
 
     def __str__(self):
         return '{} (SSN: {})'.format(self.name_display(), self.ssn_display())
-
 
 class HouseholdManager (models.QuerySet):
     def get_queryset(self):
