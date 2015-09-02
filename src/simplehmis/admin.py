@@ -445,7 +445,7 @@ class ProjectAdmin (VersionAdmin):
         qs = super().get_queryset(request)
 
         user = models.HMISUser(request.user)
-        if not user.is_superuser and user.is_project_staff():
+        if not user.can_refer_household():
             projects = user.projects.all()
             if projects is not None:
                 qs = qs.filter(id__in=[p.id for p in projects])

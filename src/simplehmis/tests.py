@@ -56,6 +56,19 @@ class AdminTests (TestCase):
             "Some projects in {} not in {}".format(
                 [household.project for household in qs], projects)
 
+    def test_project_staff_only_see_their_programs(self):
+        request = RequestFactory().get('/simplehmis/projects')
+        admin_view = admin.ProjectAdmin(models.Project, admin.site)
+        # Set the first project admin as the request user.
+        project_admin = User.objects.get(username='project-admin1')
+        request.user = project_admin
+        # Make sure the project_admin only sees their own
+        # projects.
+        qs = admin_view.get_queryset(request)
+        projects = project_admin.projects.all()
+        assert all(project in projects for project in qs), \
+            "Some projects in {} not in {}".format(qs, projects)
+
     def test_intake_staff_see_all_households(self):
         request = RequestFactory().get('/simplehmis/households')
         admin_view = admin.HouseholdAdmin(models.Household, admin.site)
@@ -76,13 +89,25 @@ class AdminTests (TestCase):
         # Set the dual admin as the request user.
         dual_admin = User.objects.get(username='dual-admin')
         request.user = dual_admin
-        # Make sure the dual_admin only sees households
-        # in their own their own projects.
+        # Make sure the dual_admin sees all households.
         qs_households = set(admin_view.get_queryset(request))
         all_households = set(models.Household.objects.all())
         assert qs_households == all_households, \
             "Some households are missing from the queryset: {}".format(
                 all_households - qs_households)
+
+    def test_dual_staff_see_all_projects(self):
+        request = RequestFactory().get('/simplehmis/projects')
+        admin_view = admin.ProjectAdmin(models.Project, admin.site)
+        # Set the dual admin as the request user.
+        dual_admin = User.objects.get(username='dual-admin')
+        request.user = dual_admin
+        # Make sure the dual_admin sees all projects.
+        qs_projects = set(admin_view.get_queryset(request))
+        all_projects = set(models.Project.objects.all())
+        assert qs_projects == all_projects, \
+            "Some households are missing from the queryset: {}".format(
+                all_projects - qs_projects)
 
 
 class EnrollmentFilterTests (TestCase):
