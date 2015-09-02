@@ -200,6 +200,7 @@ class ClientLoaderHelper:
         client = row['_client']
         project_name = row['Program Name']
         entry_date = parse_date(row['Program Start Date'])
+        exit_date = parse_date(row['Program End Date'])
 
         try:
             # If we can find a household membership that already exists for
@@ -207,7 +208,7 @@ class ClientLoaderHelper:
             # immediately.
             member = client.memberships.get(
                 household__project__name=project_name,
-                entry_assessment__project_entry_date=entry_date)
+                entry_date=entry_date)
             row['_member'] = member
             return member, False
         except HouseholdMember.DoesNotExist:
@@ -224,13 +225,15 @@ class ClientLoaderHelper:
             # corresponding head of household.
             hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
             entry_date = parse_date(row['Program Start Date'])
-            hoh = HouseholdMember.objects.get(client__ssn=hoh_ssn, entry_assessment__project_entry_date=entry_date)
+            hoh = HouseholdMember.objects.get(client__ssn=hoh_ssn, entry_date=entry_date)
             household = hoh.household
 
         member = HouseholdMember.objects.create(
             client=client,
             household=household,
-            hoh_relationship=hud_code(row['Relationship to HoH'], consts.HUD_CLIENT_HOH_RELATIONSHIP)
+            hoh_relationship=hud_code(row['Relationship to HoH'], consts.HUD_CLIENT_HOH_RELATIONSHIP),
+            entry_date=entry_date,
+            exit_date=exit_date,
         )
         row['_member'] = member
         return member, True
