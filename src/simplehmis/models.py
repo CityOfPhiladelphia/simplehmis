@@ -637,7 +637,7 @@ class ClientAnnualAssessment (TimestampedModel, HealthInsuranceFields,
     assessment_date = models.DateField(default=now)
 
     def __str__(self):
-        return '{} Annual Assessment from {}'.format(self.member, self.collected_at)
+        return '{} Annual Assessment from {}'.format(self.member, self.assessment_date)
 
 
 class ClientExitAssessment (TimestampedModel, HealthInsuranceFields,
