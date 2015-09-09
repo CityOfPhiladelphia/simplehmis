@@ -143,6 +143,7 @@ STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(os.path.dirname(BASE_DI
 # Application specific settings
 
 HELP_EMAIL = os.environ.get('HELP_EMAIL', 'test@example.com')
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'admin@example.com')
 
 
 # Logging
