@@ -64,7 +64,7 @@ class HouseholdMemberInline (admin.TabularInline):
         else:
             client_url = reverse('admin:simplehmis_householdmember_change', args=(obj.id,))
             return render_to_string(
-                'admin/_assessments_display.html',
+                'admin/_householdmember_assessments_display.html',
                 {'member': obj, 'url': client_url})
     link_to_assessments.allow_tags = True
     link_to_assessments.short_description = _('Assessments')
@@ -94,17 +94,38 @@ class IsEnrolledListFilter(admin.SimpleListFilter):
         return queryset.filter_by_enrollment(self.value())
 
 
+class IsAssessedListFilter(admin.SimpleListFilter):
+    title = _('assessment completion status')
+    parameter_name = 'assessed'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('0', _('incomplete')),
+            ('1', _('up to date')),
+        )
+
+    def queryset(self, request, queryset):
+        return queryset.filter_by_assessments(self.value())
+
+
 class HouseholdAdmin (VersionAdmin):
     inlines = [HouseholdMemberInline]
     raw_id_fields = ['project']
 
     actions_on_top = actions_on_bottom = False
-    list_display = ['members_display', 'is_enrolled', 'project', 'date_of_intake', 'date_of_entry']
+    list_display = ['members_display', 'project', 'is_enrolled', 'date_of_intake', 'date_of_entry', 'date_of_exit', 'assessment_statuses']
     search_fields = ['project__name', 'members__client__first', 'members__client__middle', 'members__client__last', 'members__client__ssn']
 
     class Media:
         js = ("js/show-strrep.js", "js/hmis-forms.js")
         css = {"all": ("css/hmis-forms.css",)}
+
+    def assessment_statuses(self, obj):
+        return render_to_string(
+            'admin/_household_assessments_display.html',
+            {'household': obj})
+    assessment_statuses.allow_tags = True
+    assessment_statuses.short_description = _('Assessment Statuses')
 
     def date_of_intake(self, obj):
         return obj.created_at.date()
@@ -126,7 +147,7 @@ class HouseholdAdmin (VersionAdmin):
             .prefetch_related('members__client')
 
     def get_list_filter(self, request):
-        list_filter = [IsEnrolledListFilter]
+        list_filter = [IsEnrolledListFilter, IsAssessedListFilter]
         user = models.HMISUser(request.user)
         if user.can_refer_household():
             list_filter.append('project')

@@ -1,0 +1,19 @@
+<span>
+  Entry:
+  {% if household.is_entry_assessments_complete %}
+  <em class="assessment-complete">All Complete</em>
+  {% else %}
+  <em class="assessment-incomplete">Not Complete</em>
+  {% endif %}
+</span>
+
+<br>
+
+<span>
+  Exit:
+  {% if household.is_exit_assessments_complete %}
+  <em class="assessment-complete">All Complete</em>
+  {% else %}
+  <em class="assessment-incomplete">Not Complete</em>
+  {% endif %}
+</span>

@@ -260,6 +260,42 @@ class HouseholdManager (models.QuerySet):
             raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
         return qs
 
+    def filter_by_assessments(self, status):
+        """
+        status can be:
+        0  -- Assessments are not up to date; this could be because:
+              * members with entry dates don't have entry assessments
+              * members with exit dates don't have exit assessments
+        1  -- Assessments are up to date
+        """
+        from django.db.models import Count, F, Q
+        if status is None:
+            return self
+
+        status = str(status)
+        if status == '0':
+            qs = self\
+                .filter(members__present_at_enrollment=True)\
+                .annotate(total_entered_count=Count('members__entry_date'))\
+                .annotate(total_exited_count=Count('members__exit_date'))\
+                .annotate(entry_count=Count('members__entry_assessment'))\
+                .annotate(exit_count=Count('members__exit_assessment'))\
+                .filter(
+                    Q(entry_count__lt=F('total_entered_count')) |
+                    Q(exit_count__lt=F('total_exited_count')))
+        elif status == '1':
+            qs = self\
+                .filter(members__present_at_enrollment=True)\
+                .annotate(total_entered_count=Count('members__entry_date'))\
+                .annotate(total_exited_count=Count('members__exit_date'))\
+                .annotate(entry_count=Count('members__entry_assessment'))\
+                .annotate(exit_count=Count('members__exit_assessment'))\
+                .filter(entry_count=F('total_entered_count'))\
+                .filter(exit_count=F('total_exited_count'))
+        else:
+            raise ValueError('Status should only be 0 or 1. Got {}'.format(status))
+        return qs
+
 
 class Household (TimestampedModel):
     """
@@ -339,7 +375,22 @@ class Household (TimestampedModel):
         if hoh:
             return hoh.project_entry_date()
     date_of_entry.short_description = _('Date of entry')
-    date_of_entry.admin_order_field = 'members__entry_assessment__project_entry_date'
+    date_of_entry.admin_order_field = 'members__entry_date'
+
+    def date_of_exit(self):
+        hoh = self.hoh()
+        if hoh:
+            return hoh.project_exit_date()
+    date_of_exit.short_description = _('Date of exit')
+    date_of_exit.admin_order_field = 'members__exit_date'
+
+    def is_entry_assessments_complete(self):
+        members = self.members.all()
+        return all(member.has_entry_assessment() for member in members if member.present_at_enrollment)
+
+    def is_exit_assessments_complete(self):
+        members = self.members.all()
+        return all(member.has_exit_assessment() for member in members if member.present_at_enrollment)
 
     def __str__(self):
         return '{}\'s household'.format(self.hoh())
@@ -438,14 +489,12 @@ class HouseholdMember (TimestampedModel):
     project.short_description = _('Project')
 
     def project_entry_date(self):
-        try: return self.entry_assessment.project_entry_date
-        except ClientEntryAssessment.DoesNotExist: return None
+        return self.entry_date
     project_entry_date.short_description = _('Entry Date')
     project_entry_date.admin_order_field = 'entry_assessment__project_entry_date'
 
     def project_exit_date(self):
-        try: return self.exit_assessment.project_exit_date
-        except ClientExitAssessment.DoesNotExist: return None
+        return self.exit_date
     project_exit_date.short_description = _('Exit Date')
     project_exit_date.admin_order_field = 'exit_assessment__project_exit_date'
 
