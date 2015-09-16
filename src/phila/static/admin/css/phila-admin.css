@@ -132,6 +132,7 @@ table tbody tr th {
 	list-style: none;
 	position: relative;
 	z-index: 1000;
+  min-height: 4.15rem;
 }
 .object-tools li {
 	float: left;

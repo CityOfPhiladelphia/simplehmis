@@ -28,10 +28,12 @@
 {% if change %}{% if not is_popup %}
     <ul class="object-tools">
         {% block object-tools-items %}
-        {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
-        <li>
-            <a href="{% add_preserved_filters history_url %}" class="historylink button icon">{% trans "History" %}</a>
-        </li>
+        {% if user.is_superuser %}
+            {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+            <li>
+                <a href="{% add_preserved_filters history_url %}" class="historylink button icon">{% trans "History" %}</a>
+            </li>
+        {% endif %}
         {% if has_absolute_url %}<a href="{{ absolute_url }}" class="viewsitelink">{% trans "View on site" %}</a>{% endif %}
         {% endblock %}
     </ul>
