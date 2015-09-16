@@ -1,4 +1,5 @@
 from django.test import TestCase, RequestFactory
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from simplehmis import models, admin
 
@@ -108,6 +109,25 @@ class AdminTests (TestCase):
         assert qs_projects == all_projects, \
             "Some households are missing from the queryset: {}".format(
                 all_projects - qs_projects)
+
+    def test_superusers_can_dump_all_data(self):
+        request = RequestFactory().get('/simplehmis/download_data')
+        # Set the superuser as the request user.
+        superuser = User.objects.get(username='admin')
+        request.user = superuser
+        # Make sure the superuser gets a zipfile.
+        response = admin.dump_hud_data(request)
+        assert response.status_code == 200
+
+    def test_dual_staff_cannot_dump_all_data(self):
+        request = RequestFactory().get('/simplehmis/download_data')
+        # Set the dual_admin as the request user.
+        dual_admin = User.objects.get(username='dual-admin')
+        request.user = dual_admin
+        # Make sure the dual_admin cannot get the download.
+        response = admin.dump_hud_data(request)
+        assert response.status_code == 302
+        assert response.url.startswith(settings.LOGIN_URL)
 
 
 class EnrollmentFilterTests (TestCase):
