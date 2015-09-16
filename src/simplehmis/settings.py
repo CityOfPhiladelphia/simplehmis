@@ -105,6 +105,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'simplehmis.wsgi.application'
+LOGIN_URL = '/login/'
 
 
 # Database

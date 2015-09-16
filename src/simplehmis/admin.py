@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.decorators import user_passes_test
+from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from django.db.models import fields
 from django.forms import widgets
@@ -8,6 +10,36 @@ from reversion import VersionAdmin
 from . import forms
 from . import models
 from . import sites
+
+
+def superuser_check(user):
+    return user.is_superuser
+
+
+@user_passes_test(superuser_check)
+def dump_hud_data(request):
+    import os
+    from io import BytesIO
+    from tempfile import mkdtemp
+    from zipfile import ZipFile
+    from os.path import join as pathjoin
+    from django.http import HttpResponse
+
+    # Dump the files into a temporary directory
+    dirpath = mkdtemp()
+    call_command('dump_hud_data', dirpath)
+
+    # Copy each of the files into a zip buffer
+    zipbuffer = BytesIO()
+    with ZipFile(zipbuffer, 'w') as zipfile:
+        for filename in os.listdir(dirpath):
+            filepath = pathjoin(dirpath, filename)
+            zipfile.write(filepath, filename)
+
+    # Write the zip file buffer out as a downloadable file
+    response = HttpResponse(zipbuffer.getvalue(), content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="simplehmis_data.zip"'
+    return response
 
 
 class HouseholdMemberInline (admin.TabularInline):

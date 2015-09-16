@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^', include('nopassword.urls')),
     url(r'^', include('phila.urls')),
     url(r'^', include(admin.site.urls)),
+    url(r'^admin/download_data$', admin.dump_hud_data, name='simplehmis_download_data'),
 ]
