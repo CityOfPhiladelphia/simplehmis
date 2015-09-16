@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+<!-- Passwordless login confirmation -->
+<div class="panel">
+  <h3>{% trans "Sorry, we couldn't find what you were looking for." %}</h3>
+  {% blocktrans with login_url=settings.LOGIN_URL %}
+  <p>If you were trying to log in, make sure you're not using a log-in link that has been used before. Try returning to the <a href="{{ login_url }}">login page</a> and entering your username again.</p>
+  {% endblocktrans %}
+</div>
+
+</div>
+{% endblock %}
