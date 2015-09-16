@@ -18,6 +18,11 @@ def superuser_check(user):
 
 @user_passes_test(superuser_check)
 def dump_hud_data(request):
+    """
+    Download the complete set of CSV data.
+    """
+    # NOTE: This will start to cause problems if the amount of data in the
+    #       system becomes HUGE. It should be moved to a background process.
     import os
     from io import BytesIO
     from tempfile import mkdtemp
