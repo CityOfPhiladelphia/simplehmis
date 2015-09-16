@@ -137,6 +137,27 @@ class ClientManager (models.Manager):
         helper = self.get_load_helper()
         return helper.get_or_create_assessments_from_row(self, row)
 
+    def get_dump_helper(self):
+        from simplehmis.management.dumper_utils import DumpHelper
+        helper = DumpHelper()
+        return helper
+
+    def dump_to_csv_file(self, filename):
+        helper = self.get_dump_helper()
+        helper.dump_to_csv_file(
+            self.prefetch_related('race'), filename,
+            all_fields=('client_id', 'first', 'middle', 'last', 'suffix',
+                        'dob', 'ssn','gender', 'race', 'ethnicity',
+                        'veteran_status'),
+            hud_code_fields={
+                'gender': dict(consts.HUD_CLIENT_GENDER),
+                'ethnicity': dict(consts.HUD_CLIENT_ETHNICITY),
+                'veteran_status': dict(consts.HUD_YES_NO),
+            },
+            multi_hud_code_fields={'race'},
+            renamed_fields={'client_id': 'id'}
+        )
+
 
 class ClientRace (models.Model):
     label = models.CharField(max_length=100)
@@ -349,6 +370,24 @@ class HouseholdMemberQuerySet (models.QuerySet):
         else:
             raise ValueError('Status should only be one of -1, 0, or 1. Got {}'.format(status))
         return qs
+
+    def get_dump_helper(self):
+        from simplehmis.management.dumper_utils import HouseholdMemberDumpHelper
+        helper = HouseholdMemberDumpHelper()
+        return helper
+
+    def dump_to_csv_file(self, filename):
+        helper = self.get_dump_helper()
+        helper.dump_to_csv_file(
+            self.select_related('household__project'), filename,
+            all_fields=('project_id', 'project_name', 'client_id',
+                        'household_id', 'enrollment_id', 'hoh_relationship',
+                        'entry_date', 'exit_date'),
+            hud_code_fields={
+                'hoh_relationship': dict(consts.HUD_CLIENT_HOH_RELATIONSHIP),
+            },
+            renamed_fields={'enrollment_id': 'id'}
+        )
 
 
 class HouseholdMember (TimestampedModel):
