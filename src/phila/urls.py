@@ -21,8 +21,10 @@ def get_strrep(request):
     #       the current user doesn't have change permission, they probably
     #       shouldn't be able to even see the string representation.
     link_text = ('<a id="{app}_{model}_{objid}_edit_link" href="{url}" '
-                 'onclick="showAdminPopup(this, \'nosuchfield\');" '
-                 'target="_blank">{repr}</a>')
+                 'target="_blank">{repr}</a><script>'
+                 'django.jQuery(\'#{app}_{model}_{objid}_edit_link\').on(\'click\', function(evt) {{ '
+                 'evt.preventDefault(); showAdminPopup(this, \'nosuchfield\'); '
+                 '}});</script>')
     return HttpResponse(link_text.format(
         app=ctype_app,
         model=ctype_model,

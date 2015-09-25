@@ -1,9 +1,14 @@
 <a id="client_{{member.id}}_assessments_link"
     href="{{url}}"
-    onclick="showAdminPopup(this, 'nosuchfield');"
     target="_blank">
   Edit client assessments
 </a>
+<script>
+  django.jQuery('#client_{{member.id}}_assessments_link').on('click', function(evt) {
+    evt.preventDefault();
+    showAdminPopup(this, 'nosuchfield');
+  })
+</script>
 
 <br>
 
