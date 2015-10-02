@@ -96,13 +96,16 @@ class TimestampedModel (models.Model):
 
 class ProjectManager (models.Manager):
     def create_from_csv_file(self, filename):
-        import csv
         logger.debug('Opening the CSV file {}'.format(filename))
         with open(filename, 'rU') as csvfile:
-            reader = csv.DictReader(csvfile)
-            projects = [Project(name=row['ProjectName']) for row in reader]
-            logger.debug('Creating {} projects'.format(len(projects)))
-            return self.bulk_create(projects)
+            return self.create_from_csv_stream(csvfile)
+
+    def create_from_csv_stream(self, stream):
+        import csv
+        reader = csv.DictReader(stream)
+        projects = [Project(name=row['ProjectName']) for row in reader]
+        logger.debug('Creating {} projects'.format(len(projects)))
+        return self.bulk_create(projects)
 
 
 class Project (TimestampedModel):

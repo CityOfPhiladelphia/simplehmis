@@ -12,4 +12,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         projects_filename = options['projects_filename'][0]
-        Project.objects.create_from_csv_file(projects_filename)
+        if projects_filename == '-':
+            from sys import stdin
+            Project.objects.create_from_csv_stream(stdin)
+        else:
+            Project.objects.create_from_csv_file(projects_filename)
