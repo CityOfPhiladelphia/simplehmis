@@ -117,7 +117,7 @@ class HouseholdAdmin (VersionAdmin):
     search_fields = ['project__name', 'members__client__first', 'members__client__middle', 'members__client__last', 'members__client__ssn']
 
     class Media:
-        js = ("js/show-strrep.js", "js/hmis-forms.js")
+        js = ("js/show-strrep.js?2", "js/hmis-forms.js?2")
         css = {"all": ("css/hmis-forms.css",)}
 
     def assessment_statuses(self, obj):
@@ -224,7 +224,7 @@ class ClientAdmin (VersionAdmin):
     )
 
     class Media:
-        js = ("js/show-strrep.js", "js/hmis-forms.js")
+        js = ("js/show-strrep.js?2", "js/hmis-forms.js?2")
         css = {"all": ("css/hmis-forms.css",)}
 
 
@@ -443,7 +443,7 @@ class HouseholdMemberAdmin (VersionAdmin):
     search_fields = ['client__first', 'client__middle', 'client__last', 'client__ssn']
 
     class Media:
-        js = ("js/show-strrep.js", "js/hmis-forms.js")
+        js = ("js/show-strrep.js?2", "js/hmis-forms.js?2")
         css = {"all": ("css/hmis-forms.css",)}
 
     def get_queryset(self, request):
