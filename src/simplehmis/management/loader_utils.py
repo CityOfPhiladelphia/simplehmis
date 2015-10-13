@@ -46,6 +46,8 @@ def hud_code(value, items):
         'Rental by client, no ongoing housing subsidy (Private Market)': 'Rental by client, no ongoing housing subsidy',
     }
 
+    value = value.strip()
+
     for number, string in items:
         if string.lower() == value.lower():
             return number
@@ -76,7 +78,10 @@ def parse_ssn(ssn):
     """
     Remove extra dashes and spaces from an SSN.
     """
-    return ssn.replace('-', '').strip()
+    ssn = ssn.replace('-', '').strip()
+    if ssn.strip('0') == '':
+        ssn = ''
+    return ssn
 
 
 class ClientLoaderHelper:
@@ -99,7 +104,20 @@ class ClientLoaderHelper:
         # Next, for all those rows where a household member was not created,
         # create one.
         for row in rows:
-            if '_member' not in row:
+
+            # If the member has been created and the SSN is blank, remember the
+            # HOH. This remembered HOH will serve as the HOH for the subsequent
+            # dependant household members.
+            if '_member' in row:
+                if row['_member'].client.ssn in ('', None) or row['_member'].client.ssn.strip('0') == '':
+                    print('Storing HOH:', row['_member'])
+                    self.remembered_hoh = row['_member']
+                    self.remembered_entry_date = row['_member'].entry_date
+                else:
+                    self.remembered_hoh = None
+                    self.remembered_entry_date = None
+
+            elif '_member' not in row:
                 self.get_or_create_household_member_from_row(manager, row)
                 self.get_or_create_assessments_from_row(manager, row)
 
@@ -138,7 +156,7 @@ class ClientLoaderHelper:
         def relaxed_get_or_create(defaults={}, **params):
             clients = manager.filter(**params)
             if len(clients) > 1:
-                logger.warn('more than one client found for {}'.format(ssn))
+                logger.warn('more than one client found for {}'.format(params))
 
             try:
                 client = clients[0]
@@ -189,8 +207,8 @@ class ClientLoaderHelper:
             hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
             assert ssn == hoh_ssn, \
                 ('Client is listed as the head of household, but does not '
-                 'match the head of household\'s SSN: {!r} vs {!r}.'
-                 ).format(ssn, hoh_ssn)
+                 'match the head of household\'s SSN: {!r} vs {!r}: {}.'
+                 ).format(ssn, hoh_ssn, row)
 
             # Check whether a household exists for this HoH's project and entry
             # date. If not, create one.
@@ -223,13 +241,27 @@ class ClientLoaderHelper:
             # household.
             project, _ = Project.objects.get_or_create(name=project_name)
             household = Household.objects.create(project=project)
+            ssn = parse_ssn(row['SSN'])
+
         else:
             # For dependants, we should use the household that exists for the
             # corresponding head of household.
             hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
             entry_date = parse_date(row['Program Start Date'])
-            hoh = HouseholdMember.objects.get(client__ssn=hoh_ssn, entry_date=entry_date)
+
+            recall_hoh = (hoh_ssn == '')
+            if recall_hoh:
+                assert hasattr(self, 'remembered_hoh') and self.remembered_hoh is not None, 'Last seen HOH did not have a blank SSN; the current row does: {}.'.format(row)
+                assert entry_date == self.remembered_entry_date, 'Entry dates for {} does not match recalled HOH -- {}'.format(row, self.remembered_hoh)
+                hoh = self.remembered_hoh
+            else:
+                try:
+                    hoh = HouseholdMember.objects.filter(client__ssn=hoh_ssn, entry_date__lte=entry_date).order_by('-entry_date')[0]
+                except IndexError:
+                    raise HouseholdMember.DoesNotExist('Could not find HOH with SSN {} and entry_date before {}'.format(hoh_ssn, entry_date))
+
             household = hoh.household
+            is_hoh = False
 
         member = HouseholdMember.objects.create(
             client=client,
@@ -238,6 +270,7 @@ class ClientLoaderHelper:
             entry_date=entry_date,
             exit_date=exit_date,
         )
+
         row['_member'] = member
         return member, True
 
