@@ -85,28 +85,31 @@ class ClientLoaderHelper:
     CSV file -- a fairly *ad hoc* process.
 
     """
+    def load_from_csv_stream(self, manager, stream):
+        reader = csv.DictReader(stream)
+        rows = list(reader)
+
+        # First create all the clients. We do the clients and households in
+        # separate steps just in case any dependents are listed before the
+        # head of household in the CSV.
+        for row in rows:
+            client, created = self.get_or_create_client_from_row(manager, row)
+            logger.debug('{} client'.format('Created' if created else 'Updated'))
+
+        # Next, for all those rows where a household member was not created,
+        # create one.
+        for row in rows:
+            if '_member' not in row:
+                self.get_or_create_household_member_from_row(manager, row)
+                self.get_or_create_assessments_from_row(manager, row)
+
+        return (row['_client'] for row in rows)
+
     def load_from_csv_file(self, manager, filename):
         logger.debug('Opening the CSV file {}'.format(filename))
 
         with open(filename, 'rU') as csvfile:
-            reader = csv.DictReader(csvfile)
-            rows = list(reader)
-
-            # First create all the clients. We do the clients and households in
-            # separate steps just in case any dependents are listed before the
-            # head of household in the CSV.
-            for row in rows:
-                client, created = self.get_or_create_client_from_row(manager, row)
-                logger.debug('{} client'.format('Created' if created else 'Updated'))
-
-            # Next, for all those rows where a household member was not created,
-            # create one.
-            for row in rows:
-                if '_member' not in row:
-                    self.get_or_create_household_member_from_row(manager, row)
-                    self.get_or_create_assessments_from_row(manager, row)
-
-            return (row['_client'] for row in rows)
+            return self.load_from_csv_stream(manager, csvfile)
 
     def get_or_create_client_from_row(self, manager, row):
         ssn = parse_ssn(row['SSN'])

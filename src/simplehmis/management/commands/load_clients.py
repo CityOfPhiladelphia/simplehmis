@@ -11,5 +11,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         filename = options['filename'][0]
-        with transaction.atomic():
+        if filename == '-':
+            from sys import stdin
+            Client.objects.load_from_csv_stream(stdin)
+        else:
             Client.objects.load_from_csv_file(filename)

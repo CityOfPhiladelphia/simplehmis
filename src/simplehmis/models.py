@@ -127,6 +127,10 @@ class ClientManager (models.Manager):
         helper = ClientLoaderHelper()
         return helper
 
+    def load_from_csv_stream(self, stream):
+        helper = self.get_load_helper()
+        return helper.load_from_csv_stream(self, stream)
+
     def load_from_csv_file(self, filename):
         helper = self.get_load_helper()
         return helper.load_from_csv_file(self, filename)
