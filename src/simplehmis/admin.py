@@ -161,9 +161,18 @@ class HouseholdAdmin (VersionAdmin):
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
+
+        # Sync the entry and exit dates between the household
+        # and the members.
         for obj in instances:
             self.save_member_form(request, obj, form, change)
+
+        # Save many-to-many relationships.
         formset.save_m2m()
+
+        # Delete deleted members.
+        for obj in formset.deleted_objects:
+            obj.delete()
 
     def save_member_form(self, request, obj, form, change):
         # Copy the entry and exit dates to the assessments.

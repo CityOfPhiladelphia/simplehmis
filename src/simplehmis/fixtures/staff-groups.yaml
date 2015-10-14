@@ -10,6 +10,7 @@
     - [refer_household, simplehmis, household]
     - [add_householdmember, simplehmis, householdmember]
     - [change_householdmember, simplehmis, householdmember]
+    - [delete_householdmember, simplehmis, householdmember]
     - [change_project, simplehmis, project]
   model: auth.group
 - fields:
