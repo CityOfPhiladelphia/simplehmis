@@ -16,6 +16,7 @@
 - fields:
     name: project-staff
     permissions:
+    - [add_client, simplehmis, client]
     - [change_client, simplehmis, client]
     - [add_clientannualassessment, simplehmis, clientannualassessment]
     - [change_clientannualassessment, simplehmis, clientannualassessment]
