@@ -247,13 +247,21 @@ class ClientLoaderHelper:
             # For dependants, we should use the household that exists for the
             # corresponding head of household.
             hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
+            last_name = row['Last Name']
             entry_date = parse_date(row['Program Start Date'])
 
-            recall_hoh = (hoh_ssn == '')
-            if recall_hoh:
-                assert hasattr(self, 'remembered_hoh') and self.remembered_hoh is not None, 'Last seen HOH did not have a blank SSN; the current row does: {}.'.format(row)
-                assert entry_date == self.remembered_entry_date, 'Entry dates for {} does not match recalled HOH -- {}'.format(row, self.remembered_hoh)
-                hoh = self.remembered_hoh
+            hoh_is_blank = (hoh_ssn == '')
+            if hoh_is_blank:
+                # Try matching on the dependent's last name and entry date
+                try:
+                    hoh = HouseholdMember.objects.get(client__last=last_name, entry_date=entry_date)
+
+                # Failing that, get the most recent HOH that did not have an
+                # SSN set.
+                except HouseholdMember.DoesNotExist:
+                    assert hasattr(self, 'remembered_hoh') and self.remembered_hoh is not None, 'Last seen HOH did not have a blank SSN; the current row does: {}.'.format(pretty.pformat(row))
+                    assert entry_date == self.remembered_entry_date, 'Entry dates for {} does not match recalled HOH -- {}'.format(pretty.pformat(row), self.remembered_hoh)
+                    hoh = self.remembered_hoh
             else:
                 try:
                     hoh = HouseholdMember.objects.filter(client__ssn=hoh_ssn, entry_date__lte=entry_date).order_by('-entry_date')[0]
