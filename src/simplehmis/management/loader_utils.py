@@ -4,6 +4,9 @@ from django.utils.timezone import datetime
 from simplehmis import consts
 from simplehmis.models import ClientRace, Household, HouseholdMember, Project, ClientEntryAssessment, ClientExitAssessment
 
+import pprint
+pretty = pprint.PrettyPrinter(indent=2)
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -45,6 +48,9 @@ def hud_code(value, items):
         'Black': 'Black or African American',
         'Rental by client, no ongoing housing subsidy (Private Market)': 'Rental by client, no ongoing housing subsidy',
     }
+
+    if not isinstance(value, str):
+        raise ValueError('"value" must be a string, not {}'.format(value))
 
     value = value.strip()
 
