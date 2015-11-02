@@ -8,3 +8,4 @@ psycopg2==2.6.1
 django-nopassword==2.1.0
 django-reversion==1.9.3
 coverage==3.7.1
+python-dateutil==2.4.2

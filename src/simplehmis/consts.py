@@ -180,15 +180,17 @@ HUD_CLIENT_DESTINATION = with_data_quality([
 ])
 
 HUD_CLIENT_HOMELESS_COUNT = with_data_quality([
-    (0, _('0 (not homeless - Prevention only)')),
-    (1, _('1 (homeless only this time)')),
-    (2, _('2')),
-    (3, _('3')),
-    (4, _('4 or more')),
+    (0, _('Never in 3 years')),
+    (1, _('One time')),
+    (2, _('Two times')),
+    (3, _('Three times')),
+    (4, _('Four or more times')),
 ])
 
-HUD_CLIENT_HOMELESS_MONTHS = [(100 + m, str(m)) for m in range(13)] + with_data_quality([
-    (7, _('More than 12 months')),
+HUD_CLIENT_HOMELESS_MONTHS = [
+    (101, _('One Month'))] + [
+    (100 + m, str(m)) for m in range(2, 13)] + with_data_quality([
+    (113, _('More than 12 months')),
 ])
 
 HUD_CLIENT_HOUSING_STATUS = with_data_quality([

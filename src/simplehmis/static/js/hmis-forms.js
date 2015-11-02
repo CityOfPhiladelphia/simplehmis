@@ -68,7 +68,7 @@ var HUD = HUD || {};
 
   HUD.updateHomelessInThreeYearsField = function() {
     // HUD Field 3.17, Dependent A
-    HUD.updateOptionDependentFields.call(this, '[value="4"]');
+    HUD.updateOptionDependentFields.call(this, '[value="1"],[value="2"],[value="3"],[value="4"]');
   };
 
   HUD.initHomelessInThreeYearsField = function() {

@@ -648,10 +648,14 @@ class HousingStatusFields (models.Model):
     """
     housing_status = models.PositiveIntegerField(_('Housing status'), choices=consts.HUD_CLIENT_HOUSING_STATUS, null=True, default=consts.HUD_BLANK)
 
-    homeless_at_least_one_year = models.PositiveIntegerField(_('Continuously homeless for at least one year'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
-    homeless_in_three_years = models.PositiveIntegerField(_('Number of times the client has been homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_COUNT, null=True, default=consts.HUD_BLANK)
-    homeless_months_in_three_years = models.PositiveIntegerField(_('If client has been homeless 4 or more times, how many total months homeless in the past three years'), choices=consts.HUD_CLIENT_HOMELESS_MONTHS, blank=True, null=True, default=consts.HUD_BLANK)
-    homeless_months_prior = models.PositiveIntegerField(_('Total number of months continuously homeless immediately prior to project entry (partial months should be rounded UP)'), null=True)
+    entering_from_streets = models.PositiveIntegerField(_('Is the client entering from the streets, shelter or safe haven? (i.e. Did the client sleep in a shelter, safe haven, or on the streets the night before entering the project?)'), choices=consts.HUD_YES_NO, null=True, default=consts.HUD_BLANK)
+    homeless_start_date = models.DateField(_('What was the approximate date the client started staying in that homeless situation? (i.e. when was the last time the client had a place to sleep that was not on the street, in an emergency shelter, or safe haven)?'), blank=True, null=True,
+        help_text=_('<ul>'
+                    '<li>If client is unsure of the exact day, enter an approximate date.</li>'
+                    '<li>If a client moved from one homeless situation to another (i.e. went from the streets to a safe haven, back to the streets, then into shelter, etc), then enter the date the client first became homeless.</li>'
+                    '</ul>'))
+    homeless_in_three_years = models.PositiveIntegerField(_('Regardless of where they stayed last night – Number of times the client has been on the streets, in ES, or SH in the past three years including today.'), choices=consts.HUD_CLIENT_HOMELESS_COUNT, null=True, default=consts.HUD_BLANK)
+    homeless_months_in_three_years = models.PositiveIntegerField(_('Total number of months homeless (i.e., on the street, in an emergency shelter, or safe haven) in the past three (3) years'), choices=consts.HUD_CLIENT_HOMELESS_MONTHS, blank=True, null=True, default=consts.HUD_BLANK)
     status_documented = models.PositiveIntegerField(choices=consts.YES_NO, blank=True, null=True)
     # TODO: WHAT DOES status_documented MEAN?
 

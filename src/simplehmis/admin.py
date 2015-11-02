@@ -321,7 +321,12 @@ DISABLING_CONDITION_FIELDSETS = (
 
 HOUSING_STATUS_FIELDSETS = (
     (None, {
-        'fields': ('housing_status', 'homeless_at_least_one_year',)
+        'classes': ('fieldset-entering_from_streets', 'has-yes-dependency',),
+        'fields': ('housing_status', 'entering_from_streets',)
+    }),
+    (None, {
+        'classes': ('indent',),
+        'fields': ('homeless_start_date',)
     }),
     (None, {
         'classes': ('fieldset-homeless_in_three_years', 'has-dependency',),
@@ -332,7 +337,7 @@ HOUSING_STATUS_FIELDSETS = (
         'fields': ('homeless_months_in_three_years',)
     }),
     (None, {
-        'fields': ('homeless_months_prior', 'status_documented',)
+        'fields': ('status_documented',)
     }),
     (None, {
         'classes': ('fieldset-prior_residence', 'has-dependency',),
