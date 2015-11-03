@@ -1,4 +1,5 @@
 import csv
+import sys
 
 from django.utils.timezone import datetime
 from simplehmis import consts
@@ -70,14 +71,26 @@ def hud_code(value, items):
     raise KeyError('No value {!r} found'.format(value))
 
 
-def parse_date(d):
+def parse_date(d, interactive=True):
     """
     Parse a mm/dd/yyyy date.
     """
-    try:
-        return datetime.strptime(d, '%m/%d/%Y').date() if d else None
-    except ValueError:
-        raise ValueError('Could not parse the date {!r}'.format(d))
+    if not d:
+        return None
+
+    for fmt in ('%m/%d/%Y', '%m/%d/%y'):
+        try:
+            return datetime.strptime(d, fmt).date()
+        except ValueError:
+            continue
+    else:
+        message = 'Could not parse the date {!r}'.format(d)
+        if interactive:
+            print(message + '; please enter a new date >>> ', end='', file=sys.stderr)
+            new_d = input()
+            return parse_date(new_d, interactive=interactive)
+        else:
+            raise ValueError(message)
 
 
 def parse_ssn(ssn):
