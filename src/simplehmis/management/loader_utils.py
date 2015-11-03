@@ -41,7 +41,10 @@ def hud_code(value, items, interactive=True):
 
         'Data Not Collected': 'Data not collected',
         'Jail, prison, or juvenile facility': 'Jail, prison or juvenile detention facility',
-        '4': '4 or more',
+        '1 (homeless only this time)': 'One time',
+        '2': 'Two times',
+        '3': 'Three times',
+        '4': 'Four or more times',
         'Non-Hispanic / Non-Latino': 'Non-Hispanic/Non-Latino',
         'Non- Hispanic/Non-Latino': 'Non-Hispanic/Non-Latino',
         'Hispanic / Latino': 'Hispanic/Latino',
