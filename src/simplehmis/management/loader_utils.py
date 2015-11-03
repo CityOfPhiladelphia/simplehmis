@@ -12,7 +12,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def hud_code(value, items):
+def hud_code(value, items, interactive=True):
     """
     Get the corresponding HUD code from a string value.
     """
@@ -68,7 +68,13 @@ def hud_code(value, items):
         if equivalents.get(value) == string:
             return number
 
-    raise KeyError('No value {!r} found'.format(value))
+    message = 'No value {!r} found among {}'.format(value, [s for n, s in items])
+    if interactive:
+        print(message + '; please enter another value\n>>> ', end='', file=sys.stderr)
+        new_value = input()
+        return hud_code(new_value, items, interactive=True)
+    else:
+        raise KeyError(message)
 
 
 def parse_date(d, interactive=True):
@@ -88,7 +94,7 @@ def parse_date(d, interactive=True):
         if interactive:
             print(message + '; please enter a new date >>> ', end='', file=sys.stderr)
             new_d = input()
-            return parse_date(new_d, interactive=interactive)
+            return parse_date(new_d, interactive=True)
         else:
             raise ValueError(message)
 
