@@ -12,6 +12,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def try_to_correct_value(message, retry_func, interactive=True):
+    if interactive:
+        print(message + '; please enter a new value\n>>> ', end='', file=sys.stderr)
+        try:
+            new_value = input()
+        except (KeyboardInterrupt, EOFError):
+            raise ValueError(message)
+        return retry_func(new_value)
+    else:
+        raise ValueError(message)
+
+
 def hud_code(value, items, interactive=True):
     """
     Get the corresponding HUD code from a string value.
@@ -85,13 +97,9 @@ def hud_code(value, items, interactive=True):
         if equivalents.get(value) == string:
             return number
 
-    message = 'No value {!r} found among {}'.format(value, [s for n, s in items])
-    if interactive:
-        print(message + '; please enter another value\n>>> ', end='', file=sys.stderr)
-        new_value = input()
-        return hud_code(new_value, items, interactive=True)
-    else:
-        raise KeyError(message)
+    return try_to_correct_value(
+        'No value {!r} found among {}'.format(value, pretty.pformat([s for n, s in items])),
+        lambda v: hud_code(v, items, interactive))
 
 
 def parse_date(d, interactive=True):
@@ -107,23 +115,23 @@ def parse_date(d, interactive=True):
         except ValueError:
             continue
     else:
-        message = 'Could not parse the date {!r}'.format(d)
-        if interactive:
-            print(message + '; please enter a new date >>> ', end='', file=sys.stderr)
-            new_d = input()
-            return parse_date(new_d, interactive=True)
-        else:
-            raise ValueError(message)
+        return try_to_correct_value(
+            'Could not parse the date {!r}'.format(d),
+            lambda d: parse_date(d, interactive))
 
 
-def parse_ssn(ssn):
+def parse_ssn(ssn, interactive=True):
     """
     Remove extra dashes and spaces from an SSN.
     """
-    ssn = ssn.replace('-', '').strip()
-    if ssn.strip('0') == '':
-        ssn = ''
-    return ssn
+    norm_ssn = ssn.replace('-', '').strip()
+    if norm_ssn.strip('0') == '':
+        norm_ssn = ''
+    elif len(norm_ssn) > 9 or any(c not in '1234567890' for c in norm_ssn):
+        return try_to_correct_value(
+            'Invalid SSN: {!r}'.format(ssn),
+            lambda n: parse_ssn(n, interactive))
+    return norm_ssn
 
 
 class ClientLoaderHelper:
@@ -171,7 +179,7 @@ class ClientLoaderHelper:
         with open(filename, 'rU') as csvfile:
             return self.load_from_csv_stream(manager, csvfile)
 
-    def get_or_create_client_from_row(self, manager, row):
+    def get_or_create_client_from_row(self, manager, row, interactive=True):
         ssn = parse_ssn(row['SSN'])
 
         name_and_dob = dict(
@@ -247,10 +255,17 @@ class ClientLoaderHelper:
         if hoh_rel == 'Self (head of household)':
             # Make sure that the HoH SSN matches the client's.
             hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
-            assert ssn == hoh_ssn, \
-                ('Client is listed as the head of household, but does not '
-                 'match the head of household\'s SSN: {!r} vs {!r}: {}.'
-                 ).format(ssn, hoh_ssn, row)
+            if hoh_ssn and ssn != hoh_ssn:
+                message = (
+                    'Client is listed as the head of household, but does not '
+                    'match the head of household\'s SSN: {!r} vs {!r}: {}.'
+                    ).format(row['SSN'], row['Head of Household\'s SSN'], pretty.pformat(row))
+
+                if interactive:
+                    print(message + '\n\nWhich would you like to keep?\n>>>', end='', file=sys.stderr)
+                    hoh_ssn = ssn = client_values['ssn'] = parse_ssn(input())
+                else:
+                    raise AssertionError(message)
 
             # Check whether a household exists for this HoH's project and entry
             # date. If not, create one.
@@ -348,9 +363,38 @@ class ClientLoaderHelper:
             domestic_violence=hud_code(row['Domestic Violence'], consts.HUD_YES_NO),
         )
 
+        # Prepare to convert the following fields from HUD 2.1 entry assessment
+        # values to HUD 3.0 entry assessment values.
+        #
+        # See simplehmis migration 0010 for more information on this conversion.
+        homeless_at_least_one_year = hud_code(row['Has Been Continuously Homeless (on the streets, in EH or in a Safe Haven) for at Least One Year'], consts.HUD_YES_NO)
+        prior_residence = hud_code(row['Residence Prior to Program Entry - Type of Residence'], consts.HUD_CLIENT_PRIOR_RESIDENCE)
+        if prior_residence in (1, 16, 18) or \
+           homeless_at_least_one_year == 1:
+            entering_from_streets = 1  # Yes
+        elif prior_residence in (8, 9, 99) and \
+             homeless_at_least_one_year in (8, 9, 99):
+            entering_from_streets = min(prior_residence, homeless_at_least_one_year)
+        else:
+            entering_from_streets = 0  # No
+
+        # We don't have an explicity homeless_months_prior column, so infer it
+        # from the length_at_prior_residence if prior residence is some sort of
+        # shelter or emergency housing.
+        if prior_residence in (1, 16, 18):
+            from dateutil.relativedelta import relativedelta
+            length_of_homeless_map = {10: 1, 11: 1, 2: 1, 3: 1, 4: 3, 5: 12}
+            length_at_prior_residence = hud_code(row['Residence Prior to Program Entry - Length of Stay in Previous Place'], consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE)
+            homeless_months_prior = length_of_homeless_map.get(length_at_prior_residence, 0)
+            month_count = homeless_months_prior or 0
+            homeless_start_date = entry_date - relativedelta(months=month_count)
+        else:
+            homeless_start_date = None
+
         entry_values = dict(
             shared_values,
-            homeless_at_least_one_year=hud_code(row['Has Been Continuously Homeless (on the streets, in EH or in a Safe Haven) for at Least One Year'], consts.HUD_YES_NO),
+            entering_from_streets=entering_from_streets,
+            homeless_start_date=homeless_start_date,
             homeless_in_three_years=hud_code(row['Number of Times the Client has Been Homeless in the Past Three Years (streets, in EH, or in a safe haven)'], consts.HUD_CLIENT_HOMELESS_COUNT),
             prior_residence=hud_code(row['Residence Prior to Program Entry - Type of Residence'], consts.HUD_CLIENT_PRIOR_RESIDENCE),
             length_at_prior_residence=hud_code(row['Residence Prior to Program Entry - Length of Stay in Previous Place'], consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE),
