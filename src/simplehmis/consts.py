@@ -123,7 +123,7 @@ HUD_CLIENT_PRIOR_RESIDENCE = with_data_quality([
     (24, _('Long-term care facility or nursing home')),
     (23, _('Owned by client, no ongoing housing subsidy')),
     (21, _('Owned by client, with ongoing housing subsidy')),
-    (3, _('Permanent housing for formerly homeless persons (such as: a CoC project; HUD legacy programs; or HOPWA PH)')),
+    (3, _('Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)')),
     (16, _('Place not meant for habitation (e.g., a vehicle, an abandoned building, bus/train/subway station/airport or anywhere outside)')),
     (4, _('Psychiatric hospital or other psychiatric facility')),
     (22, _('Rental by client, no ongoing housing subsidy')),

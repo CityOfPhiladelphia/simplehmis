@@ -20,6 +20,7 @@ def hud_code(value, items, interactive=True):
         # Mapping sheet strings to equivalent consts strings
         'Permanent housing for formerly homeless persons': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
         'Client Refused': 'Client refused',
+        'Refused Info': 'Client refused',
         'Refused': 'Client refused',
         'Client doesn\'t know': 'Client doesn’t know',
         'Client Doesn’t Know': 'Client doesn’t know',
@@ -38,19 +39,32 @@ def hud_code(value, items, interactive=True):
         'On the street or other place not meant for human habitation': 'Place not meant for habitation (e.g., a vehicle, an abandoned building, bus/train/subway station/airport or anywhere outside)',
         'Rental by client': 'Rental by client, no ongoing housing subsidy',
         'Permanent Housing': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
+        #'Permanent housing for formerly homeless persons': 'Permanent housing for formerly homeless persons (such as: a CoC project; HUD legacy programs; or HOPWA PH)',
+        'Permanent Supportive Housing': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
+        'PHA': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
+        'Staying with friends': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
 
         'Data Not Collected': 'Data not collected',
         'Jail, prison, or juvenile facility': 'Jail, prison or juvenile detention facility',
+        'Rental by client, no ongoing housing subsidy (Private Market)': 'Rental by client, no ongoing housing subsidy',
+
+        # Totally random destinations.
+        'Methodist Hope': 'Other',
+        'find housing': 'Other',
+
+        # Times homeless
         '1 (homeless only this time)': 'One time',
         '2': 'Two times',
         '3': 'Three times',
         '4': 'Four or more times',
+
         'Non-Hispanic / Non-Latino': 'Non-Hispanic/Non-Latino',
         'Non- Hispanic/Non-Latino': 'Non-Hispanic/Non-Latino',
+        'Non-Hispanic/ Non Latin': 'Non-Hispanic/Non-Latino',
+        'Non-Hispanic/Non Latin': 'Non-Hispanic/Non-Latino',
         'Hispanic / Latino': 'Hispanic/Latino',
         'Hispanic': 'Hispanic/Latino',
         'Black': 'Black or African American',
-        'Rental by client, no ongoing housing subsidy (Private Market)': 'Rental by client, no ongoing housing subsidy',
     }
 
     if not isinstance(value, str):
