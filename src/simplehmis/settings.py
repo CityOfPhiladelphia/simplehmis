@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'nopassword',
     'reversion',
+    'django_object_actions',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -58,3 +58,7 @@ fieldset {
 .assessment-incomplete {
 	color: gray;
 }
+
+.objectaction-item[data-tool-name="send_onboarding_message"] .button.icon:after {
+  content: "\f0e0"; /* fa-envelope */
+}

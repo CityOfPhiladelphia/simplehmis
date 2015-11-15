@@ -6,6 +6,7 @@ from django.db.models import fields
 from django.forms import widgets
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
+from django_object_actions import DjangoObjectActions
 from reversion import VersionAdmin
 from . import forms
 from . import models
@@ -544,7 +545,7 @@ class HMISUserGroupsInline (admin.TabularInline):
     extra = 0
 
 
-class HMISUserAdmin (UserAdmin):
+class HMISUserAdmin (DjangoObjectActions, UserAdmin):
     actions = ['send_onboarding_messages']
     add_form = forms.PasswordlessUserCreationForm
     add_fieldsets = (
@@ -563,6 +564,8 @@ class HMISUserAdmin (UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
+    objectactions = ('send_onboarding_message', )
+
     class Media:
         js = ("js/show-strrep.js?2", "js/hmis-forms.js?2")
         css = {"all": ("css/hmis-forms.css",)}
@@ -575,6 +578,13 @@ class HMISUserAdmin (UserAdmin):
             count = len(queryset)
         self.message_user(request, 'Successfully sent {} onbaording message{}.'.format(count, '' if count == 1 else 's'))
     send_onboarding_messages.short_description = "Send onboarding emails to the selected users"
+
+    def send_onboarding_message(self, request, obj):
+        user = models.HMISUser(obj)
+        user.send_onboarding_email(secure=(request.scheme == 'https'), host=request.get_host())
+        self.message_user(request, 'Successfully sent onbaording message to {}.'.format(user.username))
+    send_onboarding_message.label = "Send onboarding email"
+    send_onboarding_message.short_description = "Send an onboarding email to the current user"
 
 
 site = sites.HMISAdminSite()
