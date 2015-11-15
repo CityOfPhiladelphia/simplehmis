@@ -528,6 +528,22 @@ class ProjectAdmin (VersionAdmin):
 from django.contrib.auth.admin import Group, GroupAdmin, User, UserAdmin
 
 
+class HMISUserProjectInline (admin.TabularInline):
+    model = models.Project.admins.through
+    # raw_id_fields = ('project',)
+    verbose_name = 'provider partner'
+    verbose_name_plural = 'provider partners'
+    extra = 0
+
+
+class HMISUserGroupsInline (admin.TabularInline):
+    model = User.groups.through
+    # raw_id_fields = ('group',)
+    verbose_name = 'group'
+    verbose_name_plural = 'groups'
+    extra = 0
+
+
 class HMISUserAdmin (UserAdmin):
     actions = ['send_onboarding_messages']
     add_form = forms.PasswordlessUserCreationForm
@@ -537,6 +553,19 @@ class HMISUserAdmin (UserAdmin):
             'fields': ('username',),
         }),
     )
+
+    readonly_fields = ('last_login', 'date_joined')
+    inlines = (HMISUserGroupsInline, HMISUserProjectInline,)
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+
+    class Media:
+        js = ("js/show-strrep.js?2", "js/hmis-forms.js?2")
+        css = {"all": ("css/hmis-forms.css",)}
 
     def send_onboarding_messages(self, request, queryset):
         for user in queryset:
