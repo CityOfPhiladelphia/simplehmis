@@ -127,17 +127,17 @@ class ClientManager (models.Manager):
         helper = ClientLoaderHelper()
         return helper
 
-    def load_from_csv_stream(self, stream):
+    def load_from_csv_stream(self, stream, interactive=True, strong_matching=False):
         helper = self.get_load_helper()
-        return helper.load_from_csv_stream(self, stream)
+        return helper.load_from_csv_stream(self, stream, interactive=interactive, strong_matching=strong_matching)
 
-    def load_from_csv_file(self, filename):
+    def load_from_csv_file(self, filename, interactive=True, strong_matching=False):
         helper = self.get_load_helper()
-        return helper.load_from_csv_file(self, filename)
+        return helper.load_from_csv_file(self, filename, interactive=interactive, strong_matching=strong_matching)
 
-    def get_or_create_client_from_row(self, row):
+    def get_or_create_client_from_row(self, row, interactive=True, strong_matching=False):
         helper = self.get_load_helper()
-        return helper.get_or_create_client_from_row(self, row)
+        return helper.get_or_create_client_from_row(self, row, interactive=interactive, strong_matching=strong_matching)
 
     def get_or_create_household_member_from_row(self, row):
         helper = self.get_load_helper()

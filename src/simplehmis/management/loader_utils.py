@@ -140,7 +140,7 @@ class ClientLoaderHelper:
     CSV file -- a fairly *ad hoc* process.
 
     """
-    def load_from_csv_stream(self, manager, stream):
+    def load_from_csv_stream(self, manager, stream, interactive=True, strong_matching=False):
         reader = csv.DictReader(stream)
         rows = list(reader)
 
@@ -148,7 +148,7 @@ class ClientLoaderHelper:
         # separate steps just in case any dependents are listed before the
         # head of household in the CSV.
         for row in rows:
-            client, created = self.get_or_create_client_from_row(manager, row)
+            client, created = self.get_or_create_client_from_row(manager, row, interactive=interactive, strong_matching=strong_matching)
             logger.debug('{} client'.format('Created' if created else 'Updated'))
 
         # Next, for all those rows where a household member was not created,
@@ -173,13 +173,13 @@ class ClientLoaderHelper:
 
         return (row['_client'] for row in rows)
 
-    def load_from_csv_file(self, manager, filename):
+    def load_from_csv_file(self, manager, filename, interactive=True, strong_matching=False):
         logger.debug('Opening the CSV file {}'.format(filename))
 
         with open(filename, 'rU') as csvfile:
-            return self.load_from_csv_stream(manager, csvfile)
+            return self.load_from_csv_stream(manager, csvfile, interactive=True, strong_matching=strong_matching)
 
-    def get_or_create_client_from_row(self, manager, row, interactive=True):
+    def get_or_create_client_from_row(self, manager, row, interactive=True, strong_matching=False):
         ssn = parse_ssn(row['SSN'])
 
         name_and_dob = dict(
@@ -217,9 +217,12 @@ class ClientLoaderHelper:
 
             return client, created
 
-        # First, try to match on SSN
+        # First, try to match on SSN (or SSN, name, and DOB if strong matching)
         if ssn:
-            client, created = relaxed_get_or_create(ssn=ssn, defaults=client_values)
+            if strong_matching:
+                client, created = relaxed_get_or_create(ssn=ssn, defaults=client_values, **name_and_dob)
+            else:
+                client, created = relaxed_get_or_create(ssn=ssn, defaults=client_values)
 
         # Failing that, try first, last, and date of birth
         elif all(name_and_dob.values()):
