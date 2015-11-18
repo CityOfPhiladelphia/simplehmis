@@ -62,3 +62,16 @@ fieldset {
 .objectaction-item[data-tool-name="send_onboarding_message"] .button.icon:after {
   content: "\f0e0"; /* fa-envelope */
 }
+
+
+.app-auth.model-user .related-widget-wrapper select {
+  width: auto;
+}
+
+.app-auth.model-user .inline-group .tabular td.original p {
+  display: none;
+}
+
+.app-auth.model-user .inline-group .tabular tr.has_original td {
+  padding: 0.5625rem 0.625rem;
+}
