@@ -39,6 +39,7 @@ def hud_code(value, items, interactive=True):
         'Client Doesn\'t Know': 'Client doesn’t know',
         'YES': 'Yes',
         'NO': 'No',
+        'Head of household’s other relation member': 'Head of household’s other relation member (other relation to head of household)',
 
         # Destinations
         'Staying or living with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
@@ -326,7 +327,7 @@ class ClientLoaderHelper:
                 try:
                     hoh = HouseholdMember.objects.filter(client__ssn=hoh_ssn, entry_date__lte=entry_date).order_by('-entry_date')[0]
                 except IndexError:
-                    raise HouseholdMember.DoesNotExist('Could not find HOH with SSN {} and entry_date before {}'.format(hoh_ssn, entry_date))
+                    raise HouseholdMember.DoesNotExist('Could not find HOH with SSN {} and entry_date before {}'.format(row['Head of Household\'s SSN'], entry_date))
 
             household = hoh.household
             is_hoh = False
