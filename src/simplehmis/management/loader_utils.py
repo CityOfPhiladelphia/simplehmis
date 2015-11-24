@@ -100,7 +100,8 @@ def hud_code(value, items, interactive=True):
 
     return try_to_correct_value(
         'No value {!r} found among {}'.format(value, pretty.pformat([s for n, s in items])),
-        lambda v: hud_code(v, items, interactive))
+        lambda v: hud_code(v, items, interactive),
+        interactive=interactive)
 
 
 def parse_date(d, interactive=True):
@@ -118,7 +119,8 @@ def parse_date(d, interactive=True):
     else:
         return try_to_correct_value(
             'Could not parse the date {!r}'.format(d),
-            lambda d: parse_date(d, interactive))
+            lambda d: parse_date(d, interactive),
+            interactive=interactive)
 
 
 def parse_ssn(ssn, interactive=True):
@@ -131,7 +133,8 @@ def parse_ssn(ssn, interactive=True):
     elif len(norm_ssn) > 9 or any(c not in '1234567890' for c in norm_ssn):
         return try_to_correct_value(
             'Invalid SSN: {!r}'.format(ssn),
-            lambda n: parse_ssn(n, interactive))
+            lambda n: parse_ssn(n, interactive),
+            interactive=interactive)
     return norm_ssn
 
 
@@ -169,8 +172,8 @@ class ClientLoaderHelper:
                     self.remembered_entry_date = None
 
             elif '_member' not in row:
-                self.get_or_create_household_member_from_row(manager, row)
-                self.get_or_create_assessments_from_row(manager, row)
+                self.get_or_create_household_member_from_row(manager, row, interactive=interactive)
+                self.get_or_create_assessments_from_row(manager, row, interactive=interactive)
 
         return (row['_client'] for row in rows)
 
@@ -178,15 +181,15 @@ class ClientLoaderHelper:
         logger.debug('Opening the CSV file {}'.format(filename))
 
         with open(filename, 'rU') as csvfile:
-            return self.load_from_csv_stream(manager, csvfile, interactive=True, strong_matching=strong_matching)
+            return self.load_from_csv_stream(manager, csvfile, interactive=interactive, strong_matching=strong_matching)
 
     def get_or_create_client_from_row(self, manager, row, interactive=True, strong_matching=False):
-        ssn = parse_ssn(row['SSN'])
+        ssn = parse_ssn(row['SSN'], interactive=interactive)
 
         name_and_dob = dict(
             first=row['First Name'],
             last=row['Last Name'],
-            dob=parse_date(row['DOB'])
+            dob=parse_date(row['DOB'], interactive=interactive)
         )
 
         client_values = dict(
@@ -258,7 +261,7 @@ class ClientLoaderHelper:
         hoh_rel = row['Relationship to HoH']
         if hoh_rel == 'Self (head of household)':
             # Make sure that the HoH SSN matches the client's.
-            hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
+            hoh_ssn = parse_ssn(row['Head of Household\'s SSN'], interactive=interactive)
             if hoh_ssn and ssn != hoh_ssn:
                 message = (
                     'Client is listed as the head of household, but does not '
@@ -267,22 +270,22 @@ class ClientLoaderHelper:
 
                 if interactive:
                     print(message + '\n\nWhich would you like to keep?\n>>>', end='', file=sys.stderr)
-                    hoh_ssn = ssn = client_values['ssn'] = parse_ssn(input())
+                    hoh_ssn = ssn = client_values['ssn'] = parse_ssn(input(), interactive=interactive)
                 else:
                     raise AssertionError(message)
 
             # Check whether a household exists for this HoH's project and entry
             # date. If not, create one.
-            self.get_or_create_household_member_from_row(manager, row)
-            self.get_or_create_assessments_from_row(manager, row)
+            self.get_or_create_household_member_from_row(manager, row, interactive=interactive)
+            self.get_or_create_assessments_from_row(manager, row, interactive=interactive)
 
         return client, created
 
-    def get_or_create_household_member_from_row(self, manager, row):
+    def get_or_create_household_member_from_row(self, manager, row, interactive=True):
         client = row['_client']
         project_name = row['Program Name']
-        entry_date = parse_date(row['Program Start Date'])
-        exit_date = parse_date(row['Program End Date'])
+        entry_date = parse_date(row['Program Start Date'], interactive=interactive)
+        exit_date = parse_date(row['Program End Date'], interactive=interactive)
 
         try:
             # If we can find a household membership that already exists for
@@ -302,14 +305,14 @@ class ClientLoaderHelper:
             # household.
             project, _ = Project.objects.get_or_create(name=project_name)
             household = Household.objects.create(project=project)
-            ssn = parse_ssn(row['SSN'])
+            ssn = parse_ssn(row['SSN'], interactive=interactive)
 
         else:
             # For dependants, we should use the household that exists for the
             # corresponding head of household.
-            hoh_ssn = parse_ssn(row['Head of Household\'s SSN'])
+            hoh_ssn = parse_ssn(row['Head of Household\'s SSN'], interactive=interactive)
             last_name = row['Last Name']
-            entry_date = parse_date(row['Program Start Date'])
+            entry_date = parse_date(row['Program Start Date'], interactive=interactive)
 
             hoh_is_blank = (hoh_ssn == '')
             if hoh_is_blank:
@@ -335,7 +338,7 @@ class ClientLoaderHelper:
         member = HouseholdMember.objects.create(
             client=client,
             household=household,
-            hoh_relationship=hud_code(row['Relationship to HoH'], consts.HUD_CLIENT_HOH_RELATIONSHIP),
+            hoh_relationship=hud_code(row['Relationship to HoH'], consts.HUD_CLIENT_HOH_RELATIONSHIP, interactive=interactive),
             entry_date=entry_date,
             exit_date=exit_date,
         )
@@ -343,10 +346,10 @@ class ClientLoaderHelper:
         row['_member'] = member
         return member, True
 
-    def get_or_create_assessments_from_row(self, manager, row):
+    def get_or_create_assessments_from_row(self, manager, row, interactive=True):
         member = row['_member']
-        entry_date = parse_date(row['Program Start Date'])
-        exit_date = parse_date(row['Program End Date'])
+        entry_date = parse_date(row['Program Start Date'], interactive=interactive)
+        exit_date = parse_date(row['Program End Date'], interactive=interactive)
 
         if 'never' in row['Exit Destination'].lower() or \
            'no show' in row['Exit Destination'].lower():
@@ -358,21 +361,21 @@ class ClientLoaderHelper:
             return None, None
 
         shared_values = dict(
-            physical_disability=hud_code(row['Physical Disability'], consts.HUD_YES_NO),
-            developmental_disability=hud_code(row['Developmental Disability'], consts.HUD_YES_NO),
-            chronic_health=hud_code(row['Chronic Health Condition'], consts.HUD_YES_NO),
-            hiv_aids=hud_code(row['HIV/AIDS'], consts.HUD_YES_NO),
-            mental_health=hud_code(row['Mental Health Problem'], consts.HUD_YES_NO),
-            substance_abuse=hud_code(row['Substance Abuse'], consts.HUD_CLIENT_SUBSTANCE_ABUSE),
-            domestic_violence=hud_code(row['Domestic Violence'], consts.HUD_YES_NO),
+            physical_disability=hud_code(row['Physical Disability'], consts.HUD_YES_NO, interactive=interactive),
+            developmental_disability=hud_code(row['Developmental Disability'], consts.HUD_YES_NO, interactive=interactive),
+            chronic_health=hud_code(row['Chronic Health Condition'], consts.HUD_YES_NO, interactive=interactive),
+            hiv_aids=hud_code(row['HIV/AIDS'], consts.HUD_YES_NO, interactive=interactive),
+            mental_health=hud_code(row['Mental Health Problem'], consts.HUD_YES_NO, interactive=interactive),
+            substance_abuse=hud_code(row['Substance Abuse'], consts.HUD_CLIENT_SUBSTANCE_ABUSE, interactive=interactive),
+            domestic_violence=hud_code(row['Domestic Violence'], consts.HUD_YES_NO, interactive=interactive),
         )
 
         # Prepare to convert the following fields from HUD 2.1 entry assessment
         # values to HUD 3.0 entry assessment values.
         #
         # See simplehmis migration 0010 for more information on this conversion.
-        homeless_at_least_one_year = hud_code(row['Has Been Continuously Homeless (on the streets, in EH or in a Safe Haven) for at Least One Year'], consts.HUD_YES_NO)
-        prior_residence = hud_code(row['Residence Prior to Program Entry - Type of Residence'], consts.HUD_CLIENT_PRIOR_RESIDENCE)
+        homeless_at_least_one_year = hud_code(row['Has Been Continuously Homeless (on the streets, in EH or in a Safe Haven) for at Least One Year'], consts.HUD_YES_NO, interactive=interactive)
+        prior_residence = hud_code(row['Residence Prior to Program Entry - Type of Residence'], consts.HUD_CLIENT_PRIOR_RESIDENCE, interactive=interactive)
         if prior_residence in (1, 16, 18) or \
            homeless_at_least_one_year == 1:
             entering_from_streets = 1  # Yes
@@ -388,7 +391,7 @@ class ClientLoaderHelper:
         if prior_residence in (1, 16, 18):
             from dateutil.relativedelta import relativedelta
             length_of_homeless_map = {10: 1, 11: 1, 2: 1, 3: 1, 4: 3, 5: 12}
-            length_at_prior_residence = hud_code(row['Residence Prior to Program Entry - Length of Stay in Previous Place'], consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE)
+            length_at_prior_residence = hud_code(row['Residence Prior to Program Entry - Length of Stay in Previous Place'], consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE, interactive=interactive)
             homeless_months_prior = length_of_homeless_map.get(length_at_prior_residence, 0)
             month_count = homeless_months_prior or 0
             homeless_start_date = entry_date - relativedelta(months=month_count)
@@ -399,14 +402,14 @@ class ClientLoaderHelper:
             shared_values,
             entering_from_streets=entering_from_streets,
             homeless_start_date=homeless_start_date,
-            homeless_in_three_years=hud_code(row['Number of Times the Client has Been Homeless in the Past Three Years (streets, in EH, or in a safe haven)'], consts.HUD_CLIENT_HOMELESS_COUNT),
-            prior_residence=hud_code(row['Residence Prior to Program Entry - Type of Residence'], consts.HUD_CLIENT_PRIOR_RESIDENCE),
-            length_at_prior_residence=hud_code(row['Residence Prior to Program Entry - Length of Stay in Previous Place'], consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE),
+            homeless_in_three_years=hud_code(row['Number of Times the Client has Been Homeless in the Past Three Years (streets, in EH, or in a safe haven)'], consts.HUD_CLIENT_HOMELESS_COUNT, interactive=interactive),
+            prior_residence=hud_code(row['Residence Prior to Program Entry - Type of Residence'], consts.HUD_CLIENT_PRIOR_RESIDENCE, interactive=interactive),
+            length_at_prior_residence=hud_code(row['Residence Prior to Program Entry - Length of Stay in Previous Place'], consts.HUD_CLIENT_LENGTH_AT_PRIOR_RESIDENCE, interactive=interactive),
         )
 
         exit_values = dict(
             shared_values,
-            destination=hud_code(row['Exit Destination'], consts.HUD_CLIENT_DESTINATION),
+            destination=hud_code(row['Exit Destination'], consts.HUD_CLIENT_DESTINATION, interactive=interactive),
         )
 
         # Get or create the entry and exit assessments, if there is an entry
