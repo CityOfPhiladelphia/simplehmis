@@ -37,9 +37,13 @@ def hud_code(value, items, interactive=True):
         'Client doesn\'t know': 'Client doesn’t know',
         'Client Doesn’t Know': 'Client doesn’t know',
         'Client Doesn\'t Know': 'Client doesn’t know',
+        "CLIENT DOESN'T KNOW": 'Client doesn’t know',
+        'UNKNOWN': 'Client doesn’t know',
         'YES': 'Yes',
         'NO': 'No',
         'Head of household’s other relation member': 'Head of household’s other relation member (other relation to head of household)',
+        'HEAD OF HOUSEHOLD CHILD': 'Head of household’s child',
+        'AUNT': 'Head of household’s other relation member (other relation to head of household)',
 
         # Destinations
         'Staying or living with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
@@ -60,16 +64,25 @@ def hud_code(value, items, interactive=True):
         'Data Not Collected': 'Data not collected',
         'Jail, prison, or juvenile facility': 'Jail, prison or juvenile detention facility',
         'Rental by client, no ongoing housing subsidy (Private Market)': 'Rental by client, no ongoing housing subsidy',
+        'TRANSITIONAL HOUSING FOR HOMELESS PERSONS': 'Transitional housing for homeless persons (including homeless youth)',
+        "STAYING OR LIVING IN A FRIEND'S ROOM, APARTMENT OR HOUSE": 'Staying or living in a friend’s room, apartment or house',
+        "STAYING OR LIVING IN A FAMILY MEMBER'S ROOM, APARTMENT OR HOUSE": 'Staying or living in a family member’s room, apartment or house',
 
         # Totally random destinations.
         'Methodist Hope': 'Other',
         'find housing': 'Other',
+        'OTHER SUPPORTIVE HOUSING': 'Other',
 
         # Times homeless
+        '0 (NOT HOMELESS - PREVENTION ONLY)': 'Never in 3 years',
         '1 (homeless only this time)': 'One time',
+        '1 (HOMELESS ONLY THIS TIME)': 'One time',
         '2': 'Two times',
         '3': 'Three times',
         '4': 'Four or more times',
+        '4 OR MORE': 'Four or more times',
+        "DON'T KNOW": 'Client doesn’t know',
+        'OTHER (PLEASE SPECIFY)': 'Other',
 
         'Non-Hispanic / Non-Latino': 'Non-Hispanic/Non-Latino',
         'Non- Hispanic/Non-Latino': 'Non-Hispanic/Non-Latino',
@@ -78,6 +91,9 @@ def hud_code(value, items, interactive=True):
         'Hispanic / Latino': 'Hispanic/Latino',
         'Hispanic': 'Hispanic/Latino',
         'Black': 'Black or African American',
+        'BLACK/AFRICAN-AMERICAN': 'Black or African American',
+        'BLACK/NON AFRICAN-AMERICAN': 'Black or African American',
+        'NONE': 'No',
     }
 
     if not isinstance(value, str):
@@ -203,7 +219,7 @@ class ClientLoaderHelper:
 
         # Race, as a many-to-many field, gets applied separately.
         race = [
-            hud_code(race, consts.HUD_CLIENT_RACE)
+            hud_code(race, consts.HUD_CLIENT_RACE, interactive=interactive)
             for race in row['Race (HUD)'].split(';')
         ]
 
@@ -259,7 +275,7 @@ class ClientLoaderHelper:
         # The following only apply to clients that are listed as a head of
         # household.
         hoh_rel = row['Relationship to HoH']
-        if hoh_rel == 'Self (head of household)':
+        if hoh_rel.lower() == 'self (head of household)':
             # Make sure that the HoH SSN matches the client's.
             hoh_ssn = parse_ssn(row['Head of Household\'s SSN'], interactive=interactive)
             if hoh_ssn and ssn != hoh_ssn:
@@ -299,7 +315,7 @@ class ClientLoaderHelper:
         except HouseholdMember.DoesNotExist:
             pass
 
-        if row['Relationship to HoH'] == 'Self (head of household)':
+        if row['Relationship to HoH'].lower() == 'self (head of household)':
             # For heads of households, if we haven't found an existing
             # membership, then we can assume that we need to create a new
             # household.
