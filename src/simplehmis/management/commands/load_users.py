@@ -34,7 +34,10 @@ class Command(BaseCommand):
                     user = User.objects.create(**row)
 
                 if project_name:
-                    project = Project.objects.get(name=project_name)
+                    try:
+                        project = Project.objects.get(name=project_name)
+                    except Project.DoesNotExist:
+                        raise Project.DoesNotExist("No project named " + project_name)
                     user.projects.add(project)
 
                 groups = Group.objects.filter(name__in=staff_groups)
