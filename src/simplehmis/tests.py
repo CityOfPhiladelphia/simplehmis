@@ -129,6 +129,29 @@ class AdminTests (TestCase):
         assert response.status_code == 302
         assert response.url.startswith(settings.LOGIN_URL)
 
+    def test_project_staff_cannot_see_project_filter_if_single_project(self):
+        request = RequestFactory().get('/simplehmis/households')
+        admin_view = admin.HouseholdAdmin(models.Household, admin.site)
+        staff = User.objects.get(username='project-admin1')
+        request.user = staff
+        # Make sure staff sees project filter.
+        filters = set(admin_view.get_list_filter(request))
+        assert 'project' not in filters, \
+            "Project filter is present for staff with single " \
+            "project: {}".format(filters)
+
+    def test_project_staff_can_see_project_filter_if_multiple_projects(self):
+        request = RequestFactory().get('/simplehmis/households')
+        admin_view = admin.HouseholdAdmin(models.Household, admin.site)
+        staff = User.objects.get(username='project-admin2')
+        request.user = staff
+        # Make sure staff sees project filter.
+        filters = set(admin_view.get_list_filter(request))
+        assert 'project' in filters, \
+            "Project filter is not present for staff with multiple " \
+            "projects: {}".format(filters)
+
+
 
 class EnrollmentFilterTests (TestCase):
     fixtures = ['staff-groups', 'hmis-test-data']

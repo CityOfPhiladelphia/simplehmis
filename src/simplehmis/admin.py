@@ -150,7 +150,8 @@ class HouseholdAdmin (VersionAdmin):
     def get_list_filter(self, request):
         list_filter = [IsEnrolledListFilter, IsAssessedListFilter]
         user = models.HMISUser(request.user)
-        if user.can_refer_household():
+        if (user.can_refer_household() or
+            user.can_enroll_household() and user.projects.all().count() > 1):
             list_filter.append('project')
         return list_filter
 
