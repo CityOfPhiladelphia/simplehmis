@@ -41,8 +41,13 @@ def hud_code(value, items, interactive=True):
         'UNKNOWN': 'Client doesn’t know',
         'YES': 'Yes',
         'NO': 'No',
+
+        'Drugs': 'Drug abuse',
+
+        # 'Self (head of household': 'Self (head of household)',
         'Head of household’s other relation member': 'Head of household’s other relation member (other relation to head of household)',
         'HEAD OF HOUSEHOLD CHILD': 'Head of household’s child',
+        "Head of household's child": 'Head of household’s child',
         'AUNT': 'Head of household’s other relation member (other relation to head of household)',
 
         # Destinations
@@ -87,6 +92,7 @@ def hud_code(value, items, interactive=True):
         'Non-Hispanic / Non-Latino': 'Non-Hispanic/Non-Latino',
         'Non- Hispanic/Non-Latino': 'Non-Hispanic/Non-Latino',
         'Non-Hispanic/ Non Latin': 'Non-Hispanic/Non-Latino',
+        'Non-Hipanic/Non-Latino': 'Non-Hispanic/Non-Latino',
         'Non-Hispanic/Non Latin': 'Non-Hispanic/Non-Latino',
         'Hispanic / Latino': 'Hispanic/Latino',
         'Hispanic': 'Hispanic/Latino',
@@ -129,7 +135,7 @@ def parse_date(d, interactive=True):
 
     for fmt in ('%m/%d/%Y', '%m/%d/%y'):
         try:
-            return datetime.strptime(d, fmt).date()
+            return datetime.strptime(d.strip(), fmt).date()
         except ValueError:
             continue
     else:
@@ -144,7 +150,9 @@ def parse_ssn(ssn, interactive=True):
     Remove extra dashes and spaces from an SSN.
     """
     norm_ssn = ssn.replace('-', '').strip()
-    if norm_ssn.strip('0') == '':
+    if norm_ssn.lower() == 'n/a':
+        norm_ssn = ''
+    elif norm_ssn.strip('0') == '':
         norm_ssn = ''
     elif len(norm_ssn) > 9 or any(c not in '1234567890' for c in norm_ssn):
         return try_to_correct_value(
@@ -212,9 +220,9 @@ class ClientLoaderHelper:
             name_and_dob,
             ssn=ssn,
             middle=row['Middle Name'],
-            ethnicity=hud_code(row['Ethnicity (HUD)'], consts.HUD_CLIENT_ETHNICITY),
-            gender=hud_code(row['Gender (HUD)'], consts.HUD_CLIENT_GENDER),
-            veteran_status=hud_code(row['Veteran Status (HUD)'], consts.HUD_YES_NO),
+            ethnicity=hud_code(row['Ethnicity (HUD)'], consts.HUD_CLIENT_ETHNICITY, interactive=interactive),
+            gender=hud_code(row['Gender (HUD)'], consts.HUD_CLIENT_GENDER, interactive=interactive),
+            veteran_status=hud_code(row['Veteran Status (HUD)'], consts.HUD_YES_NO, interactive=interactive),
         )
 
         # Race, as a many-to-many field, gets applied separately.
@@ -240,7 +248,7 @@ class ClientLoaderHelper:
         # First, try to match on SSN (or SSN, name, and DOB if strong matching)
         if ssn:
             if strong_matching:
-                client, created = relaxed_get_or_create(ssn=ssn, defaults=client_values, **name_and_dob)
+                client, created = relaxed_get_or_create(ssn=ssn, last=name_and_dob['last'], defaults=client_values)
             else:
                 client, created = relaxed_get_or_create(ssn=ssn, defaults=client_values)
 
@@ -334,7 +342,7 @@ class ClientLoaderHelper:
             if hoh_is_blank:
                 # Try matching on the dependent's last name and entry date
                 try:
-                    hoh = HouseholdMember.objects.get(client__last=last_name, entry_date=entry_date)
+                    hoh = HouseholdMember.objects.get(client__last=last_name, entry_date=entry_date, household__project__name=project_name, hoh_relationship=1)
 
                 # Failing that, get the most recent HOH that did not have an
                 # SSN set.
@@ -342,6 +350,12 @@ class ClientLoaderHelper:
                     assert hasattr(self, 'remembered_hoh') and self.remembered_hoh is not None, 'Last seen HOH did not have a blank SSN; the current row does: {}.'.format(pretty.pformat(row))
                     assert entry_date == self.remembered_entry_date, 'Entry dates for {} does not match recalled HOH -- {}'.format(pretty.pformat(row), self.remembered_hoh)
                     hoh = self.remembered_hoh
+
+                except HouseholdMember.MultipleObjectsReturned:
+                    hohs = HouseholdMember.objects.filter(client__last=last_name, entry_date=entry_date, household__project__name=project_name, hoh_relationship=1).order_by('-client__dob')
+                    hoh = hohs[0]
+                    logger.warn('Take note: Multiple HOHs were found with the same last name and entry date. Assuming the eldest is HOH: {}'.format(hoh))
+
             else:
                 try:
                     hoh = HouseholdMember.objects.filter(client__ssn=hoh_ssn, entry_date__lte=entry_date).order_by('-entry_date')[0]
