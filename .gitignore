@@ -4,7 +4,20 @@ include/
 lib/
 dist/
 log/
-.env
 app.conf
 *.pyc
-*.sqlite3
+*.sqlite3*
+
+# All environment files, except the template
+.env*
+!.env.template
+
+# Generated test coverate reports
+.coverage
+
+# Other local files
+partner-users.yaml
+tmpdata/
+huddata/
+*tmp/
+dump-prod.sh
