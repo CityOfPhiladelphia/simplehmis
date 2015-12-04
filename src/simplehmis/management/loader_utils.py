@@ -65,6 +65,7 @@ def hud_code(value, items, interactive=True):
         'Permanent Supportive Housing': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
         'PHA': 'Permanent housing for formerly homeless persons (such as: CoC project; or HUD legacy programs; or HOPWA PH)',
         'Staying with friends': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
+        'Transitional Housing': 'Transitional housing for homeless persons (including homeless youth)',
 
         'Data Not Collected': 'Data not collected',
         'Jail, prison, or juvenile facility': 'Jail, prison or juvenile detention facility',
@@ -132,6 +133,8 @@ def parse_date(d, interactive=True):
     """
     if not d:
         return None
+    elif d.lower() in ('not collected',):
+        return None
 
     for fmt in ('%m/%d/%Y', '%m/%d/%y'):
         try:
@@ -150,7 +153,7 @@ def parse_ssn(ssn, interactive=True):
     Remove extra dashes and spaces from an SSN.
     """
     norm_ssn = ssn.replace('-', '').strip()
-    if norm_ssn.lower() == 'n/a':
+    if norm_ssn.lower() in ('n/a', 'not collected', 'not in file', 'no data collected', 'unknown', 'immigrant'):
         norm_ssn = ''
     elif norm_ssn.strip('0') == '':
         norm_ssn = ''
