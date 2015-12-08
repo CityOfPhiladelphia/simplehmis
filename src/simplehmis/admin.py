@@ -110,6 +110,27 @@ class IsAssessedListFilter(admin.SimpleListFilter):
         return queryset.filter_by_assessments(self.value())
 
 
+class AvailableProjectsListFilter(admin.SimpleListFilter):
+    title = _('project')
+    parameter_name = 'project__id__exact'
+
+    def lookups(self, request, model_admin):
+        if request.user.is_superuser:
+            qs = models.Project.objects.all()
+        else:
+            qs = request.user.projects.all()
+
+        return (
+            (str(p.id), str(p))
+            for p in qs
+        )
+
+    def queryset(self, request, queryset):
+        if self.value():
+            queryset = queryset.filter(project__id__exact=self.value())
+        return queryset
+
+
 class HouseholdAdmin (VersionAdmin):
     inlines = [HouseholdMemberInline]
     raw_id_fields = ['project']
@@ -153,7 +174,7 @@ class HouseholdAdmin (VersionAdmin):
         user = models.HMISUser(request.user)
         if (user.can_refer_household() or
             user.can_enroll_household() and user.projects.all().count() > 1):
-            list_filter.append('project')
+            list_filter.append(AvailableProjectsListFilter)
         return list_filter
 
     def lookup_allowed(self, lookup, value):
