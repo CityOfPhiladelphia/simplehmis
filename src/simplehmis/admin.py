@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import fields
 from django.forms import widgets
 from django.template.loader import render_to_string
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import ugettext as _
 from django_object_actions import DjangoObjectActions
 from reversion import VersionAdmin
@@ -555,6 +556,7 @@ class HMISUserAdmin (DjangoObjectActions, UserAdmin):
             'fields': ('username',),
         }),
     )
+    list_display = ('username', 'programs', 'first_name', 'last_name', 'is_staff')
 
     readonly_fields = ('last_login', 'date_joined')
     inlines = (HMISUserGroupsInline, HMISUserProjectInline,)
@@ -570,6 +572,21 @@ class HMISUserAdmin (DjangoObjectActions, UserAdmin):
     class Media:
         js = ("js/show-strrep.js?2", "js/hmis-forms.js?2")
         css = {"all": ("css/hmis-forms.css",)}
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('projects', 'groups')
+
+    def programs(self, obj):
+        programs_strings = []
+        for project in obj.projects.all():
+            programs_strings.append(
+                format_html('<a href="{}">{}</a>',
+                            reverse('admin:simplehmis_project_change', args=[obj.id]),
+                            project.name)
+            )
+        return mark_safe(',<br>'.join(programs_strings))
+    programs.admin_order_field = 'projects__name'
 
     def send_onboarding_messages(self, request, queryset):
         for user in queryset:
