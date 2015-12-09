@@ -51,6 +51,7 @@ def hud_code(value, items, interactive=True):
         'AUNT': 'Head of household’s other relation member (other relation to head of household)',
 
         # Destinations
+        'Staying with family': 'Staying or living with family, temporary tenure (e.g., room, apartment or house)',
         'Staying or living with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
         'Staying or living  with friends, temporary tenure': 'Staying or living with friends, temporary tenure (e.g., room apartment or house)',
         'Staying or living  with friends, permanent tenure': 'Staying or living with friends, permanent tenure',
@@ -187,16 +188,17 @@ class ClientLoaderHelper:
         for row in rows:
 
             # If the member has been created and the SSN is blank, remember the
-            # HOH. This remembered HOH will serve as the HOH for the subsequent
+            # HOH. This last blank HOH will serve as the HOH for the subsequent
             # dependant household members.
             if '_member' in row:
+                self.last_seen_hoh = row['_member']
                 if row['_member'].client.ssn in ('', None) or row['_member'].client.ssn.strip('0') == '':
                     print('Storing HOH:', row['_member'])
-                    self.remembered_hoh = row['_member']
-                    self.remembered_entry_date = row['_member'].entry_date
+                    self.last_blank_hoh = row['_member']
+                    self.last_blank_entry_date = row['_member'].entry_date
                 else:
-                    self.remembered_hoh = None
-                    self.remembered_entry_date = None
+                    self.last_blank_hoh = None
+                    self.last_blank_entry_date = None
 
             elif '_member' not in row:
                 self.get_or_create_household_member_from_row(manager, row, interactive=interactive)
@@ -350,9 +352,9 @@ class ClientLoaderHelper:
                 # Failing that, get the most recent HOH that did not have an
                 # SSN set.
                 except HouseholdMember.DoesNotExist:
-                    assert hasattr(self, 'remembered_hoh') and self.remembered_hoh is not None, 'Last seen HOH did not have a blank SSN; the current row does: {}.'.format(pretty.pformat(row))
-                    assert entry_date == self.remembered_entry_date, 'Entry dates for {} does not match recalled HOH -- {}'.format(pretty.pformat(row), self.remembered_hoh)
-                    hoh = self.remembered_hoh
+                    assert hasattr(self, 'last_blank_hoh') and self.last_blank_hoh is not None, 'Last seen HOH ({}) did not have a blank SSN ({}); the current row does: {}.'.format(self.last_seen_hoh, self.last_seen_hoh.client.ssn, pretty.pformat(row))
+                    assert entry_date == self.last_blank_entry_date, 'Entry dates for {} does not match recalled HOH -- {}'.format(pretty.pformat(row), self.last_blank_hoh)
+                    hoh = self.last_blank_hoh
 
                 except HouseholdMember.MultipleObjectsReturned:
                     hohs = HouseholdMember.objects.filter(client__last=last_name, entry_date=entry_date, household__project__name=project_name, hoh_relationship=1).order_by('-client__dob')
@@ -433,6 +435,7 @@ class ClientLoaderHelper:
 
         entry_values = dict(
             shared_values,
+            project_entry_date=entry_date,
             entering_from_streets=entering_from_streets,
             homeless_start_date=homeless_start_date,
             homeless_in_three_years=hud_code(row['Number of Times the Client has Been Homeless in the Past Three Years (streets, in EH, or in a safe haven)'], consts.HUD_CLIENT_HOMELESS_COUNT, interactive=interactive),
@@ -442,6 +445,7 @@ class ClientLoaderHelper:
 
         exit_values = dict(
             shared_values,
+            project_exit_date=exit_date,
             destination=hud_code(row['Exit Destination'], consts.HUD_CLIENT_DESTINATION, interactive=interactive),
         )
 
@@ -451,7 +455,6 @@ class ClientLoaderHelper:
         if entry_date:
             entry, _ = ClientEntryAssessment.objects.get_or_create(
                 member=member,
-                project_entry_date=entry_date,
                 defaults=entry_values)
             for k, v in entry_values.items():
                 if getattr(entry, k) != v:
@@ -462,7 +465,6 @@ class ClientLoaderHelper:
         if exit_date:
             exit, _ = ClientExitAssessment.objects.get_or_create(
                 member=member,
-                project_exit_date=exit_date,
                 defaults=exit_values)
             for k, v in exit_values.items():
                 if getattr(exit, k) != v:
