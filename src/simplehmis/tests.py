@@ -136,7 +136,8 @@ class AdminTests (TestCase):
         request.user = staff
         # Make sure staff sees project filter.
         filters = set(admin_view.get_list_filter(request))
-        assert 'project' not in filters, \
+        from simplehmis.admin import AvailableProjectsListFilter
+        assert AvailableProjectsListFilter not in filters, \
             "Project filter is present for staff with single " \
             "project: {}".format(filters)
 
@@ -147,7 +148,8 @@ class AdminTests (TestCase):
         request.user = staff
         # Make sure staff sees project filter.
         filters = set(admin_view.get_list_filter(request))
-        assert 'project' in filters, \
+        from simplehmis.admin import AvailableProjectsListFilter
+        assert AvailableProjectsListFilter in filters, \
             "Project filter is not present for staff with multiple " \
             "projects: {}".format(filters)
 
