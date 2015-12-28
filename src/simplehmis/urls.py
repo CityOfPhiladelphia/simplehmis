@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^', include('phila.urls')),
     url(r'^', include(admin.site.urls)),
     url(r'^simplehmis/download_data$', admin.dump_hud_data, name='simplehmis_download_data'),
+    url(r'^simplehmis/download_enrollments$', admin.dump_enrollment_demographics, name='simplehmis_download_enrollments'),
 ]

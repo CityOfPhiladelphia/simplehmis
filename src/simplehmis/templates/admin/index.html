@@ -18,6 +18,7 @@
     {% if user.is_superuser %}
         {% include "admin/_full_app_list.html" %}
         <div class="index-action"><a href="{% url "simplehmis_download_data" %}" class="downloadlink button icon">Download All Data<i class="fa fa-download"></i></a></div>
+        <div class="index-action"><a href="{% url "simplehmis_download_enrollments" %}" class="downloadlink button icon">Download Enrollments<i class="fa fa-download"></i></a></div>
     {% else %}
         {% if perms.simplehmis.add_household %}
             <div class="index-action"><a href="{% url "admin:simplehmis_household_add" %}" class="addlink button icon">Refer a new household<i class="fa fa-plus"></i></a></div>

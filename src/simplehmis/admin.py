@@ -9,6 +9,7 @@ from django.utils.html import format_html, mark_safe
 from django.utils.translation import ugettext as _
 from django_object_actions import DjangoObjectActions
 from reversion import VersionAdmin
+from . import consts
 from . import forms
 from . import models
 from . import sites
@@ -46,6 +47,52 @@ def dump_hud_data(request):
     # Write the zip file buffer out as a downloadable file
     response = HttpResponse(zipbuffer.getvalue(), content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename="simplehmis_data.zip"'
+    return response
+
+
+@user_passes_test(superuser_check)
+def dump_enrollment_demographics(request):
+    """
+    Download winter initiative data as a CSV.
+    """
+    import csv
+    from io import StringIO
+    from django.http import HttpResponse
+
+    enrollments = models.HouseholdMember.objects.all()\
+        .select_related('client')\
+        .select_related('household')\
+        .select_related('household__project')
+
+    fields = ('project name', 'entry date', 'exit date', 'referral created', 'referral last edited',
+              'client name', 'client dob', 'client ssn', 'client gender', 'client vet status')
+    data = []
+    for enrollment in enrollments:
+        client = enrollment.client
+        referral = enrollment.household
+        data.append(
+            (
+                referral.project.name,
+                enrollment.entry_date.isoformat() if enrollment.entry_date else None,
+                enrollment.exit_date.isoformat() if enrollment.exit_date else None,
+                referral.created_at.date().isoformat(),
+                referral.updated_at.date().isoformat(),
+                client.name_display(),
+                client.dob.isoformat() if client.dob else None,
+                client.ssn,
+                dict(consts.HUD_CLIENT_GENDER).get(client.gender),
+                dict(consts.HUD_YES_NO).get(client.veteran_status)
+            )
+        )
+
+    csvbuffer = StringIO()
+    writer = csv.writer(csvbuffer)
+    writer.writerow(fields)
+    for row in data:
+        writer.writerow(row)
+
+    response = HttpResponse(csvbuffer.getvalue(), content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="enrollment_demographics.csv"'
     return response
 
 
