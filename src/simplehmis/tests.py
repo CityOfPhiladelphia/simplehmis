@@ -154,7 +154,6 @@ class AdminTests (TestCase):
             "projects: {}".format(filters)
 
 
-
 class EnrollmentFilterTests (TestCase):
     fixtures = ['staff-groups', 'hmis-test-data']
 
