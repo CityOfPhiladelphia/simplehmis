@@ -33,6 +33,11 @@ def get_strrep(request):
         repr=obj))
 
 
+def generate_exception(request):
+    raise Exception('This is an exception.')
+
+
 urlpatterns = [
     url(r'^get-strrep$', get_strrep),
+    url(r'^generate-exception$', generate_exception)
 ]

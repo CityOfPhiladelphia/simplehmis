@@ -59,6 +59,14 @@ INSTALLED_APPS = (
     'django_object_actions',
 )
 
+if 'SENTRY_DSN' in os.environ:
+    import raven
+    INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
+    RAVEN_CONFIG = {
+        'dsn': os.environ.get('SENTRY_DSN'),
+        'release': raven.fetch_git_sha(os.path.join(os.path.dirname(__file__), '..', '..')),
+    }
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

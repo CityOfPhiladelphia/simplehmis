@@ -10,3 +10,4 @@ django-reversion==1.9.3
 coverage==3.7.1
 python-dateutil==2.4.2
 django-object-actions==0.5.1
+raven==5.9.2
